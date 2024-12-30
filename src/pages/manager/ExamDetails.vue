@@ -47,6 +47,7 @@ const examDetails = ref({
 <template>
     <div style="background-color: whitesmoke;"
     class="xl:pl-60 pt-14 min-h-screen w-full transition-position bg-gray-50 dark:bg-slate-800 dark:text-slate-100">
+    
     <div class="container">
       <h1 class="exam-title">{{ examDetails.subject }} 시험 정보</h1>
       <div class="exam-stats">

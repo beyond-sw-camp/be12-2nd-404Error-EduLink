@@ -20,7 +20,7 @@ import InstructorDash from '../pages/instructor/InstructorDash.vue';
 
 import ExamList from '../pages/manager/ExamList.vue';
 import ExamDetails from '../pages/manager/ExamDetails.vue';
-
+import LeaveRequest from '../pages/manager/LeaveRequest.vue';
 
 
 import InstStudInform from '../pages/Instructor/InstStudInform.vue';
@@ -71,6 +71,7 @@ const router = createRouter({
         { path: '/bootcamp', component : bootcampList },
 
         { path: '/manager/attendanceManage', component: AttendanceManage },
+        { path: '/manager/leave-request', component: LeaveRequest },
 
         { path: '/bootcamp', component : bootcampList },
         { path: '/board/bbboard', component : bbboard },
