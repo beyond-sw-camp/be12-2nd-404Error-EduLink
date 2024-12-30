@@ -45,7 +45,7 @@
                 class="max-h-screen-menu overflow-y-auto lg:overflow-visible absolute w-screen top-14 left-0 bg-gray-50 shadow-lg lg:w-auto lg:flex lg:static lg:shadow-none dark:bg-slate-800 hidden">
                 <div
                     class="block lg:flex items-center relative cursor-pointer navbar-item-label dark:text-white dark:hover:text-slate-400 lg:py-2 lg:px-3">
-                    <div
+                    <a href="/userinfo"
                         class="flex items-center bg-gray-100 dark:bg-slate-800 lg:bg-transparent lg:dark:bg-transparent p-3 lg:p-0">
                         <div class="w-6 h-6 mr-3 inline-flex"><img
                                 src="https://api.dicebear.com/7.x/avataaars/svg?seed=doe-doe-doe-example-com"
@@ -57,7 +57,7 @@
                                 <path fill="currentColor"
                                     d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"></path>
                             </svg></span>
-                    </div>
+                    </a>
                     <div
                         class="text-sm border-b border-gray-100 lg:border lg:bg-white lg:absolute lg:top-full lg:left-0 lg:min-w-full lg:z-20 lg:rounded-lg lg:shadow-lg lg:dark:bg-slate-800 dark:border-slate-700 lg:hidden">
                         <a
