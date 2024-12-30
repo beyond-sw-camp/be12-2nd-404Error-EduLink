@@ -7,7 +7,8 @@ import LoginForm from '../pages/LoginForm.vue';
 import Aside from '../pages/Aside.vue';
 import FormsView from '../pages/FormsView.vue';
 import SignupForm from '../pages/SignupForm.vue';
-import { h } from 'vue';
+
+import UserinfoForm from '../pages/UserInformation.vue';import { h } from 'vue';
 import Studentdashboard from '../pages/Student/Studentdashboard.vue';
 import BootcampInfo from '../pages/Student/BootcampInfo.vue';
 import ManagerDashboard from '../pages/manager/ManagerDashboard.vue';
@@ -54,7 +55,7 @@ const router = createRouter({
             meta: { asideComponent: StudentAside  ,hideAside: false }, // StudentAside를 항상 사용
         },     
 
-          
+        { path: '/userinfo', component: UserinfoForm },
 
         { path: '/inst/dashboard', component: InstructorDash },
         { path: '/inst/studinform', component: InstStudInform },
