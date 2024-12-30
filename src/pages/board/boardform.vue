@@ -1,105 +1,414 @@
 <template>
+ 
   <div style="background-color: whitesmoke;"
-  class="xl:pl-60 pt-14 min-h-screen w-full transition-position bg-gray-50 dark:bg-slate-800 dark:text-slate-100">
-    <div class="flex z-30 items-center flex-col justify-center overflow-hidden fixed inset-0" v-show="isOverlayVisible">
-      <div
-        class="overlay absolute inset-0 bg-gradient-to-tr opacity-90 dark:from-gray-700 dark:via-gray-900 dark:to-gray-700">
-      </div>
-    </div>
-  
-    <section class="p-6 xl:max-w-6xl xl:mx-auto">
-      <section class="mb-6 flex items-center justify-between">
-        <div class="flex items-center justify-start">
-          <span
-            class="inline-flex justify-center items-center w-12 h-12 rounded-full bg-white text-black dark:bg-slate-900/70 dark:text-white mr-3">
-            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-              width="24" height="24" fill="none" viewBox="0 0 24 24">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M12 6.03v13m0-13c-2.819-.831-4.715-1.076-8.029-1.023A.99.99 0 0 0 3 6v11c0 .563.466 1.014 1.03 1.007 3.122-.043 5.018.212 7.97 1.023m0-13c2.819-.831 4.715-1.076 8.029-1.023A.99.99 0 0 1 21 6v11c0 .563-.466 1.014-1.03 1.007-3.122-.043-5.018.212-7.97 1.023" />
-            </svg>
-          </span>
-          <h1 class="text-3xl leading-tight">글작성</h1>
-        </div>
-        
+ class="xl:pl-60 pt-14 min-h-screen w-full transition-position bg-gray-50 dark:bg-slate-800 dark:text-slate-100">
+ <ul class="hidden text-sm font-medium text-center text-gray-500 rounded-lg shadow sm:flex dark:divide-gray-700 dark:text-gray-400">
+    <li class="w-full focus-within:z-10" @click="setSelectedTab('공지사항')">
+       <div :class="getClass('공지사항')">
+         공지사항
+       </div>
+   </li>
+   <li class="w-full focus-within:z-10" @click="setSelectedTab('자유')">
+       <div :class="getClass('자유')">
+         자유
+       </div>
+   </li>
+   <li class="w-full focus-within:z-10" @click="setSelectedTab('시험')">
+       <div :class="getClass('시험')">
+         시험
+       </div>
+   </li>
+   <li class="w-full focus-within:z-10" @click="setSelectedTab('커리큘럼')">
+       <div :class="getClass('커리큘럼')">
+         커리큘럼
+       </div>
+   </li>
+   <li class="w-full focus-within:z-10" @click="setSelectedTab('과제')">
+       <div :class="getClass('과제')">
+         과제
+       </div>
+   </li>
+   <li class="w-full focus-within:z-10" @click="setSelectedTab('질의응답')">
+       <div :class="getClass('질의응답')">
+         질의응답
+       </div>
+   </li>
+</ul>
 
 
-      </section>
-  
-      <div class="rounded-2xl flex-col dark:bg-slate-900/70 bg-white flex">
-        <div class="flex-1 p-6">
-          <div class="mb-6 last:mb-0">
-            <label class="block font-bold mb-2">제목</label>
-            <input v-model="formData.title" type="text"
-              class="px-3 py-2 max-w-full focus:ring focus:outline-none border-gray-700 rounded w-full dark:placeholder-gray-400 h-12 border bg-white dark:bg-slate-800">
-          </div>
-  
-          <div class="mb-6 last:mb-0">
-            <label class="block font-bold mb-2">카테고리</label>
-            <select v-model="formData.category"
-              class="px-3 py-2 max-w-full focus:ring focus:outline-none border-gray-700 rounded w-full dark:placeholder-gray-400 h-12 border bg-white dark:bg-slate-800">
-              <option value="자유">자유</option>
-              <option value="공지사항">공지사항</option>
-              <option value="테스트">테스트</option>
-            </select>
-          </div>
-  
-          <div class="mb-6 last:mb-0">
-            <label class="block font-bold mb-2">내용</label>
-            <textarea v-model="formData.content"
-              class="px-3 py-2 max-w-full focus:ring focus:outline-none border-gray-700 rounded w-full dark:placeholder-gray-400 h-24 border bg-white dark:bg-slate-800"
-              placeholder="글을 작성해주세요...."></textarea>
-          </div>
-        </div>
-  
-        <footer class="p-6">
-          <div class="flex items-center justify-start flex-wrap -mb-3">
-            <button @click="submitPost"
-              class="inline-flex justify-center items-center whitespace-nowrap focus:outline-none transition-colors focus:ring duration-150 border cursor-pointer rounded border-blue-600 dark:border-blue-500 ring-blue-300 dark:ring-blue-700 bg-blue-600 dark:bg-blue-500 text-white hover:bg-blue-700 hover:border-blue-700 hover:dark:bg-blue-600 hover:dark:border-blue-600 py-2 px-3 mr-3 last:mr-0 mb-3">
-              <span class="px-2">게시</span>
-            </button>
-            <button @click="saveDraft"
-              class="inline-flex justify-center items-center whitespace-nowrap focus:outline-none transition-colors focus:ring duration-150 border cursor-pointer rounded border-blue-600 dark:border-blue-500 ring-blue-300 dark:ring-blue-700 text-blue-600 dark:text-blue-500 hover:bg-blue-600 hover:text-white hover:dark:text-white hover:dark:border-blue-600 py-2 px-3 mr-3 last:mr-0 mb-3">
-              <span class="px-2">임시저장</span>
-            </button>
-          </div>
-        </footer>
-      </div>
-    </section>
-  </div>
-  </template>
-  
-  <script setup>
-  import { ref } from 'vue';
-  import { useRouter } from 'vue-router';
-  
-  const router = useRouter();
-  
-  const isOverlayVisible = ref(false);
-  
-  const formData = ref({
-    title: '',
-    category: '자유',
-    content: '',
-  });
-  
-  const goToList = () => {
-    router.push('/board/managerboard');
-  };
-  
-  const submitPost = () => {
-    // Implement API call to submit the post
-    console.log('게시물 제출:', formData.value);
-  };
-  
-  const saveDraft = () => {
-    // Save the draft locally or via an API call
-    console.log('임시 저장:', formData.value);
-  };
-  </script>
-  
-  <style scoped>
-  .z-30 {
-    z-index: 30;
-  }
-  </style>
-  
+   <!-- 선택된 카테고리에 맞는 내용 표시 -->
+   <div v-if="selectedTab === '공지사항'">
+     
+     <!-- 여기에 공지사항 내용 -->
+     <section class="bg-gray-50 dark:bg-gray-900 min-h-screen flex items-center justify-center">
+   <div class="py-8 px-4 mx-auto max-w-screen-lg lg:py-16 w-full">
+     <div class="w-full max-w-2xl mx-auto bg-white rounded-lg shadow-xl dark:bg-gray-800 p-8 space-y-8">
+       <h2 class="text-3xl font-semibold text-center text-gray-900 dark:text-white">
+         글 작성
+       </h2>
+
+       <div class="mb-5">
+     <label for="large-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">제목
+
+     </label>
+     <input type="text" id="large-input" class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+ </div>
+
+       <form @submit.prevent="submitForm" class="space-y-6">
+         <!-- 파일 업로드 필드 -->
+         <div>
+           <label for="user_avatar" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">첨부파일</label>
+           <input
+             id="user_avatar"
+             name="user_avatar"
+             type="file"
+             class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+           />
+         </div>
+
+         <!-- 텍스트 입력 필드 -->
+         <div>
+           <label for="content" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">글 내용</label>
+           <textarea
+             id="content"
+             name="content"
+             class="block w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-4 focus:ring-blue-300 dark:bg-gray-700 dark:text-white dark:border-gray-600 dark:focus:ring-blue-500 focus:outline-none"
+             placeholder="글을 작성해주세요..."
+             rows="6"
+             required
+           ></textarea>
+         </div>
+
+         <!-- 제출 버튼 -->
+         <div>
+           <button
+             type="submit"
+             class="w-full px-5 py-3 text-base font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+           >
+             게시
+           </button>
+         </div>
+       </form>
+     </div>
+   </div>
+     </section>
+   </div>
+   <div v-if="selectedTab === '자유'">
+     
+     <!-- 여기에 자유 내용 -->
+     <section class="bg-gray-50 dark:bg-gray-900 min-h-screen flex items-center justify-center">
+   <div class="py-8 px-4 mx-auto max-w-screen-lg lg:py-16 w-full">
+     <div class="w-full max-w-2xl mx-auto bg-white rounded-lg shadow-xl dark:bg-gray-800 p-8 space-y-8">
+       <h2 class="text-3xl font-semibold text-center text-gray-900 dark:text-white">
+         글 작성
+       </h2>
+
+       <div class="mb-5">
+     <label for="large-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">제목
+
+     </label>
+     <input type="text" id="large-input" class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+ </div>
+
+       <form @submit.prevent="submitForm" class="space-y-6">
+         <!-- 파일 업로드 필드 -->
+         <div>
+           <label for="user_avatar" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">첨부파일</label>
+           <input
+             id="user_avatar"
+             name="user_avatar"
+             type="file"
+             class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+           />
+         </div>
+
+         <!-- 텍스트 입력 필드 -->
+         <div>
+           <label for="content" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">글 내용</label>
+           <textarea
+             id="content"
+             name="content"
+             class="block w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-4 focus:ring-blue-300 dark:bg-gray-700 dark:text-white dark:border-gray-600 dark:focus:ring-blue-500 focus:outline-none"
+             placeholder="글을 작성해주세요..."
+             rows="6"
+             required
+           ></textarea>
+         </div>
+
+         <!-- 제출 버튼 -->
+         <div>
+           <button
+             type="submit"
+             class="w-full px-5 py-3 text-base font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+           >
+             게시
+           </button>
+         </div>
+       </form>
+     </div>
+   </div>
+ </section>
+
+
+   </div>
+   <div v-if="selectedTab === '시험'">
+   
+     <!-- 여기에 시험 내용 -->
+     <section class="bg-gray-50 dark:bg-gray-900 min-h-screen flex items-center justify-center">
+   <div class="py-8 px-4 mx-auto max-w-screen-lg lg:py-16 w-full">
+     <div class="w-full max-w-2xl mx-auto bg-white rounded-lg shadow-xl dark:bg-gray-800 p-8 space-y-8">
+       <h2 class="text-3xl font-semibold text-center text-gray-900 dark:text-white">
+         글 작성
+       </h2>
+
+       <div class="mb-5">
+     <label for="large-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">제목
+
+     </label>
+     <input type="text" id="large-input" class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+ </div>
+
+       <form @submit.prevent="submitForm" class="space-y-6">
+         <!-- 파일 업로드 필드 -->
+         <div>
+           <label for="user_avatar" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">첨부파일</label>
+           <input
+             id="user_avatar"
+             name="user_avatar"
+             type="file"
+             class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+           />
+         </div>
+
+         <!-- 텍스트 입력 필드 -->
+         <div>
+           <label for="content" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">글 내용</label>
+           <textarea
+             id="content"
+             name="content"
+             class="block w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-4 focus:ring-blue-300 dark:bg-gray-700 dark:text-white dark:border-gray-600 dark:focus:ring-blue-500 focus:outline-none"
+             placeholder="글을 작성해주세요..."
+             rows="6"
+             required
+           ></textarea>
+         </div>
+
+         <!-- 제출 버튼 -->
+         <div>
+           <button
+             type="submit"
+             class="w-full px-5 py-3 text-base font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+           >
+             게시
+           </button>
+         </div>
+       </form>
+     </div>
+   </div>
+ </section>
+
+
+   </div>
+   <div v-if="selectedTab === '커리큘럼'">
+    
+     <!-- 여기에 커리큘럼 내용 -->
+     <section class="bg-gray-50 dark:bg-gray-900 min-h-screen flex items-center justify-center">
+   <div class="py-8 px-4 mx-auto max-w-screen-lg lg:py-16 w-full">
+     <div class="w-full max-w-2xl mx-auto bg-white rounded-lg shadow-xl dark:bg-gray-800 p-8 space-y-8">
+       <h2 class="text-3xl font-semibold text-center text-gray-900 dark:text-white">
+         글 작성
+       </h2>
+
+       <div class="mb-5">
+     <label for="large-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">제목
+
+     </label>
+     <input type="text" id="large-input" class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+ </div>
+
+       <form @submit.prevent="submitForm" class="space-y-6">
+         <!-- 파일 업로드 필드 -->
+         <div>
+           <label for="user_avatar" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">첨부파일</label>
+           <input
+             id="user_avatar"
+             name="user_avatar"
+             type="file"
+             class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+           />
+         </div>
+
+         <!-- 텍스트 입력 필드 -->
+         <div>
+           <label for="content" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">글 내용</label>
+           <textarea
+             id="content"
+             name="content"
+             class="block w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-4 focus:ring-blue-300 dark:bg-gray-700 dark:text-white dark:border-gray-600 dark:focus:ring-blue-500 focus:outline-none"
+             placeholder="글을 작성해주세요..."
+             rows="6"
+             required
+           ></textarea>
+         </div>
+
+         <!-- 제출 버튼 -->
+         <div>
+           <button
+             type="submit"
+             class="w-full px-5 py-3 text-base font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+           >
+             게시
+           </button>
+         </div>
+       </form>
+     </div>
+   </div>
+ </section>
+
+
+   </div>
+   <div v-if="selectedTab === '과제'">
+     
+     <!-- 여기에 과제 내용 -->
+     <section class="bg-gray-50 dark:bg-gray-900 min-h-screen flex items-center justify-center">
+   <div class="py-8 px-4 mx-auto max-w-screen-lg lg:py-16 w-full">
+     <div class="w-full max-w-2xl mx-auto bg-white rounded-lg shadow-xl dark:bg-gray-800 p-8 space-y-8">
+       <h2 class="text-3xl font-semibold text-center text-gray-900 dark:text-white">
+         글 작성
+       </h2>
+
+       <div class="mb-5">
+     <label for="large-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">제목
+
+     </label>
+     <input type="text" id="large-input" class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+ </div>
+
+       <form @submit.prevent="submitForm" class="space-y-6">
+         <!-- 파일 업로드 필드 -->
+         <div>
+           <label for="user_avatar" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">첨부파일</label>
+           <input
+             id="user_avatar"
+             name="user_avatar"
+             type="file"
+             class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+           />
+         </div>
+
+         <!-- 텍스트 입력 필드 -->
+         <div>
+           <label for="content" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">글 내용</label>
+           <textarea
+             id="content"
+             name="content"
+             class="block w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-4 focus:ring-blue-300 dark:bg-gray-700 dark:text-white dark:border-gray-600 dark:focus:ring-blue-500 focus:outline-none"
+             placeholder="글을 작성해주세요..."
+             rows="6"
+             required
+           ></textarea>
+         </div>
+
+         <!-- 제출 버튼 -->
+         <div>
+           <button
+             type="submit"
+             class="w-full px-5 py-3 text-base font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+           >
+             게시
+           </button>
+         </div>
+       </form>
+     </div>
+   </div>
+ </section>
+
+
+   </div>
+   <div v-if="selectedTab === '질의응답'">
+     
+     <!-- 여기에 질의응답 내용 -->
+      <section class="bg-gray-50 dark:bg-gray-900 min-h-screen flex items-center justify-center">
+   <div class="py-8 px-4 mx-auto max-w-screen-lg lg:py-16 w-full">
+     <div class="w-full max-w-2xl mx-auto bg-white rounded-lg shadow-xl dark:bg-gray-800 p-8 space-y-8">
+       <h2 class="text-3xl font-semibold text-center text-gray-900 dark:text-white">
+         글 작성
+       </h2>
+
+       <div class="mb-5">
+     <label for="large-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">제목
+
+     </label>
+     <input type="text" id="large-input" class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+ </div>
+
+       <form @submit.prevent="submitForm" class="space-y-6">
+         <!-- 파일 업로드 필드 -->
+         <div>
+           <label for="user_avatar" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">첨부파일</label>
+           <input
+             id="user_avatar"
+             name="user_avatar"
+             type="file"
+             class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+           />
+         </div>
+
+         <!-- 텍스트 입력 필드 -->
+         <div>
+           <label for="content" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">글 내용</label>
+           <textarea
+             id="content"
+             name="content"
+             class="block w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-4 focus:ring-blue-300 dark:bg-gray-700 dark:text-white dark:border-gray-600 dark:focus:ring-blue-500 focus:outline-none"
+             placeholder="글을 작성해주세요..."
+             rows="6"
+             required
+           ></textarea>
+         </div>
+
+         <!-- 제출 버튼 -->
+         <div>
+           <button
+             type="submit"
+             class="w-full px-5 py-3 text-base font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+           >
+             게시
+           </button>
+         </div>
+       </form>
+     </div>
+   </div>
+ </section>
+
+
+   </div>
+ </div>
+</template>
+
+<script>
+export default {
+ data() {
+   return {
+     selectedTab: '공지사항', // 기본 선택된 카테고리
+   };
+ },
+ methods: {
+   setSelectedTab(tab) {
+     this.selectedTab = tab; // 선택된 카테고리 업데이트
+   },
+   getClass(tab) {
+     return {
+       'text-gray-900 bg-gray-100 border-r border-gray-200 dark:border-gray-700 rounded-s-lg focus:ring-4 focus:ring-blue-300 dark:bg-gray-700 dark:text-white': this.selectedTab === tab,
+       'bg-white border-r border-gray-200 dark:border-gray-700 hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700': this.selectedTab !== tab,
+     };
+   }
+ }
+};
+</script>
+
+<style scoped>
+/* 필요에 따라 추가 스타일링 */
+</style>
+
+
