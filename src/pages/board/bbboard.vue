@@ -1,76 +1,155 @@
 <template>
     
+   
     <div style="background-color: whitesmoke;"
-    class="xl:pl-60 pt-14 min-h-screen w-full transition-position bg-gray-50 dark:bg-slate-800 dark:text-slate-100">
-    <div>
+ class="xl:pl-60 pt-14 min-h-screen w-full transition-position bg-gray-50 dark:bg-slate-800 dark:text-slate-100">
+ <ul class="hidden text-sm font-medium text-center text-gray-500 rounded-lg shadow sm:flex dark:divide-gray-700 dark:text-gray-400">
+  <li class="w-full focus-within:z-10">
+    <router-link
+        to="/board/bbnoticeboard"
+        class="inline-block w-full p-4"
+        :class="{
+          'text-gray-900 bg-gray-100 border-r border-gray-200 dark:border-gray-700 rounded-s-lg focus:ring-4 focus:ring-blue-300 dark:bg-gray-700 dark:text-white': selectedTab === 'Profile',
+          'bg-white border-r border-gray-200 dark:border-gray-700 hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700': selectedTab !== 'Profile',
+        }"
+      > 공지사항 글
+    </router-link>
+  </li>
+  <li class="w-full focus-within:z-10">
+    <router-link
+        to="/board/bbboard"
+        class="inline-block w-full p-4"
+        :class="{
+          'text-gray-900 bg-gray-100 border-r border-gray-200 dark:border-gray-700 rounded-s-lg focus:ring-4 focus:ring-blue-300 dark:bg-gray-700 dark:text-white': selectedTab === 'Dashboard',
+          'bg-white border-r border-gray-200 dark:border-gray-700 hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700': selectedTab !== 'Dashboard',
+        }"
+      >
+        자유 글
+      </router-link>
+  </li>
+  <li class="w-full focus-within:z-10">
+    <router-link
+        to="/manager/ExamList"
+        class="inline-block w-full p-4"
+        :class="{
+          'text-gray-900 bg-gray-100 border-r border-gray-200 dark:border-gray-700 rounded-s-lg focus:ring-4 focus:ring-blue-300 dark:bg-gray-700 dark:text-white': selectedTab === 'Dashboard',
+          'bg-white border-r border-gray-200 dark:border-gray-700 hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700': selectedTab !== 'Dashboard',
+        }"
+      >
+        시험 글
+      </router-link>
+  </li>
+  <li class="w-full focus-within:z-10">
+    <router-link
+        to="/dashboard"
+        class="inline-block w-full p-4"
+        :class="{
+          'text-gray-900 bg-gray-100 border-r border-gray-200 dark:border-gray-700 rounded-s-lg focus:ring-4 focus:ring-blue-300 dark:bg-gray-700 dark:text-white': selectedTab === 'Dashboard',
+          'bg-white border-r border-gray-200 dark:border-gray-700 hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700': selectedTab !== 'Dashboard',
+        }"
+      >
+        커리큘럼
+      </router-link>
+  </li>
+  <li class="w-full focus-within:z-10">
+    <router-link
+        to="/dashboard"
+        class="inline-block w-full p-4"
+        :class="{
+          'text-gray-900 bg-gray-100 border-r border-gray-200 dark:border-gray-700 rounded-s-lg focus:ring-4 focus:ring-blue-300 dark:bg-gray-700 dark:text-white': selectedTab === 'Dashboard',
+          'bg-white border-r border-gray-200 dark:border-gray-700 hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700': selectedTab !== 'Dashboard',
+        }"
+      >
+        과제
+      </router-link>
+  </li>
+  <li class="w-full focus-within:z-10">
+    <router-link
+        to="/board/question"
+        class="inline-block w-full p-4"
+        :class="{
+          'text-gray-900 bg-gray-100 border-r border-gray-200 dark:border-gray-700 rounded-s-lg focus:ring-4 focus:ring-blue-300 dark:bg-gray-700 dark:text-white': selectedTab === 'Dashboard',
+          'bg-white border-r border-gray-200 dark:border-gray-700 hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700': selectedTab !== 'Dashboard',
+        }"
+      >
+        질의응답
+      </router-link>
+  </li>
+  
+</ul>
+
+
+<div>
       <!-- 오버레이 -->
       <div class="flex z-30 items-center flex-col justify-center overflow-hidden fixed inset-0" v-show="isOverlayVisible">
-        <div class="overlay absolute inset-0 bg-gradient-to-tr opacity-90 dark:from-gray-700 dark:via-gray-900 dark:to-gray-700"></div>
-      </div>
-  
-      <!-- 메인 콘텐츠 -->
-      <section class="p-6 xl:max-w-6xl xl:mx-auto">
-        <section class="mb-4 flex items-center justify-between">
-          <div class="flex items-center justify-start">
-            <span class="inline-flex justify-center items-center w-12 h-12 rounded-full bg-white text-black dark:bg-slate-900/70 dark:text-white mr-3">
-              <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.03v13m0-13c-2.819-.831-4.715-1.076-8.029-1.023A.99.99 0 0 0 3 6v11c0 .563.466 1.014 1.03 1.007 3.122-.043 5.018.212 7.97 1.023m0-13c2.819-.831 4.715-1.076 8.029-1.023A.99.99 0 0 1 21 6v11c0 .563-.466 1.014-1.03 1.007-3.122-.043-5.018.212-7.97 1.023"/>
-              </svg>
-            </span>
-            <h1 class="text-3xl font-bold leading-tight">질의응답</h1>
-          </div>
-          <!-- 목록 버튼: Vue Router 사용 -->
-          <router-link to="/board/freeboard" class="inline-flex justify-center items-center whitespace-nowrap focus:outline-none transition-colors focus:ring duration-150 border cursor-pointer rounded-none border-blue-600 dark:border-blue-500 ring-blue-300 dark:ring-blue-700 bg-blue-600 dark:bg-blue-500 text-white hover:bg-blue-700 hover:border-blue-700 hover:dark:bg-blue-600 hover:dark:border-blue-600 py-2 px-4 mr-3 last:mr-0 mb-3 ml-auto text-sm">
-            <span class="px-2">목록</span>
-          </router-link>
-        </section>
-  
-        <div class="rounded-2xl flex-col dark:bg-slate-300/70 bg-white flex">
-          <div class="flex-1 p-6">
-            <div>
-              <p>작성자: 김유진</p>
-              <div class="mt-4"></div>
-            </div>
-  
-            <!-- 글 제목 및 내용 -->
-            <div class="mb-2 last:mb-0">
-              <label class="text-3xl font-bold leading-tight">vscode커밋하는</label>
-              <div class="px-3 py-2 max-w-full">
-                vscode커밋하는 방법
-                <p>1. 브랜치에 들어가 새 분기 만들기 클릭</p>
-                <p>2. 브랜치 이름 작성..</p>
-                <p>3. ...?</p>
-              </div>
-            </div>
-  
-            <hr class="my-4 border-gray-300 dark:border-gray-600">
-  
-            <!-- 댓글 작성 -->
-            <div class="mb-4 last:mb-0">
-              <label for="comment" class="block font-bold mb-2">댓글 작성</label>
-              <textarea id="comment" v-model="newComment" class="px-3 py-2 w-64 focus:ring focus:outline-none border-gray-700 rounded h-12 border bg-white dark:bg-slate-800 border-2" placeholder="댓글을 작성해주세요..."></textarea>
-            </div>
-            <button @click="submitComment" class="inline-flex justify-center items-center whitespace-nowrap focus:outline-none transition-colors focus:ring duration-150 border cursor-pointer rounded-none border-blue-600 dark:border-blue-500 ring-blue-300 dark:ring-blue-700 bg-blue-600 dark:bg-blue-500 text-white hover:bg-blue-700 hover:border-blue-700 hover:dark:bg-blue-600 hover:dark:border-blue-600 py-2 px-4 mr-3 last:mr-0 mb-3 ml-auto text-sm">
-              댓글 등록
-            </button>
-  
-            <!-- 댓글 목록 -->
-            <div class="mb-6 last:mb-0">
-              <label class="block font-bold mb-2">댓글</label>
-              <div class="space-y-4">
-                <div v-for="(comment, index) in comments" :key="index" class="p-3 border rounded bg-gray-100 border-2 border-gray-300">
-                  <p class="text-gray-800 font-semibold">{{ comment.author }}</p>
-                  <p>{{ comment.date }}</p>
-                  <p>{{ comment.text }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
+    <div class="overlay absolute inset-0 bg-gradient-to-tr opacity-90 dark:from-gray-700 dark:via-gray-900 dark:to-gray-700"></div>
+</div>
+
+<!-- 메인 콘텐츠 -->
+<section class="p-6 xl:max-w-6xl xl:mx-auto">
+    <!-- 게시판 글 섹션 -->
+    <section class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+        <!-- 제목과 작성자 -->
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-200">하하하핳핳</h2>
+           
+            
+            <div class="flex items-center space-x-2"> <!-- 간격을 줄이기 위해 space-x-2 사용 -->
+    <div class="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
+        <svg class="absolute w-12 h-12 text-gray-400 -left-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+    </div>
+    <p class="text-sm text-gray-600 dark:text-gray-400">작성자: 김유진<br>
+      2025-02-06
+
+    </p>
+</div>
+
+
         </div>
-      </section>
+        
+        <div class="space-y-6">
+            <!-- 각 글 항목 -->
+            <div class="pb-4">
+              <h3 class="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-4">1. 브랜치를 생성한다다</h3>
+이 글은 게시판에 등록된 첫 번째 글입니다. 내용을 여기에 작성하세요.<br>
+
+이 글은 게시판에 등록된 두 번째 글입니다. 내용을 여기에 작성하세요.<br>
+이 글은 게시판에 등록된 세 번째 글입니다. 내용을 여기에 작성하세요.
+            </div>
+        </div>
+    </section>
+
+    <!-- 댓글 작성 섹션 -->
+  
+
+
+    <!-- 댓글 목록 섹션 -->
+    <section class="mt-8">
+
+    <!-- 댓글 목록 -->
+    <label class="block font-bold text-gray-800 dark:text-gray-200 mb-4">댓글</label>
+    <div class="flex items-center space-x-4 mb-6">
+        <textarea id="comment" v-model="newComment" class="px-3 py-2 w-64 focus:ring focus:outline-none border-gray-700 rounded h-12 border bg-white dark:bg-slate-800 dark:border-gray-600 mb-4" placeholder="댓글을 작성해주세요..."></textarea>
+        <button @click="submitComment" class="inline-flex justify-center items-center whitespace-nowrap focus:outline-none transition-colors focus:ring duration-150 border cursor-pointer rounded-md border-blue-600 dark:border-blue-500 ring-blue-300 dark:ring-blue-700 bg-blue-600 dark:bg-blue-500 text-white hover:bg-blue-700 hover:border-blue-700 hover:dark:bg-blue-600 hover:dark:border-blue-600 py-2 px-4 h-12 text-sm">
+            댓글 등록
+        </button>
     </div>
+    <div class="space-y-6">
+        <div v-for="(comment, index) in comments" :key="index" class="p-4 border rounded-lg bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600">
+            <div class="flex items-center justify-between mb-2">
+                <p class="text-gray-800 font-semibold dark:text-gray-200">{{ comment.author }}</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">{{ comment.date }}</p>
+            </div>
+            <p class="text-gray-700 dark:text-gray-300">{{ comment.text }}</p>
+        </div>
     </div>
-    
+</section>
+
+
+</section>
+</div>
+    </div>
+   
   </template>
   
   <script>
