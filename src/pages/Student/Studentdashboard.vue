@@ -29,37 +29,146 @@ const toggleDrawer = () => {
 };
 
 const handleSubmit = async (event) => {
-  event.preventDefault();
+   event.preventDefault();
 
-  const formData = new FormData(event.target);
-  const data = Object.fromEntries(formData.entries());
+   const formData = new FormData(event.target);
+   const data = Object.fromEntries(formData.entries());
 
-  try {
-   const response = await axios.post('/api/submit', data, {
+   try {
+      const response = await axios.post('/api/submit', data, {
          headers: {
             'Content-Type': 'application/json',
          },
       });
 
-    if (response.ok) {
-      console.log('Form submitted successfully');
-    } else {
-      console.error('Form submission failed');
-    }
-  } catch (error) {
-    console.error('Error submitting form:', error);
-  }finally { // 일단 임의로 팝업만 닫는다.
+      if (response.ok) {
+         console.log('Form submitted successfully');
+      } else {
+         console.error('Form submission failed');
+      }
+   } catch (error) {
+      console.error('Error submitting form:', error);
+   } finally { // 일단 임의로 팝업만 닫는다.
       window.location.reload();
    }
 };
 
-</script>
+const examData = ref([
+   {
+      id: 1,
+      subject: "프론트 엔드",
+      date: "2024-12-30",
+      participants: 26,
+      total: 27,
+   },
+   { id: 2, subject: "백엔드", date: "2024-12-29", participants: 27, total: 27 },
+   {
+      id: 3,
+      subject: "기반 기술",
+      date: "2024-12-28",
+      participants: 26,
+      total: 27,
+   },
+]);
 
+</script>
+<style>
+.exam-card-grid {
+   display: grid;
+   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+   gap: 20px;
+   margin-top: 20px;
+}
+
+.exam-card {
+   background: #fff;
+   border-radius: 12px;
+   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+   overflow: hidden;
+   display: flex;
+   flex-direction: column;
+   justify-content: space-between;
+   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.exam-card:hover {
+   transform: translateY(-5px);
+   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.exam-header {
+   padding: 16px;
+   background-color: #f7f7f7;
+   border-bottom: 1px solid #eee;
+}
+
+.exam-subject {
+   font-size: 18px;
+   font-weight: 600;
+   margin-bottom: 8px;
+   color: #333;
+}
+
+.exam-date {
+   font-size: 14px;
+   color: #666;
+}
+
+.exam-body {
+   padding: 16px;
+}
+
+.exam-participants {
+   font-size: 16px;
+   color: #444;
+   margin-bottom: 8px;
+}
+
+.exam-progress {
+   width: 100%;
+   height: 8px;
+   border-radius: 4px;
+   background-color: #e0e0e0;
+   appearance: none;
+   overflow: hidden;
+}
+
+.exam-progress::-webkit-progress-bar {
+   background-color: #e0e0e0;
+   border-radius: 4px;
+}
+
+.exam-progress::-webkit-progress-value {
+   background-color: #4caf50;
+   border-radius: 4px;
+}
+
+.exam-footer {
+   padding: 16px;
+   background-color: #f7f7f7;
+   text-align: center;
+}
+
+.exam-button {
+   background-color: #4caf50;
+   color: white;
+   border: none;
+   border-radius: 8px;
+   padding: 8px 16px;
+   font-size: 14px;
+   cursor: pointer;
+   transition: background-color 0.2s ease-in-out;
+}
+
+.exam-button:hover {
+   background-color: #45a049;
+}
+</style>
 
 <!-- //data-drawer-target="drawer-right-example" data-drawer-show="drawer-right-example" data-drawer-placement="right" aria-controls="drawer-right-example" -->
 <template>
 
-   <div style="background-color: whitesmoke;"
+   <div style="background-color: whitesmoke; padding-left : 260px"
       class="xl:pl-60 pt-14 min-h-screen w-full transition-position bg-gray-50 dark:bg-slate-800 dark:text-slate-100">
       <!-- Navigation Button -->
 
@@ -166,14 +275,15 @@ const handleSubmit = async (event) => {
                            placeholder="사유 요약" required="">
                      </div>
                      <div class="col-span-2">
-                        <label for="date-range" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">날짜 범위</label>
+                        <label for="date-range" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">날짜
+                           범위</label>
                         <div class="flex items-center">
                            <Datepicker v-model="startDate" placeholder="Select start date" class="w-full" />
                            <span class="mx-4 text-gray-500">to</span>
                            <Datepicker v-model="endDate" placeholder="Select end date" class="w-full" />
                         </div>
                      </div>
-                     
+
                      <div class="col-span-2 ">
                         <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"> 목록
                         </label>
@@ -460,75 +570,48 @@ const handleSubmit = async (event) => {
          </div>
 
       </div>
-      <div class="p-8 bg-gray-100 dark:bg-gray-900">
-         <h1 class="text-3xl font-bold mb-6 text-gray-800 dark:text-gray-100">게시판</h1>
-         <div class="overflow-x-auto shadow-lg rounded-lg">
-            <table class="min-w-full text-sm text-left text-gray-500 dark:text-gray-400">
-               <thead class="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 uppercase text-xs">
-                  <tr>
-                     <th scope="col" class="px-6 py-4">제목</th>
-                     <th scope="col" class="px-6 py-4">글쓴이</th>
-                     <th scope="col" class="px-6 py-4">카테고리</th>
-                     <th scope="col" class="px-6 py-4">작성 일자</th>
-                     <th scope="col" class="px-6 py-4 text-right">
-                        <a href="#" class="text-blue-600 dark:text-blue-400 hover:underline">더보기</a>
-                     </th>
-                  </tr>
-               </thead>
-               <tbody>
-                  <!-- Row 1 -->
-                  <tr class="bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700">
-                     <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">애플 맥북 프로 17"</td>
-                     <td class="px-6 py-4">홍길동</td>
-                     <td class="px-6 py-4">랩탑</td>
-                     <td class="px-6 py-4">2024-01-01</td>
-                     <td class="px-6 py-4 text-right">
-                        <a href="#" class="text-blue-600 dark:text-blue-400 hover:underline">글보기</a>
-                     </td>
-                  </tr>
-                  <!-- Row 2 -->
-                  <tr class="bg-gray-50 dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-700">
-                     <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">마이크로소프트 서피스 프로</td>
-                     <td class="px-6 py-4">김철수</td>
-                     <td class="px-6 py-4">랩탑 PC</td>
-                     <td class="px-6 py-4">2024-01-02</td>
-                     <td class="px-6 py-4 text-right">
-                        <a href="#" class="text-blue-600 dark:text-blue-400 hover:underline">글보기</a>
-                     </td>
-                  </tr>
-                  <!-- Row 3 -->
-                  <tr class="bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700">
-                     <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">매직 마우스 2</td>
-                     <td class="px-6 py-4">이영희</td>
-                     <td class="px-6 py-4">액세서리</td>
-                     <td class="px-6 py-4">2024-01-03</td>
-                     <td class="px-6 py-4 text-right">
-                        <a href="#" class="text-blue-600 dark:text-blue-400 hover:underline">글보기</a>
-                     </td>
-                  </tr>
-                  <!-- Additional Rows -->
-                  <tr class="bg-gray-50 dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-700">
-                     <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">매직 키보드</td>
-                     <td class="px-6 py-4">박지민</td>
-                     <td class="px-6 py-4">액세서리</td>
-                     <td class="px-6 py-4">2024-01-04</td>
-                     <td class="px-6 py-4 text-right">
-                        <a href="#" class="text-blue-600 dark:text-blue-400 hover:underline">글보기</a>
-                     </td>
-                  </tr>
-               </tbody>
-            </table>
+      <div class="container" style="margin-bottom: 20px; height: 350px; ">
+         <!-- 시험 섹션 -->
+         <div class="section-title">
+            <h1>시험</h1>
+         </div>
+         <div class="exam-card-grid">
+            <div v-for="exam in examData.slice(0, 3)" :key="exam.id" class="exam-card">
+               <div class="exam-header">
+                  <h3 class="exam-subject">{{ exam.subject }}</h3>
+                  <p class="exam-date">시험 날짜: {{ exam.date }}</p>
+               </div>
+               <div class="exam-body">
+                  <p class="exam-participants">
+                     참여 인원: {{ exam.participants }} / {{ exam.total }}
+                  </p>
+                  <progress class="exam-progress" :value="exam.participants" :max="exam.total"></progress>
+               </div>
+               <div class="exam-footer">
+                  <button class="exam-button" @click="$router.push`/exam/${exam.id}`">
+                     시험 보기
+                  </button>
+               </div>
+            </div>
          </div>
       </div>
+
+
+
+
+
+
+
+
       <div>
          <ol class="relative border-s border-gray-200 dark:border-gray-700 p-6 bg-gray-100 dark:bg-gray-900 rounded-lg shadow-lg"
             style="
     margin-left: 40px;
-">           
+">
             <h1 class="text-3xl font-bold mb-6 text-gray-800 dark:text-gray-100">과제 현황</h1>
-            <div  class="px-6 py-4 text-right">
+            <div class="px-6 py-4 text-right">
                <a href="#" class="text-blue-600 dark:text-blue-400 hover:underline">더보기</a>
-               </div>
+            </div>
             <li v-for="assignment in usestudent.homework_check" :key="assignment.id" class="mb-10 ms-6">
                <span
                   class="absolute flex items-center justify-center w-8 h-8 bg-blue-100 text-blue-600 rounded-full -start-4 ring-4 ring-white dark:ring-gray-900 dark:bg-blue-900 dark:text-blue-300">
