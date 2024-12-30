@@ -4,7 +4,13 @@
     class="xl:pl-60 pt-14 min-h-screen w-full transition-position bg-gray-50 dark:bg-slate-800 dark:text-slate-100"
   >
     <div style="margin-top: 30px" class="attendance-management">
+      
       <h1 class="page-title">출석 관리</h1>
+      <div class="action-buttons">
+        <router-link to="/manager/leave-request" class="process-button">
+          출석 처리
+        </router-link>
+      </div>
 
       <!-- 카테고리 탭 -->
       <div class="tabs">
@@ -41,36 +47,35 @@
       </div>
 
       <!-- 월별 출석률 -->
-      <div v-if="selectedTab === '월별'">
-        <h2>월별 출석률</h2>
-        <label for="month">월 선택:</label>
-        <select
-          id="month"
-          v-model="selectedMonth"
-          @change="filterMonthlyAttendance"
-        >
-          <option v-for="month in months" :key="month" :value="month">
-            {{ month }}월
-          </option>
-        </select>
+      <!-- 월별 출석률 -->
+<div v-if="selectedTab === '월별'">
+  <h2>월별 출석률</h2>
+  <label for="month">월 선택:</label>
+  <select
+    id="month"
+    v-model="selectedMonth"
+    @change="filterMonthlyAttendance"
+  >
+    <option v-for="month in months" :key="month" :value="month">
+      {{ month }}월
+    </option>
+  </select>
 
-        <table style="text-align: center" class="custom-table">
-          <thead style="text-align: center">
-            <tr>
-              <th>이름</th>
-              <th>출석률</th>
-              <th>출석 상태</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="student in filteredMonthlyAttendance" :key="student.id">
-              <td>{{ student.name }}</td>
-              <td>{{ student.attendanceRate }}%</td>
-              <td>{{ student.status }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+  <table style="text-align: center" class="custom-table">
+    <thead>
+      <tr>
+        <th>이름</th>
+        <th>월별 출석률</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="student in filteredMonthlyAttendance" :key="student.id">
+        <td>{{ student.name }}</td>
+        <td>{{ student.attendanceRate }}%</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
       <!-- 일별 출석여부 -->
       <div v-if="selectedTab === '일별'">
@@ -345,5 +350,29 @@ input[type="date"] {
   font-size: 14px;
   border: 1px solid #ced4da;
   border-radius: 5px;
+}
+
+.process-button {
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #28a745;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  text-align: center;
+  display: inline-block;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.process-button:hover {
+  background-color: #218838;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: flex-end; /* 버튼을 오른쪽 끝으로 정렬 */
+  margin-bottom: 20px;
 }
 </style>

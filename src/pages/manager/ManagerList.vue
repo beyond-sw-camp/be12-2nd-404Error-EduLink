@@ -3,7 +3,7 @@
     class="xl:pl-60 pt-14 min-h-screen w-full transition-position bg-gray-50 dark:bg-slate-800 dark:text-slate-100">
     <div class="manager-list-container">
       <h1 class="page-title">매니저 관리</h1>
-
+      
       <!-- 매니저 테이블 -->
       <div class="table-section">
         <div class="table-header">
