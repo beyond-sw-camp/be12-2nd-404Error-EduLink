@@ -139,9 +139,32 @@ DB<br>
 <details>
 <summary> Instructor </summary>
 
-### 기능 이름
-![](/img/feat_gif/.gif)
+### 커리큘럼 등록
+<img src="./images/feat_gif/.gif" />
 
+### 과제 생성성
+<img src="./images/feat_gif/과제생성.gif" />
+
+### 과제 수정
+<img src="./images/feat_gif/과제수정.gif" />
+
+### 과제 삭제
+<img src="./images/feat_gif/과제삭제.gif" />
+
+### 과제별 제출 학생 확인
+<img src="./images/feat_gif/과제별제출학생.gif" />
+
+### 자료 등록
+<img src="./images/feat_gif/자료등록.gif" />
+
+### 자료 수정
+<img src="./images/feat_gif/자료수정.gif" />
+
+### 자료 삭제
+<img src="./images/feat_gif/자료삭제.gif" />
+
+### 학생 상세보기
+<img src="./images/feat_gif/학생상세보기.gif" />
 </details>
 
 
