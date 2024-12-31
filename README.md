@@ -171,8 +171,37 @@ DB<br>
 <details>
 <summary> Manager </summary>
 
-### 기능 이름
-![](/img/feat_gif/.gif)
+
+
+### 학생 리스트, 상세 정보 보기
+![학생리스트.gif](/images/feat_gif/manager_gif/student_list_detail.gif)
+
+### 학생 수강 승인, 제적 처리
+![학생승인제적.gif](/images/feat_gif/manager_gif/student_approve_expel.gif)
+
+### 강사 리스트, 상세 정보 보기
+![강사리스트.gif](/images/feat_gif/manager_gif/instructor_list_detail.gif)
+
+### 강사 추가, 삭제
+![강사추가삭제.gif](/images/feat_gif/manager_gif/instructor_insert_delete.gif)
+
+### 매니저 리스트, 상세보기
+![매니저리스트.gif](/images/feat_gif/manager_gif/manager_list_detail.gif)
+
+### 매니저 추가, 삭제
+![매니저추가삭제.gif](/images/feat_gif/manager_gif/manager_insert_delete.gif)
+
+### 출석 정보 보기
+![출석.gif](/images/feat_gif/manager_gif/attendance_list.gif)
+
+### 휴가 / 병가 / 예비군 출석 처리
+![출석처리.gif](/images/feat_gif/manager_gif/leave_request.gif)
+
+### 시험 추가 / 수정
+![시험.gif](/images/feat_gif/manager_gif/exam_add_update.gif)
+
+### 시험 상세 정보 보기
+![시험상세정보.gif](/images/feat_gif/manager_gif/exam_details.gif)
 
 </details>
 

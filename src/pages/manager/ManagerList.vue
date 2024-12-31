@@ -17,6 +17,7 @@
             <tr>
               <th>이름</th>
               <th>연락처</th>
+              <th>이메일</th>
               <th>담당 반</th>
               <th>권한 여부</th>
               <th>관리</th>
@@ -26,6 +27,7 @@
             <tr v-for="manager in managers" :key="manager.id" @click="openDetailsModal(manager)">
               <td>{{ manager.name }}</td>
               <td>{{ manager.contact }}</td>
+              <td>{{ manager.email }}</td>
               <td>{{ manager.assignedClasses }}</td>
               <td>
                 <button
@@ -41,6 +43,26 @@
             </tr>
           </tbody>
         </table>
+      </div>
+
+      <!-- 매니저 상세 정보 모달 -->
+      <div v-if="selectedManager" class="modal-overlay" @click="closeDetailsModal">
+        <div class="modal-content" @click.stop>
+          <div class="modal-header">
+            <h3 class="modal-title">매니저 상세 정보</h3>
+            <button class="close-button" @click="closeDetailsModal">&times;</button>
+          </div>
+          <div class="modal-body">
+            <p><strong>이름:</strong> {{ selectedManager.name }}</p>
+            <p><strong>연락처:</strong> {{ selectedManager.contact }}</p>
+            <p><strong>이메일:</strong> {{ selectedManager.email }}</p>
+            <p><strong>담당 반:</strong> {{ selectedManager.assignedClasses }}</p>
+            <p><strong>권한 여부:</strong> {{ selectedManager.permission ? "Yes" : "No" }}</p>
+          </div>
+          <div class="modal-footer">
+            <button class="close-modal-button" @click="closeDetailsModal">닫기</button>
+          </div>
+        </div>
       </div>
 
       <!-- 매니저 등록 모달 -->
@@ -59,6 +81,10 @@
               <div class="form-group">
                 <label for="contact">연락처</label>
                 <input v-model="newManager.contact" id="contact" type="text" required />
+              </div>
+              <div class="form-group">
+                <label for="email">이메일</label>
+                <input v-model="newManager.email" id="email" type="email" required />
               </div>
               <div class="form-group">
                 <label for="assigned-classes">담당 반</label>
@@ -102,68 +128,56 @@
   </div>
 </template>
 
-  
-  <script>
-  export default {
-    data() {
-      return {
-        managers: [
-          {
-            id: 1,
-            name: "김매니저",
-            contact: "010-1234-5678",
-            assignedClasses: "A반",
-            permission: true,
-          },
-          {
-            id: 2,
-            name: "박매니저",
-            contact: "010-5678-1234",
-            assignedClasses: "B반",
-            permission: false,
-          },
-          {
-            id: 3,
-            name: "최매니저",
-            contact: "010-1236-5678",
-            assignedClasses: "C반",
-            permission: true,
-          },
-          {
-            id: 4,
-            name: "정매니저",
-            contact: "010-5238-1237",
-            assignedClasses: "D반",
-            permission: false,
-          },
-          {
-            id: 5,
-            name: "이매니저",
-            contact: "010-8121-5218",
-            assignedClasses: "E반",
-            permission: true,
-          },
-          {
-            id: 6,
-            name: "총괄매니저",
-            contact: "010-5678-7776",
-            assignedClasses: "A반, B반, C반, D반, E반",
-            permission: false,
-          },
-          
-        ],
-        showRegisterModal: false,
-        newManager: {
-          name: "",
-          contact: "",
-          assignedClasses: "",
+<script>
+export default {
+  data() {
+    return {
+      managers: [
+        {
+          id: 1,
+          name: "김매니저",
+          contact: "010-1234-5678",
+          email: "manager1@example.com",
+          assignedClasses: "A반",
           permission: true,
         },
-        showDeleteConfirmModalVisible: false,
-        managerToDelete: null,
-      };
+        {
+          id: 2,
+          name: "박매니저",
+          contact: "010-5678-1234",
+          email: "manager2@example.com",
+          assignedClasses: "B반",
+          permission: false,
+        },
+        {
+          id: 3,
+          name: "최매니저",
+          contact: "010-1236-5678",
+          email: "manager3@example.com",
+          assignedClasses: "C반",
+          permission: true,
+        },
+      ],
+      selectedManager: null,
+      showRegisterModal: false,
+      newManager: {
+        name: "",
+        contact: "",
+        email: "",
+        assignedClasses: "",
+        permission: true,
+      },
+      showDeleteConfirmModalVisible: false,
+      managerToDelete: null,
+    };
+  },
+  methods: {
+    openDetailsModal(manager) {
+      this.selectedManager = manager;
     },
-    methods: {
+    closeDetailsModal() {
+      this.selectedManager = null;
+    },
     openRegisterModal() {
       this.showRegisterModal = true;
     },
@@ -172,7 +186,13 @@
     },
     registerManager() {
       this.managers.push({ ...this.newManager, id: Date.now() });
-      this.newManager = { name: "", contact: "", assignedClasses: "", permission: true };
+      this.newManager = {
+        name: "",
+        contact: "",
+        email: "",
+        assignedClasses: "",
+        permission: true,
+      };
       this.closeRegisterModal();
     },
     showDeleteConfirmModal(manager) {
@@ -192,146 +212,146 @@
       manager.permission = !manager.permission;
     },
   },
-  };
-  </script>
-  
-  <style scoped>
-  .manager-list-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    font-family: Arial, sans-serif;
-    color: #333;
-  }
-  
-  .page-title {
-    font-size: 28px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    color: #444;
-  }
-  
-  .table-section {
-    margin-bottom: 40px;
-  }
-  
-  .table-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-  
-  .table-title {
-    font-size: 20px;
-    font-weight: bold;
-    color: #555;
-  }
-  
-  .add-button {
-    padding: 10px 20px;
-    font-size: 14px;
-    background-color: #3498db;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
-  }
-  
-  .add-button:hover {
-    background-color: #2980b9;
-  }
-  
-  .custom-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    overflow: hidden;
-  }
-  
-  .custom-table th,
-  .custom-table td {
-    text-align: left;
-    padding: 12px;
-    font-size: 14px;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  .custom-table th {
-    background-color: #f7f7f7;
-    font-weight: bold;
-  }
-  
-  .custom-table tr:hover {
-    background-color: #f9f9f9;
-  }
-  
-  .custom-table tr {
-    cursor: pointer;
-  }
-  
-  .delete-button {
-    padding: 6px 12px;
-    border: none;
-    border-radius: 4px;
-    font-size: 14px;
-    color: #fff;
-    background-color: #e74c3c;
-    cursor: pointer;
-  }
-  
-  .delete-button:hover {
-    background-color: #c0392b;
-  }
-  
-  .permission-button {
-    padding: 6px 12px;
-    font-size: 14px;
-    border: none;
-    border-radius: 4px;
-    color: #fff;
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
-  }
-  
-  .permission-button.enabled {
-    background-color: #2ecc71;
-  }
-  
-  .permission-button.disabled {
-    background-color: #bdc3c7;
-  }
-  
-  /* 모달 스타일 */
-  .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-  }
-  
-  .modal-content {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    width: 400px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
-  
-  .modal-title {
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
+};
+</script>
+
+<style scoped>
+.manager-list-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+.page-title {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #444;
+}
+
+.table-section {
+  margin-bottom: 40px;
+}
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.table-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #555;
+}
+
+.add-button {
+  padding: 10px 20px;
+  font-size: 14px;
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.add-button:hover {
+  background-color: #2980b9;
+}
+
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.custom-table th,
+.custom-table td {
+  text-align: left;
+  padding: 12px;
+  font-size: 14px;
+  border-bottom: 1px solid #ddd;
+}
+
+.custom-table th {
+  background-color: #f7f7f7;
+  font-weight: bold;
+}
+
+.custom-table tr:hover {
+  background-color: #f9f9f9;
+}
+
+.custom-table tr {
+  cursor: pointer;
+}
+
+.delete-button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #fff;
+  background-color: #e74c3c;
+  cursor: pointer;
+}
+
+.delete-button:hover {
+  background-color: #c0392b;
+}
+
+.permission-button {
+  padding: 6px 12px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.permission-button.enabled {
+  background-color: #2ecc71;
+}
+
+.permission-button.disabled {
+  background-color: #bdc3c7;
+}
+
+/* 모달 스타일 */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.modal-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
 
 .modal-header {
   display: flex;
@@ -341,28 +361,6 @@
   background-color: #f7f7f7;
   border-bottom: 1px solid #ddd;
   position: relative;
-}
-
-.modal-title {
-  font-size: 18px;
-  font-weight: bold;
-  color: #333;
-}
-
-.close-button {
-  background: none;
-  border: none;
-  font-size: 24px;
-  font-weight: bold;
-  color: #555;
-  cursor: pointer;
-  position: absolute;
-  top: 12px;
-  right: 16px;
-}
-
-.close-button:hover {
-  color: #000;
 }
 
 .modal-body {
@@ -417,7 +415,8 @@
   font-weight: bold;
 }
 
-.modal-body input, .modal-body select {
+.modal-body input,
+.modal-body select {
   width: 100%;
   padding: 10px;
   margin-bottom: 16px;
@@ -428,9 +427,9 @@
   transition: border-color 0.3s;
 }
 
-.modal-body input:focus, .modal-body select:focus {
+.modal-body input:focus,
+.modal-body select:focus {
   border-color: #4caf50;
   box-shadow: 0 0 5px rgba(76, 175, 80, 0.4);
 }
-  </style>
-  
+</style>
