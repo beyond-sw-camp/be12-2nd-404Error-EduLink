@@ -17,7 +17,7 @@ import InstructorList from '../pages/manager/InstructorList.vue';
 import ManagerList from '../pages/manager/ManagerList.vue';
 import AttendanceManage from '../pages/manager/AttendanceManage.vue';
 
-import InstructorDash from '../pages/instructor/InstructorDash.vue';
+import InstructorDash from '../pages/Instructor/InstructorDash.vue';
 
 import ExamList from '../pages/manager/ExamList.vue';
 import ExamDetails from '../pages/manager/ExamDetails.vue';
@@ -37,9 +37,12 @@ import managerboard from '../pages/board/managerboard.vue';
 import bbnoticeboard from '../pages/board/bbnoticeboard.vue';
 import boardform from '../pages/board/boardform.vue';
 import deleteboard from '../pages/board/deleteboard.vue';
+import project from '../pages/board/project.vue';
+import data from '../pages/board/data.vue';
 
 
 import common from '../pages/commondashboard.vue';
+
 
 
 const router = createRouter({
@@ -69,8 +72,6 @@ const router = createRouter({
         { path: '/manager/examList', component: ExamList},
         { path: '/manager/examDetails', component: ExamDetails},
 
-        { path: '/bootcamp', component : bootcampList },
-
         { path: '/manager/attendanceManage', component: AttendanceManage },
         { path: '/manager/leave-request', component: LeaveRequest },
 
@@ -82,7 +83,11 @@ const router = createRouter({
         { path: '/board/freeboard', component : freeboard },
         { path: '/board/managerboard', component : managerboard },
         { path: '/board/notice', component : notice },
- 
+        { path: '/board/project', component : project },
+
+
+        { path: '/board/data', component : data },
+
 
         { path: '/common', component: common },
         { path: '/bootcampInfo', component: BootcampInfo },

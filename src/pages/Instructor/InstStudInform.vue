@@ -114,7 +114,7 @@
                             <th scope="col" class="px-6 py-4">카테고리</th>
                             <th scope="col" class="px-6 py-4">작성 일자</th>
                             <th scope="col" class="px-6 py-4 text-right">
-                                <a href="#" class="text-blue-600 dark:text-blue-400 hover:underline">더보기</a>
+                                <router-link to="/board/freeboard" class="text-blue-600 dark:text-blue-400 hover:underline">더보기</router-link>
                             </th>
                         </tr>
                     </thead>
@@ -126,7 +126,7 @@
                             <td class="px-6 py-4">랩탑</td>
                             <td class="px-6 py-4">2024-01-01</td>
                             <td class="px-6 py-4 text-right">
-                                <a href="#" class="text-blue-600 dark:text-blue-400 hover:underline">글보기</a>
+                                <router-link to="/board/bbboard" class="text-blue-600 dark:text-blue-400 hover:underline">글보기</router-link>
                             </td>
                         </tr>
                         <!-- Row 2 -->
@@ -136,7 +136,7 @@
                             <td class="px-6 py-4">랩탑 PC</td>
                             <td class="px-6 py-4">2024-01-02</td>
                             <td class="px-6 py-4 text-right">
-                                <a href="#" class="text-blue-600 dark:text-blue-400 hover:underline">글보기</a>
+                                <router-link to="/board/bbboard" class="text-blue-600 dark:text-blue-400 hover:underline">글보기</router-link>
                             </td>
                         </tr>
                         <!-- Row 3 -->
@@ -146,7 +146,7 @@
                             <td class="px-6 py-4">액세서리</td>
                             <td class="px-6 py-4">2024-01-03</td>
                             <td class="px-6 py-4 text-right">
-                                <a href="#" class="text-blue-600 dark:text-blue-400 hover:underline">글보기</a>
+                                <router-link to="/board/bbboard" class="text-blue-600 dark:text-blue-400 hover:underline">글보기</router-link>
                             </td>
                         </tr>
                         <!-- Additional Rows -->
@@ -156,7 +156,7 @@
                             <td class="px-6 py-4">액세서리</td>
                             <td class="px-6 py-4">2024-01-04</td>
                             <td class="px-6 py-4 text-right">
-                                <a href="#" class="text-blue-600 dark:text-blue-400 hover:underline">글보기</a>
+                                <router-link to="/board/bbboard" class="text-blue-600 dark:text-blue-400 hover:underline">글보기</router-link>
                             </td>
                         </tr>
                     </tbody>

@@ -65,8 +65,8 @@ DB<br>
 <a href="https://www.figma.com/design/zYTJiMBo84amcSbHL014bU/%ED%99%94%EB%A9%B4%EC%84%A4%EA%B3%84?node-id=0-1&t=BtJnVvSe2hqNxcLs-1">Figma 화면 설계서</a> 
 <br/><br/>
 
-## 🔧 시스템 아키텍처
-<!-- <img src="img/시스템_아키텍처.png" alt="시스템 아키텍처" style="width:75%;"/>
+<!--## 🔧 시스템 아키텍처
+ <img src="img/시스템_아키텍처.png" alt="시스템 아키텍처" style="width:75%;"/>
 <details>
 <summary> Amazon RDS </summary>
  

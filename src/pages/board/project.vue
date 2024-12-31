@@ -85,37 +85,47 @@
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.03v13m0-13c-2.819-.831-4.715-1.076-8.029-1.023A.99.99 0 0 0 3 6v11c0 .563.466 1.014 1.03 1.007 3.122-.043 5.018.212 7.97 1.023m0-13c2.819-.831 4.715-1.076 8.029-1.023A.99.99 0 0 1 21 6v11c0 .563-.466 1.014-1.03 1.007-3.122-.043-5.018.212-7.97 1.023"/>
           </svg>
         </div>
-        <h1 class="text-4xl">질의응답</h1>
+        <h1 class="text-4xl">과제</h1>
       </div>
      
     </header>
     
     <div class="p-4 dark:bg-gray-800 rounded-lg shadow-lg">
-        <router-link to="/board/boardform" class="inline-flex justify-center items-center whitespace-nowrap focus:outline-none transition-colors focus:ring duration-150 border cursor-pointer rounded-none border-blue-600 dark:border-blue-500 ring-blue-300 dark:ring-blue-700 bg-blue-600 dark:bg-blue-500 text-white hover:bg-blue-700 hover:border-blue-700 hover:dark:bg-blue-600 hover:dark:border-blue-600 py-2 px-4 text-sm">
-        <span class="px-2">글쓰기</span>
-      </router-link>
+      <router-link to="/board/boardform" class="inline-flex justify-center items-center whitespace-nowrap focus:outline-none transition-colors focus:ring duration-150 border cursor-pointer rounded-none border-blue-600 dark:border-blue-500 ring-blue-300 dark:ring-blue-700 bg-blue-600 dark:bg-blue-500 text-white hover:bg-blue-700 hover:border-blue-700 hover:dark:bg-blue-600 hover:dark:border-blue-600 py-2 px-4 text-sm">
+          <span class="px-2">글쓰기</span>
+        </router-link>
       <div class="overflow-x-auto">
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead class="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 uppercase text-xs">
             <tr>
-              <th scope="col" class="px-6 py-4">번호</th>
-              <th scope="col" class="px-6 py-4">글쓴이</th>
-              <th scope="col" class="px-6 py-4">제목</th>
-              <th scope="col" class="px-6 py-4">작성 일자</th>
+              <th scope="col" class="px-6 py-4"></th>
+              <th scope="col" class="px-6 py-4">과제명</th>
+              <th scope="col" class="px-6 py-4">파일명</th>
+              <th scope="col" class="px-6 py-4">제출률</th>
+              <th scope="col" class="px-6 py-4">조회수</th>
+              
             </tr>
           </thead>
           <tbody>
-            <tr 
-              v-for="(post, index) in posts" 
-              :key="post.id" 
-              class="hover:bg-gray-100 dark:hover:bg-gray-700"
-            >
-              <td class="px-6 py-4">{{ index + 1 }}</td>
-              <td class="px-6 py-4">{{ post.name }}</td>
-              <td class="px-6 py-4">{{ post.title }}</td>
-              <td class="px-6 py-4">{{ post.Creationdate }}</td>
-            </tr>
-          </tbody>
+  <tr 
+    v-for="(post, index) in posts" 
+    :key="index" 
+    class="hover:bg-gray-100 dark:hover:bg-gray-700"
+  >
+    <td class="px-6 py-4">
+      <label class="checkbox">
+        <input type="checkbox" :id="'checkbox-' + index" :value="post.id">
+        <span class="check"></span>
+      </label>
+    </td>
+    <td class="px-6 py-4">{{ post.name }}</td>
+    <td class="px-6 py-4">{{ post.title }}</td>
+    <td class="px-6 py-4">{{ post.uproad }}</td>
+    <td class="px-6 py-4">{{ post.view }}</td>
+    
+  </tr>
+</tbody>
+
         </table>
       </div>
     </div>
@@ -170,22 +180,22 @@
   import {ref} from 'vue';
   
   const posts = [
-  { id: 1, name: '김유진', title: 'Vscode커밋좀', Creationdate: '2024-12-26' },
-  { id: 2, name: '김무성', title: '자바', Creationdate: '2024-12-06' },
-  { id: 3, name: '오건하', title: '자바스크립트', Creationdate: '2024-11-25' },
-  { id: 4, name: '이우진', title: 'vue.js', Creationdate: '2024-11-02' },
-  { id: 5, name: '김정엽', title: 'node.js', Creationdate: '2024-10-20' },
-  { id: 6, name: '심강사', title: 'index.js', Creationdate: '2024-10-22' },
-  { id: 7, name: '김유진', title: 'script setup안에는', Creationdate: '2024-10-15' },
-  { id: 8, name: '김유진', title: 'router-link', Creationdate: '2024-09-30' },
-  { id: 9, name: '김무성', title: '프론트엔드 프로젝트', Creationdate: '2024-09-25' },
-  { id: 10, name: '이우진', title: '다 끝났다', Creationdate: '2024-09-20' },
-  { id: 11, name: '김정엽', title: '프로젝트 완료', Creationdate: '2024-09-15' },
-  { id: 12, name: '오건하', title: '이거 맞아요?', Creationdate: '2024-08-30' },
-  { id: 13, name: '김정엽', title: '모르겠어요', Creationdate: '2024-08-20' },
-  { id: 14, name: '김무성', title: '이부분', Creationdate: '2024-08-10' },
-  { id: 15, name: '이우진', title: 'css', Creationdate: '2024-07-30' },
-  { id: 16, name: '이우진진', title: 'tomcat', Creationdate: '2024-07-20' }
+  {  name: 'vue', title: 'vue_김정엽.txt', uproad: '제출완료', view:204},
+  { name: 'vue', title: 'vue_오건하.txt', uproad: '제출완료', view:20 },
+  {  name: 'vue', title: 'vue_이우진.txt', uproad: '제출완료' , view:1},
+  {  name: 'vue', title: 'vue_김무성.txt', uproad: '제출완료', view:2 },
+  {  name: 'vue', title: 'vue_김유진.txt', uproad: '제출완료' , view:21},
+  {  name: 'vue', title: 'vue_오건하.txt', uproad: '제출완료', view:22 },
+  {  name: 'vue', title: 'vue_김무성.txt',uproad: '제출완료' , view:23},
+  {  name: 'java', title: 'java_오건하.txt', uproad: '제출완료', view:2 },
+  {  name: 'java', title: 'java_이우진.txt', uproad: '제출완료' , view:34},
+  {  name: 'java', title: 'java_이우진.txt', uproad: '제출완료' , view:0},
+  {  name: 'java', title: 'java_김유진.txt', uproad: '제출완료' , view:24},
+  {  name: 'java', title: 'java_김정엽.txt', uproad: '제출완료', view:23 },
+  {  name: 'java', title: 'java_오건하.txt', uproad: '제출완료', view:23 },
+  {  name: 'java', title: 'java_김정엽.txt', uproad: '제출완료', view:256 },
+  {  name: 'java', title: 'java_김무성.txt', uproad: '제출완료', view:190 },
+  {  name: 'java', title: 'java_김유진.txt', uproad: '제출완료', view:20 }
   ];
   </script>
   
@@ -257,4 +267,6 @@
     cursor: pointer;
   }
   </style>
+  
+  
   
