@@ -154,7 +154,7 @@ DB<br>
 <summary> Instructor </summary>
 
 ### 커리큘럼 등록
-<img src="./images/feat_gif/.gif" />
+<img src="./images/feat_gif/커리큘럼등록.gif" />
 
 ### 과제 생성
 <img src="./images/feat_gif/과제생성.gif" />
