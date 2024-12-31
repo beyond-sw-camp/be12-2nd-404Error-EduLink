@@ -47,35 +47,34 @@
       </div>
 
       <!-- 월별 출석률 -->
-      <!-- 월별 출석률 -->
-<div v-if="selectedTab === '월별'">
-  <h2>월별 출석률</h2>
-  <label for="month">월 선택:</label>
-  <select
-    id="month"
-    v-model="selectedMonth"
-    @change="filterMonthlyAttendance"
-  >
-    <option v-for="month in months" :key="month" :value="month">
-      {{ month }}월
-    </option>
-  </select>
+      <div v-if="selectedTab === '월별'">
+        <h2>월별 출석률</h2>
+        <label for="month">월 선택:</label>
+        <select
+          id="month"
+          v-model="selectedMonth"
+          @change="filterMonthlyAttendance"
+        >
+          <option v-for="month in months" :key="month" :value="month">
+            {{ month }}월
+          </option>
+        </select>
 
-  <table style="text-align: center" class="custom-table">
-    <thead>
-      <tr>
-        <th>이름</th>
-        <th>월별 출석률</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="student in filteredMonthlyAttendance" :key="student.id">
-        <td>{{ student.name }}</td>
-        <td>{{ student.attendanceRate }}%</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+        <table style="text-align: center" class="custom-table">
+          <thead>
+            <tr>
+              <th>이름</th>
+              <th>월별 출석률</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="student in filteredMonthlyAttendance" :key="student.id">
+              <td>{{ student.name }}</td>
+              <td>{{ student.attendanceRate }}%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
       <!-- 일별 출석여부 -->
       <div v-if="selectedTab === '일별'">
@@ -151,7 +150,10 @@ export default {
       { id: 26, name: "학생26", attendanceRate: 87, status: "Y" },
     ]);
 
-    const selectedMonth = ref(null);
+
+    const selectedMonth = ref("2024.12");
+    const selectedDate = ref("2024-12-31");
+
     const months = computed(() => {
       const startYear = startDate.getFullYear();
       const endYear = endDate.getFullYear();
@@ -167,8 +169,6 @@ export default {
       return monthList;
     });
 
-    const selectedDate = ref(null);
-
     const filteredMonthlyAttendance = ref([]);
     const filteredDailyAttendance = ref([]);
 
@@ -177,7 +177,6 @@ export default {
         return {
           ...student,
           attendanceRate: Math.floor(Math.random() * 31) + 70, // 70 ~ 100
-          status: student.status,
         };
       });
     };

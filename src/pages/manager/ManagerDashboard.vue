@@ -148,7 +148,7 @@ const recentExamSummary = ref({
         </div>
       </router-link>
       <!-- 중요 공지 카드 -->
-      <router-link :to="'/notice'" class="card-link">
+      <router-link to="/board/notice" class="card-link">
         <div class="card">
           <h3 class="card-title">중요 공지</h3>
           <ul class="card-list">
@@ -204,12 +204,9 @@ const recentExamSummary = ref({
             ></progress>
           </div>
           <div class="exam-footer">
-            <button
-              class="exam-button"
-              @click="$router.push(`/exam/${exam.id}`)"
-            >
-              상세보기
-            </button>
+            <router-link to="/manager/examDetails">
+              <button class="exam-button">상세보기</button>
+            </router-link>
           </div>
         </div>
       </div>
