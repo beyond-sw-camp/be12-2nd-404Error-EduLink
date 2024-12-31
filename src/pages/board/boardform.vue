@@ -3,8 +3,6 @@
   <div style="background-color: whitesmoke;"
     class="xl:pl-60 pt-14 min-h-screen w-full transition-position bg-gray-50 dark:bg-slate-800 dark:text-slate-100">
 
-    <BoardNav :selectedTab="'Profile'" />
-
     <!-- 선택된 카테고리에 맞는 내용 표시 -->
     <div v-if="selectedTab === '공지사항'">
 
@@ -308,12 +306,8 @@
 </template>
 
 <script>
-import BoardNav from './components/BoardNav.vue';
 
 export default {
-  components: {
-    BoardNav
-  },
   data() {
     return {
       selectedTab: '공지사항', // 기본 선택된 카테고리
