@@ -19,7 +19,7 @@
             <div class="flex-1 overflow-y-auto overflow-x-hidden aside-scrollbars dark:aside-scrollbars-[slate] bg-slate-800">
                 <ul>
                     <li>
-                        <a aria-current="page"
+                        <a aria-current="page" href="/studentdashboard"
                             class="router-link-active router-link-exact-active flex cursor-pointer py-3 aside-menu-item text-slate-300 dark:text-slate-300 hover:text-white dark:hover:text-white">
                             <span
                                 class="inline-flex justify-center items-center w-16 h-6 flex-none aside-menu-item-active font-bold">
@@ -31,7 +31,7 @@
                         </a><!--v-if-->
                     </li>
                     <li>
-                        <a class="flex cursor-pointer py-3 aside-menu-item dark:text-slate-300 dark:hover:text-white hover:text-white text-slate-300">
+                        <a href="/board/freeboard" class="flex cursor-pointer py-3 aside-menu-item dark:text-slate-300 dark:hover:text-white hover:text-white text-slate-300">
                             <span class="inline-flex justify-center items-center w-16 h-6 flex-none">
                                 <svg viewBox="0 0 24 24" width="18" height="18" class="inline-block">
                                     <path fill="currentColor" d="M21,17V5H3V17H21M21,3A2,2 0 0,1 23,5V17A2,2 0 0,1 21,19H16V21H8V19H3A2,2 0 0,1 1,17V5A2,2 0 0,1 3,3H21M5,7H11V11H5V7M5,13H11V15H5V13M13,7H19V9H13V7M13,11H19V15H13V11Z">
