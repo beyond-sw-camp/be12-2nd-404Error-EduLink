@@ -64,7 +64,7 @@ menuToggle.addEventListener('click', () => {
       </nav>
             <ul>
                 <li>
-                    <a
+                    <a href="/"
                         class="flex cursor-pointer py-3 border-blue-600 dark:border-blue-500 ring-blue-300 dark:ring-blue-700 bg-blue-600 dark:bg-blue-500 text-white hover:bg-blue-700 hover:border-blue-700 hover:dark:bg-blue-600 hover:dark:border-blue-600"><span
                             class="inline-flex justify-center items-center w-16 h-6 flex-none">
                             <svg viewBox="0 0 24 24"
