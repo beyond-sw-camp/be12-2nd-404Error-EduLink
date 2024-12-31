@@ -40,14 +40,14 @@
     </li>
     <li class="w-full focus-within:z-10">
       <router-link
-          to="/dashboard"
+          to="/board/data"
           class="inline-block w-full p-4"
           :class="{
             'text-gray-900 bg-gray-100 border-r border-gray-200 dark:border-gray-700 rounded-s-lg focus:ring-4 focus:ring-blue-300 dark:bg-gray-700 dark:text-white': selectedTab === 'Dashboard',
             'bg-white border-r border-gray-200 dark:border-gray-700 hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700': selectedTab !== 'Dashboard',
           }"
         >
-          커리큘럼
+          자료실
         </router-link>
     </li>
     <li class="w-full focus-within:z-10">
