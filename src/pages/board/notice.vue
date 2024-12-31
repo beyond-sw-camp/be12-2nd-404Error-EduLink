@@ -34,60 +34,13 @@ class="xl:pl-60 pt-14 min-h-screen w-full transition-position bg-gray-50 dark:bg
           </tr>
         </thead>
         <tbody>
-          <tr 
-            v-for="(post, index) in posts" 
-            :key="post.id" 
-            class="hover:bg-gray-100 dark:hover:bg-gray-700"
-          >
-            <td class="px-6 py-4">{{ index + 1 }}</td>
-            <td class="px-6 py-4">{{ post.name }}</td>
-            <td class="px-6 py-4">{{ post.title }}</td>
-            <td class="px-6 py-4">{{ post.Creationdate }}</td>
-          </tr>
+          <TableRow v-for="(post, index) in posts" :key="index" :post="post" :columns="columns" />
         </tbody>
       </table>
     </div>
   </div>
     
-
-
-
-  <nav aria-label="Page navigation example" class="flex justify-center mt-4">
-<ul class="flex items-center -space-x-px h-10 text-base">
-  <li>
-    <a href="#" class="flex items-center justify-center px-4 h-10 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-      <span class="sr-only">Previous</span>
-      <svg class="w-3 h-3 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4" />
-      </svg>
-    </a>
-  </li>
-  <li>
-    <a href="#" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
-  </li>
-  <li>
-    <a href="#" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
-  </li>
-  <li>
-    <a href="#" aria-current="page" class="z-10 flex items-center justify-center px-4 h-10 leading-tight text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
-  </li>
-  <li>
-    <a href="#" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">4</a>
-  </li>
-  <li>
-    <a href="#" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">5</a>
-  </li>
-  <li>
-    <a href="#" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-      <span class="sr-only">Next</span>
-      <svg class="w-3 h-3 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
-      </svg>
-    </a>
-  </li>
-</ul>
-</nav>
-
+  <PageNav :pages="[1, 2, 3, 4, 5]" :currentPage="1"/>
 
   </section>
   </div>
@@ -114,12 +67,21 @@ const posts = [
 { id: 13, name: '김정엽', title: '모르겠어요', Creationdate: '2024-08-20' },
 { id: 14, name: '김무성', title: '이부분', Creationdate: '2024-08-10' },
 { id: 15, name: '이우진', title: 'css', Creationdate: '2024-07-30' },
-{ id: 16, name: '이우진진', title: 'tomcat', Creationdate: '2024-07-20' }
+{ id: 16, name: '이우진', title: 'tomcat', Creationdate: '2024-07-20' }
+];
+
+const columns = [
+  { field: 'id', label: '번호' },
+  { field: 'name', label: '글쓴이' },
+  { field: 'title', label: '제목' },
+  { field: 'Creationdate', label: '작성 일자' }
 ];
 </script>
 
 <script>
 import BoardNav from './components/BoardNav.vue';
+import TableRow from './components/TableRow.vue';
+import PageNav from './components/PageNav.vue';
 
 export default {
   components: {

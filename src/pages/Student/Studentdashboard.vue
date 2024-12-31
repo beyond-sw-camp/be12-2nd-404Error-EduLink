@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useRouter } from 'vue-router';
 import Datepicker from 'vue3-datepicker';
 import { useStudentStore } from '../../stores/useStudentStore'
+import Homework from './components/Homework.vue';
 
 const usestudent = useStudentStore();
 const startDate = ref(null);
@@ -588,8 +589,10 @@ const examData = ref([
                   <progress class="exam-progress" :value="exam.participants" :max="exam.total"></progress>
                </div>
                <div class="exam-footer">
-                  <button class="exam-button" @click="$router.push`/exam/${exam.id}`"  >
-                     <a href="https://docs.google.com/forms/d/e/1FAIpQLSd75IniM_dichQdAIhJXX02zlAWN1KU75IfIhJ1sadh4netFg/viewform?usp=dialog" > 시험 보기</a>
+                  <button class="exam-button" @click="$router.push`/exam/${exam.id}`">
+                     <a
+                        href="https://docs.google.com/forms/d/e/1FAIpQLSd75IniM_dichQdAIhJXX02zlAWN1KU75IfIhJ1sadh4netFg/viewform?usp=dialog">
+                        시험 보기</a>
                   </button>
                </div>
             </div>
@@ -605,14 +608,12 @@ const examData = ref([
 
       <div>
          <ol class="relative border-s border-gray-200 dark:border-gray-700 p-6 bg-gray-100 dark:bg-gray-900 rounded-lg shadow-lg"
-            style="
-    margin-left: 40px;
-">
+            style="margin-left: 40px;">
             <h1 class="text-3xl font-bold mb-6 text-gray-800 dark:text-gray-100">과제 현황</h1>
             <div class="px-6 py-4 text-right">
                <a href="/board/project" class="text-blue-600 dark:text-blue-400 hover:underline">더보기</a>
             </div>
-            <li v-for="assignment in usestudent.homework_check" :key="assignment.id" class="mb-10 ms-6">
+            <!-- <li v-for="assignment in usestudent.homework_check" :key="assignment.id" class="mb-10 ms-6">
                <span
                   class="absolute flex items-center justify-center w-8 h-8 bg-blue-100 text-blue-600 rounded-full -start-4 ring-4 ring-white dark:ring-gray-900 dark:bg-blue-900 dark:text-blue-300">
                   <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
@@ -624,7 +625,13 @@ const examData = ref([
                <time class="block mb-2 text-sm font-normal text-gray-500 dark:text-gray-400">{{ assignment.date
                   }}</time>
                <p class="mb-4 text-sm text-gray-600 dark:text-gray-400">{{ assignment.contents }}</p>
-            </li>
+               
+            </li> -->
+
+            <Homework v-for="assignment in usestudent.homework_check" :key="assignment.id"       :assignment="assignment"
+            >
+
+            </Homework>
          </ol>
 
       </div>

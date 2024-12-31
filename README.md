@@ -105,11 +105,14 @@ DB<br>
 <summary> User </summary>
 
 ### 회원가입
-![](/imgages/feat_gif/.gif)
+<img src="./images/feat_gif/회원가입.gif" />
+
 ### 로그인
-![](/imgages/feat_gif/.gif)
-### 개인정보보
-![](/imgages/feat_gif/.gif)
+<img src="./images/feat_gif/로그인.gif" />
+
+
+### 개인정보
+<img src="./images/feat_gif/개인정보.gif" />
 
 </details>
 
@@ -117,8 +120,32 @@ DB<br>
 <details>
 <summary> Student </summary>
 
-### 기능 이름
-![](/img/feat_gif/.gif)
+### 출석,퇴실,휴가,조퇴
+
+<img src="./images/feat_gif/출조휴.gif" />
+
+### 커리큘럼 진행률
+
+<img src="./images/feat_gif/커리큘럼.gif" />
+
+### 과제현황
+<img src="./images/feat_gif/과제현황.gif" />
+
+
+### 시험 응시
+<img src="./images/feat_gif/시험응시.gif" />
+
+
+
+
+### 부트캠프 정보
+
+<img src="./images/feat_gif/부트캠프.gif" />
+
+
+
+
+
 
 </details>
 
@@ -126,17 +153,69 @@ DB<br>
 <details>
 <summary> Instructor </summary>
 
-### 기능 이름
-![](/img/feat_gif/.gif)
+### 커리큘럼 등록
+<img src="./images/feat_gif/.gif" />
 
+### 과제 생성
+<img src="./images/feat_gif/과제생성.gif" />
+
+### 과제 수정
+<img src="./images/feat_gif/과제수정.gif" />
+
+### 과제 삭제
+<img src="./images/feat_gif/과제삭제.gif" />
+
+### 과제별 제출 학생 확인
+<img src="./images/feat_gif/과제별제출학생.gif" />
+
+### 자료 등록
+<img src="./images/feat_gif/자료등록.gif" />
+
+### 자료 수정
+<img src="./images/feat_gif/자료수정.gif" />
+
+### 자료 삭제
+<img src="./images/feat_gif/자료삭제.gif" />
+
+### 학생 상세보기
+<img src="./images/feat_gif/학생상세보기.gif" />
 </details>
 
 
 <details>
 <summary> Manager </summary>
 
-### 기능 이름
-![](/img/feat_gif/.gif)
+
+
+### 학생 리스트, 상세 정보 보기
+![학생리스트.gif](/images/feat_gif/manager_gif/student_list_detail.gif)
+
+### 학생 수강 승인, 제적 처리
+![학생승인제적.gif](/images/feat_gif/manager_gif/student_approve_expel.gif)
+
+### 강사 리스트, 상세 정보 보기
+![강사리스트.gif](/images/feat_gif/manager_gif/instructor_list_detail.gif)
+
+### 강사 추가, 삭제
+![강사추가삭제.gif](/images/feat_gif/manager_gif/instructor_insert_delete.gif)
+
+### 매니저 리스트, 상세보기
+![매니저리스트.gif](/images/feat_gif/manager_gif/manager_list_detail.gif)
+
+### 매니저 추가, 삭제
+![매니저추가삭제.gif](/images/feat_gif/manager_gif/manager_insert_delete.gif)
+
+### 출석 정보 보기
+![출석.gif](/images/feat_gif/manager_gif/attendance_list.gif)
+
+### 휴가 / 병가 / 예비군 출석 처리
+![출석처리.gif](/images/feat_gif/manager_gif/leave_request.gif)
+
+### 시험 추가 / 수정
+![시험.gif](/images/feat_gif/manager_gif/exam_add_update.gif)
+
+### 시험 상세 정보 보기
+![시험상세정보.gif](/images/feat_gif/manager_gif/exam_details.gif)
 
 </details>
 
@@ -144,7 +223,16 @@ DB<br>
 <details>
 <summary> Board  </summary>
 
-### 기능 이름
-![](/img/feat_gif/.gif)
+### 게시판 이동
+![moveboard.gif](/images/feat_gif/moveboard.gif)
+
+### 댓글작성
+![add_comments.gif](/images/feat_gif/add_comments.gif)
+
+### 게시판 탭이동
+![board_category.gif](/images/feat_gif/board_category.gif)
+
+### 게시판 글작성
+![board_write.gif](/images/feat_gif/board_write.gif)
 
 </details>
