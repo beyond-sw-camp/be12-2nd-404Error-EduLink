@@ -8,7 +8,7 @@
             'text-gray-900 bg-gray-100 border-r border-gray-200 dark:border-gray-700 rounded-s-lg focus:ring-4 focus:ring-blue-300 dark:bg-gray-700 dark:text-white': selectedTab === 'Profile',
             'bg-white border-r border-gray-200 dark:border-gray-700 hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700': selectedTab !== 'Profile',
           }"
-        > 공지사항 글
+        > 공지사항
         </router-link>
       </li>
       <li class="w-full focus-within:z-10">
@@ -20,7 +20,7 @@
             'bg-white border-r border-gray-200 dark:border-gray-700 hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700': selectedTab !== 'Dashboard',
           }"
         >
-          자유 글
+          자유
         </router-link>
       </li>
       <li class="w-full focus-within:z-10">
@@ -32,7 +32,7 @@
             'bg-white border-r border-gray-200 dark:border-gray-700 hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700': selectedTab !== 'Dashboard',
           }"
         >
-          시험 글
+          시험
         </router-link>
       </li>
       <li class="w-full focus-within:z-10">
@@ -44,7 +44,7 @@
             'bg-white border-r border-gray-200 dark:border-gray-700 hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700': selectedTab !== 'Dashboard',
           }"
         >
-          커리큘럼
+          자료실
         </router-link>
       </li>
       <li class="w-full focus-within:z-10">

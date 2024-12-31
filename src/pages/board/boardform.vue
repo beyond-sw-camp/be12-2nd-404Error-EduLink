@@ -308,7 +308,12 @@
 </template>
 
 <script>
+import BoardNav from './components/BoardNav.vue';
+
 export default {
+  components: {
+    BoardNav
+  },
   data() {
     return {
       selectedTab: '공지사항', // 기본 선택된 카테고리
