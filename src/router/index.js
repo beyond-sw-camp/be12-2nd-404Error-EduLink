@@ -17,7 +17,7 @@ import InstructorList from '../pages/manager/InstructorList.vue';
 import ManagerList from '../pages/manager/ManagerList.vue';
 import AttendanceManage from '../pages/manager/AttendanceManage.vue';
 
-import InstructorDash from '../pages/instructor/InstructorDash.vue';
+import InstructorDash from '../pages/Instructor/InstructorDash.vue';
 
 import ExamList from '../pages/manager/ExamList.vue';
 import ExamDetails from '../pages/manager/ExamDetails.vue';
