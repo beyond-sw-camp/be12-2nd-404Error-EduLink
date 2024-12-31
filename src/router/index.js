@@ -83,8 +83,10 @@ const router = createRouter({
         { path: '/board/managerboard', component : managerboard },
         { path: '/board/notice', component : notice },
         { path: '/board/project', component : project },
+
+
         { path: '/board/data', component : data },
- 
+
 
         { path: '/common', component: common },
         { path: '/bootcampInfo', component: BootcampInfo },
