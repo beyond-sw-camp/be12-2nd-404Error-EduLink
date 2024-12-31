@@ -44,7 +44,6 @@ import data from '../pages/board/data.vue';
 import common from '../pages/commondashboard.vue';
 
 
-
 const router = createRouter({
     history: createWebHistory(),
     routes: [
