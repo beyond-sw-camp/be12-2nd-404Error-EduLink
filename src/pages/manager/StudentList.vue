@@ -98,11 +98,10 @@
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      currentStudents: [
+<script setup>
+import { ref } from "vue";
+
+const currentStudents = ref([
   { id: 1, name: "학생01", email: "student01@example.com", contact: "010-1234-5678", birthDate: "1995-01-01", attendanceRate: "92%", totalAttendanceDays: 30, currentAttendanceDays: 27, absentDays: 2, remainingLeaves: 1 },
   { id: 2, name: "학생02", email: "student02@example.com", contact: "010-5678-1234", birthDate: "1996-02-13", attendanceRate: "85%", totalAttendanceDays: 30, currentAttendanceDays: 24, absentDays: 3, remainingLeaves: 0 },
   { id: 3, name: "학생03", email: "student03@example.com", contact: "010-8765-4321", birthDate: "1997-03-25", attendanceRate: "90%", totalAttendanceDays: 30, currentAttendanceDays: 26, absentDays: 1, remainingLeaves: 2 },
@@ -129,55 +128,46 @@ export default {
   { id: 24, name: "학생24", email: "student24@example.com", contact: "010-9090-0101", birthDate: "1999-10-14", attendanceRate: "91%", totalAttendanceDays: 30, currentAttendanceDays: 27, absentDays: 1, remainingLeaves: 0 },
   { id: 25, name: "학생25", email: "student25@example.com", contact: "010-2121-3232", birthDate: "1993-07-18", attendanceRate: "85%", totalAttendanceDays: 30, currentAttendanceDays: 24, absentDays: 2, remainingLeaves: 2 },
   { id: 26, name: "학생26", email: "student26@example.com", contact: "010-4343-5454", birthDate: "1992-08-30", attendanceRate: "86%", totalAttendanceDays: 30, currentAttendanceDays: 25, absentDays: 3, remainingLeaves: 1 },
-],
-
-      appliedStudents: [
+]); // 기존 데이터
+const appliedStudents = ref([[
         { id: 4, name: "학생27", contact: "010-9876-5432" },
         { id: 5, name: "학생28", contact: "010-1234-8765" },
-        // Add more applied students here...
-      ],
-      selectedStudent: null,
-      confirmModal: {
-        visible: false,
-        action: '',
-        student: null,
-      },
-    };
-  },
-  methods: {
-    openModal(student) {
-      this.selectedStudent = student;
-    },
-    closeModal() {
-      this.selectedStudent = null;
-    },
-    showConfirmModal(action, student) {
-      this.confirmModal.visible = true;
-      this.confirmModal.action = action;
-      this.confirmModal.student = student;
-    },
-    closeConfirmModal() {
-      this.confirmModal.visible = false;
-      this.confirmModal.action = '';
-      this.confirmModal.student = null;
-    },
-    confirmAction() {
-      if (this.confirmModal.action === 'approve') {
-        this.approveStudent(this.confirmModal.student);
-      } else if (this.confirmModal.action === 'expel') {
-        this.expelStudent(this.confirmModal.student);
-      }
-      this.closeConfirmModal();
-    },
-    expelStudent(student) {
-      alert(`${student.name} 학생이 제적 처리되었습니다.`);
-    },
-    approveStudent(student) {
-      alert(`${student.name} 학생의 수강 신청이 승인되었습니다.`);
-    },
-  },
+      ]]); // 기존 데이터
+
+const selectedStudent = ref(null);
+const confirmModal = ref({
+  visible: false,
+  action: "",
+  student: null,
+});
+
+const openModal = (student) => {
+  selectedStudent.value = student;
+};
+
+const closeModal = () => {
+  selectedStudent.value = null;
+};
+
+const showConfirmModal = (action, student) => {
+  confirmModal.value = { visible: true, action, student };
+};
+
+const closeConfirmModal = () => {
+  confirmModal.value = { visible: false, action: "", student: null };
+};
+
+const confirmAction = () => {
+  const { action, student } = confirmModal.value;
+  if (action === "approve") {
+    alert(`${student.name} 학생의 수강 신청이 승인되었습니다.`);
+  } else if (action === "expel") {
+    alert(`${student.name} 학생이 제적 처리되었습니다.`);
+  }
+  closeConfirmModal();
 };
 </script>
+
 
 <style scoped>
 /* 공통 스타일 */
