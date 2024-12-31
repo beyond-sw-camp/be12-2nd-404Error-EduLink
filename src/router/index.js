@@ -37,9 +37,11 @@ import managerboard from '../pages/board/managerboard.vue';
 import bbnoticeboard from '../pages/board/bbnoticeboard.vue';
 import boardform from '../pages/board/boardform.vue';
 import deleteboard from '../pages/board/deleteboard.vue';
+import project from '../pages/board/project.vue';
 
 
 import common from '../pages/commondashboard.vue';
+import Project from '../pages/board/project.vue';
 
 
 const router = createRouter({
@@ -82,6 +84,7 @@ const router = createRouter({
         { path: '/board/freeboard', component : freeboard },
         { path: '/board/managerboard', component : managerboard },
         { path: '/board/notice', component : notice },
+        { path: '/board/project', component : Project },
  
 
         { path: '/common', component: common },
