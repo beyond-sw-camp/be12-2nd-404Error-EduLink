@@ -112,7 +112,7 @@ DB<br>
 
 
 ### 개인정보
-![](/imgages/feat_gif/.gif)
+<img src="./images/feat_gif/개인정보.gif" />
 
 </details>
 
@@ -138,7 +138,7 @@ DB<br>
 
 
 
-### 부트캠프 정보보
+### 부트캠프 정보
 
 <img src="./images/feat_gif/부트캠프.gif" />
 
@@ -156,7 +156,7 @@ DB<br>
 ### 커리큘럼 등록
 <img src="./images/feat_gif/.gif" />
 
-### 과제 생성성
+### 과제 생성
 <img src="./images/feat_gif/과제생성.gif" />
 
 ### 과제 수정
@@ -234,7 +234,5 @@ DB<br>
 
 ### 게시판 글작성
 ![board_write.gif](/images/feat_gif/board_write.gif)
-### 기능 이름
-![](/img/feat_gif/.gif)
 
 </details>
