@@ -42,7 +42,7 @@ import data from '../pages/board/data.vue';
 
 
 import common from '../pages/commondashboard.vue';
-import project from '../pages/board/project.vue';
+
 
 
 const router = createRouter({
@@ -84,8 +84,10 @@ const router = createRouter({
         { path: '/board/managerboard', component : managerboard },
         { path: '/board/notice', component : notice },
         { path: '/board/project', component : project },
+
+
         { path: '/board/data', component : data },
- 
+
 
         { path: '/common', component: common },
         { path: '/bootcampInfo', component: BootcampInfo },
