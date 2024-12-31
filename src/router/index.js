@@ -71,8 +71,6 @@ const router = createRouter({
         { path: '/manager/examList', component: ExamList},
         { path: '/manager/examDetails', component: ExamDetails},
 
-        { path: '/bootcamp', component : bootcampList },
-
         { path: '/manager/attendanceManage', component: AttendanceManage },
         { path: '/manager/leave-request', component: LeaveRequest },
 
