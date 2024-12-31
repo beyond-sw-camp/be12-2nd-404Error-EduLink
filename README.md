@@ -105,10 +105,13 @@ DB<br>
 <summary> User </summary>
 
 ### 회원가입
-![](/imgages/feat_gif/.gif)
+<img src="./images/feat_gif/회원가입.gif" />
+
 ### 로그인
-![](/imgages/feat_gif/.gif)
-### 개인정보보
+<img src="./images/feat_gif/로그인.gif" />
+
+
+### 개인정보
 ![](/imgages/feat_gif/.gif)
 
 </details>
@@ -117,8 +120,18 @@ DB<br>
 <details>
 <summary> Student </summary>
 
-### 기능 이름
-![](/img/feat_gif/.gif)
+### 출석,퇴실,휴가,조퇴
+
+<img src="./images/feat_gif/출조휴.gif" />
+
+### 커리큘럼 진행률
+
+<img src="./images/feat_gif/커리큘럼.gif" />
+
+
+
+
+
 
 </details>
 
