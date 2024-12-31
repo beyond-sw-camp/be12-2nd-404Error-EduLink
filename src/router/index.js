@@ -42,7 +42,6 @@ import data from '../pages/board/data.vue';
 
 
 import common from '../pages/commondashboard.vue';
-import project from '../pages/board/project.vue';
 
 
 const router = createRouter({
