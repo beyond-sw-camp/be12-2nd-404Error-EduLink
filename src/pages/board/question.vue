@@ -52,7 +52,7 @@
     </li>
     <li class="w-full focus-within:z-10">
       <router-link
-          to="/dashboard"
+          to="/board/project"
           class="inline-block w-full p-4"
           :class="{
             'text-gray-900 bg-gray-100 border-r border-gray-200 dark:border-gray-700 rounded-s-lg focus:ring-4 focus:ring-blue-300 dark:bg-gray-700 dark:text-white': selectedTab === 'Dashboard',

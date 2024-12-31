@@ -41,7 +41,7 @@ import project from '../pages/board/project.vue';
 
 
 import common from '../pages/commondashboard.vue';
-import Project from '../pages/board/project.vue';
+import project from '../pages/board/project.vue';
 
 
 const router = createRouter({
