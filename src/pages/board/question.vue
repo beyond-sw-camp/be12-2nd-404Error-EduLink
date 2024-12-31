@@ -38,12 +38,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(post, index) in posts" :key="post.id" class="hover:bg-gray-100 dark:hover:bg-gray-700">
-                <td class="px-6 py-4">{{ index + 1 }}</td>
-                <td class="px-6 py-4">{{ post.name }}</td>
-                <td class="px-6 py-4">{{ post.title }}</td>
-                <td class="px-6 py-4">{{ post.Creationdate }}</td>
-              </tr>
+              <TableRow v-for="(post, index) in posts" :key="post.id" :post="post" />
             </tbody>
           </table>
         </div>
@@ -131,6 +126,7 @@ const posts = [
 
 <script>
 import BoardNav from './components/BoardNav.vue';
+import TableRow from './components/TableRow.vue';
 
 export default {
   components: {
