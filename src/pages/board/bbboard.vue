@@ -89,7 +89,12 @@
 </template>
 
 <script>
+import BoardNav from './components/BoardNav.vue';
+
 export default {
+  components: {
+    BoardNav
+  },
   data() {
     return {
       isOverlayVisible: false, // 오버레이 표시 여부
