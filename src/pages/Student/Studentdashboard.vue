@@ -588,8 +588,8 @@ const examData = ref([
                   <progress class="exam-progress" :value="exam.participants" :max="exam.total"></progress>
                </div>
                <div class="exam-footer">
-                  <button class="exam-button" @click="$router.push`/exam/${exam.id}`">
-                     시험 보기
+                  <button class="exam-button" @click="$router.push`/exam/${exam.id}`"  >
+                     <a href="https://docs.google.com/forms/d/e/1FAIpQLSd75IniM_dichQdAIhJXX02zlAWN1KU75IfIhJ1sadh4netFg/viewform?usp=dialog" > 시험 보기</a>
                   </button>
                </div>
             </div>
@@ -610,7 +610,7 @@ const examData = ref([
 ">
             <h1 class="text-3xl font-bold mb-6 text-gray-800 dark:text-gray-100">과제 현황</h1>
             <div class="px-6 py-4 text-right">
-               <a href="#" class="text-blue-600 dark:text-blue-400 hover:underline">더보기</a>
+               <a href="/board/freeboard" class="text-blue-600 dark:text-blue-400 hover:underline">더보기</a>
             </div>
             <li v-for="assignment in usestudent.homework_check" :key="assignment.id" class="mb-10 ms-6">
                <span
