@@ -18,6 +18,7 @@ import ManagerList from '../pages/manager/ManagerList.vue';
 import AttendanceManage from '../pages/manager/AttendanceManage.vue';
 
 import InstructorDash from '../pages/Instructor/InstructorDash.vue';
+import RegistCur from '../pages/Instructor/RegistCur.vue';
 
 import ExamList from '../pages/manager/ExamList.vue';
 import ExamDetails from '../pages/manager/ExamDetails.vue';
@@ -63,6 +64,7 @@ const router = createRouter({
 
         { path: '/inst/dashboard', component: InstructorDash },
         { path: '/inst/studinform', component: InstStudInform },
+        { path: '/inst/registercur', component: RegistCur },
         { path: '/manager/dashboard', component: ManagerDashboard },
         { path: '/manager/studentList', component: StudentList },
         { path: '/manager/instructorList', component: InstructorList },
