@@ -128,6 +128,20 @@ DB<br>
 
 <img src="./images/feat_gif/커리큘럼.gif" />
 
+### 과제현황
+<img src="./images/feat_gif/과제현황.gif" />
+
+
+### 시험 응시
+<img src="./images/feat_gif/시험응시.gif" />
+
+
+
+
+### 부트캠프 정보보
+
+<img src="./images/feat_gif/부트캠프.gif" />
+
 
 
 
