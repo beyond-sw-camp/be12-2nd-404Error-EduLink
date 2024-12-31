@@ -120,7 +120,7 @@
                 </div>
                 <div
                     class="block lg:flex items-center relative cursor-pointer navbar-item-label dark:text-white dark:hover:text-slate-400 py-2 px-3 lg:w-16 lg:justify-center">
-                    <div class="flex items-center"><!--v-if-->
+                    <a href="/" class="flex items-center"><!--v-if-->
                         <span
                             class="inline-flex justify-center items-center w-6 h-6 transition-colors">
                             <svg
@@ -131,7 +131,7 @@
                             </svg>
                         </span>
                         <span class="px-2 transition-colors lg:hidden">Log out</span><!--v-if-->
-                    </div>
+                    </a>
                     <!--v-if-->
                 </div>
             </div>
