@@ -610,7 +610,7 @@ const examData = ref([
 ">
             <h1 class="text-3xl font-bold mb-6 text-gray-800 dark:text-gray-100">과제 현황</h1>
             <div class="px-6 py-4 text-right">
-               <a href="/board/freeboard" class="text-blue-600 dark:text-blue-400 hover:underline">더보기</a>
+               <a href="/board/project" class="text-blue-600 dark:text-blue-400 hover:underline">더보기</a>
             </div>
             <li v-for="assignment in usestudent.homework_check" :key="assignment.id" class="mb-10 ms-6">
                <span
