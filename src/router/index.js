@@ -84,7 +84,7 @@ const router = createRouter({
         { path: '/board/freeboard', component : freeboard },
         { path: '/board/managerboard', component : managerboard },
         { path: '/board/notice', component : notice },
-        { path: '/board/project', component : Project },
+        { path: '/board/project', component : project },
  
 
         { path: '/common', component: common },
