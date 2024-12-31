@@ -34,7 +34,7 @@ class="xl:pl-60 pt-14 min-h-screen w-full transition-position bg-gray-50 dark:bg
           </tr>
         </thead>
         <tbody>
-          <TableRow v-for="(post, index) in posts" :key="post.id" :post="post" />
+          <TableRow v-for="(post, index) in posts" :key="index" :post="post" :columns="columns" />
         </tbody>
       </table>
     </div>
@@ -105,7 +105,14 @@ const posts = [
 { id: 13, name: '김정엽', title: '모르겠어요', Creationdate: '2024-08-20' },
 { id: 14, name: '김무성', title: '이부분', Creationdate: '2024-08-10' },
 { id: 15, name: '이우진', title: 'css', Creationdate: '2024-07-30' },
-{ id: 16, name: '이우진진', title: 'tomcat', Creationdate: '2024-07-20' }
+{ id: 16, name: '이우진', title: 'tomcat', Creationdate: '2024-07-20' }
+];
+
+const columns = [
+  { field: 'id', label: '번호' },
+  { field: 'name', label: '글쓴이' },
+  { field: 'title', label: '제목' },
+  { field: 'Creationdate', label: '작성 일자' }
 ];
 </script>
 

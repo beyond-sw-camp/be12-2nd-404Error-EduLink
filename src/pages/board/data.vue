@@ -40,8 +40,7 @@
               </tr>
             </thead>
             <tbody>
-              <TableRow v-for="(post, index) in posts" :key="post.id" :post="post" />
-
+              <TableRow v-for="(post, index) in posts" :key="index" :post="post" :columns="columns" />
             </tbody>
 
           </table>
@@ -126,6 +125,14 @@ const posts = [
   { name: 'java', title: 'java_김정엽.txt', Size: '12KB', view: 256 },
   { name: 'java', title: 'java_김무성.txt', Size: '1KB', view: 190 },
   { name: 'java', title: 'java_김유진.txt', Size: '12KB', view: 20 }
+];
+
+const columns = [
+  { field: 'id', label: '번호' },
+  { field: 'name', label: 'NAME' },
+  { field: 'title', label: 'FILE NAME' },
+  { field: 'Size', label: 'FILE SIZE' },
+  { field: 'view', label: 'VIEW COUNT' }
 ];
 </script>
 <script>
