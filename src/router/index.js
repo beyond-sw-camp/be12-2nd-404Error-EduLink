@@ -39,9 +39,11 @@ import boardform from '../pages/board/boardform.vue';
 import deleteboard from '../pages/board/deleteboard.vue';
 import project from '../pages/board/project.vue';
 import data from '../pages/board/data.vue';
+import question from '../pages/board/question.vue';
 
 
 import common from '../pages/commondashboard.vue';
+
 
 
 const router = createRouter({
@@ -86,6 +88,8 @@ const router = createRouter({
 
 
         { path: '/board/data', component : data },
+
+        { path: '/board/question', component : question },
 
 
         { path: '/common', component: common },
