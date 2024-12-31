@@ -40,19 +40,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(post, index) in posts" :key="index" class="hover:bg-gray-100 dark:hover:bg-gray-700">
-                <td class="px-6 py-4">
-                  <label class="checkbox">
-                    <input type="checkbox" :id="'checkbox-' + index" :value="post.id">
-                    <span class="check"></span>
-                  </label>
-                </td>
-                <td class="px-6 py-4">{{ post.name }}</td>
-                <td class="px-6 py-4">{{ post.title }}</td>
-                <td class="px-6 py-4">{{ post.uproad }}</td>
-                <td class="px-6 py-4">{{ post.view }}</td>
-
-              </tr>
+              <TableRow v-for="(post, index) in posts" :key="post.id" :post="post" />
             </tbody>
 
           </table>
@@ -141,6 +129,7 @@ const posts = [
 
 <script>
 import BoardNav from './components/BoardNav.vue';
+import TableRow from './components/TableRow.vue';
 
 export default {
   components: {
