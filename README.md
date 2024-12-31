@@ -209,6 +209,17 @@ DB<br>
 <details>
 <summary> Board  </summary>
 
+### 게시판 이동
+![moveboard.gif](/images/feat_gif/moveboard.gif)
+
+### 댓글작성
+![add_comments.gif](/images/feat_gif/add_comments.gif)
+
+### 게시판 탭이동
+![board_category.gif](/images/feat_gif/board_category.gif)
+
+### 게시판 글작성
+![board_write.gif](/images/feat_gif/board_write.gif)
 ### 기능 이름
 ![](/img/feat_gif/.gif)
 
