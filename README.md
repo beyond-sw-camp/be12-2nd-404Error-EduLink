@@ -65,8 +65,8 @@ DB<br>
 <a href="https://www.figma.com/design/zYTJiMBo84amcSbHL014bU/%ED%99%94%EB%A9%B4%EC%84%A4%EA%B3%84?node-id=0-1&t=BtJnVvSe2hqNxcLs-1">Figma 화면 설계서</a> 
 <br/><br/>
 
-## 🔧 시스템 아키텍처
-<!-- <img src="img/시스템_아키텍처.png" alt="시스템 아키텍처" style="width:75%;"/>
+<!-- ## 🔧 시스템 아키텍처
+ <img src="img/시스템_아키텍처.png" alt="시스템 아키텍처" style="width:75%;"/>
 <details>
 <summary> Amazon RDS </summary>
  
@@ -101,77 +101,50 @@ DB<br>
 [www.edulink.kro.kr](http://www.edulink.kro.kr)
 
 ## ✨ 기능 테스트
-<!-- <details>
+<details>
 <summary> User </summary>
 
 ### 회원가입
-![](/img/기능구현/유저_회원가입.gif)
+![](/imgages/feat_gif/.gif)
 ### 로그인
-![](/img/기능구현/유저_로그인.gif)
-</details>
-<details>
-<summary> Company </summary>
+![](/imgages/feat_gif/.gif)
+### 개인정보보
+![](/imgages/feat_gif/.gif)
 
-### 회원가입
-![](/img/기능구현/사업자_회원가입.gif)
-### 로그인
-![](/img/기능구현/사업자_로그인_상품수정.gif)
 </details>
-<details>
-<summary> Item </summary>
 
-### 상품조회
-![](/img/기능구현/상품_조회.gif)
-### 상품검색
-![](/img/기능구현/상품_검색.gif)
-### 장바구니 담기
-![](/img/기능구현/상품_장바구니.gif)
-### 상품 등록
-![](/img/기능구현/상품_등록.gif)
+
+<details>
+<summary> Student </summary>
+
+### 기능 이름
+![](/img/feat_gif/.gif)
+
 </details>
-<details>
-<summary> Cart </summary>
 
-### 장바구니 페이지
-![](/img/기능구현/장바구니.gif)
+
+<details>
+<summary> Instructor </summary>
+
+### 기능 이름
+![](/img/feat_gif/.gif)
+
 </details>
-<details>
-<summary> Order </summary>
 
-### 카카오페이 결제
-![](/img/기능구현/카카오페이_결제.gif)
-### 카카오페이 환불
-![](/img/기능구현/카카오페이_결제환불.gif)
+
+<details>
+<summary> Manager </summary>
+
+### 기능 이름
+![](/img/feat_gif/.gif)
+
 </details>
-<details>
-<summary> Recipe </summary>
 
-### 레시피 등록
-![](/img/기능구현/레시피_작성.gif)
-### 레시피 목록
-![](/img/기능구현/레시피_리스트조회.gif)
-### 레시피 상세
-![](/img/기능구현/레시피_상세조회.gif)
+
+<details>
+<summary> Board  </summary>
+
+### 기능 이름
+![](/img/feat_gif/.gif)
+
 </details>
-<details>
-<summary> Mypage(User)  </summary>
-
-### 주문내역
-![](/img/기능구현/마이페이지_주문내역.gif)
-### 주소
-![](/img/기능구현/마이페이지_주소.gif)
-### 키워드
-![](/img/기능구현/마이페이지_키워드.gif)
-</details>
-<details>
-<summary> Mypage(Company)  </summary>
-
-### 주문관리
-![](/img/기능구현/사업자_주문관리.gif)
-### 주문관리-송장번호입력
-![](/img/기능구현/사업자_송장번호입력.gif)
-### 상품등록
-![](/img/기능구현/상품_등록.gif)
-### 상품목록 조회/수정
-![](/img/기능구현/사업자_상품목록_조회수정.gif)
-</details> -->
