@@ -2,24 +2,24 @@
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
 
-const userInfo = ref({}); 
+const userInfo = ref({});
 const loading = ref(true);
 const errorMessage = ref("");
 
 const getUserInfo = async () => {
-  try {
-    const response = await axios.get("/user/info", { withCredentials: true });
-    userInfo.value = response.data.data;
-  } catch (error) {
-    console.error("Error fetching user info:", error);
-    errorMessage.value = "회원 정보를 불러오지 못했습니다.";
-  } finally {
-    loading.value = false;
-  }
+    try {
+        const response = await axios.get("/user/info", { withCredentials: true });
+        userInfo.value = response.data.data;
+    } catch (error) {
+        console.error("Error fetching user info:", error);
+        errorMessage.value = "회원 정보를 불러오지 못했습니다.";
+    } finally {
+        loading.value = false;
+    }
 };
 
 onMounted(() => {
-  getUserInfo();
+    getUserInfo();
 });
 
 </script>
@@ -48,9 +48,10 @@ onMounted(() => {
                     </div>
                     <div class="flex items-center justify-center">
                         <div class="space-y-3 text-center md:text-left lg:mx-12">
-                            <div class="flex justify-center md:block"><label class="switch"><span class="check"></span></label></div>
-                            <h1 class="text-2xl"> 안녕하세요, <b>{{userInfo.name}}</b>님! </h1>
-                            
+                            <div class="flex justify-center md:block"><label class="switch"><span
+                                        class="check"></span></label></div>
+                            <h1 class="text-2xl"> 안녕하세요, <b>{{ userInfo.name }}</b>님! </h1>
+
                         </div>
                     </div>
                 </div>
@@ -78,8 +79,10 @@ onMounted(() => {
                     <div v-else-if="userInfo" class="mb-6 last:mb-0"><label class="block font-bold mb-2">이름</label>
                         <div class="">
                             <div class="relative">
-                                <span class="px-3 py-2 max-w-full border-gray-700 rounded w-full dark:placeholder-gray-400 h-12 border bg-gray-200 dark:bg-slate-800 pl-10 inline-block">{{userInfo.name}}</span>
-                                <span class="inline-flex justify-center items-center w-10 h-12 absolute top-0 left-0 z-10 pointer-events-none text-gray-500 dark:text-slate-400">
+                                <span
+                                    class="px-3 py-2 max-w-full border-gray-700 rounded w-full dark:placeholder-gray-400 h-12 border bg-gray-200 dark:bg-slate-800 pl-10 inline-block">{{ userInfo.name }}</span>
+                                <span
+                                    class="inline-flex justify-center items-center w-10 h-12 absolute top-0 left-0 z-10 pointer-events-none text-gray-500 dark:text-slate-400">
                                     <svg viewBox="0 0 24 24" width="16" height="16" class="inline-block">
                                         <path fill="currentColor"
                                             d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z">
@@ -105,8 +108,10 @@ onMounted(() => {
                     <div v-if="userInfo.birth" class="mb-6 last:mb-0"><label class="block font-bold mb-2">생년월일</label>
                         <div class="">
                             <div class="relative">
-                                <span class="px-3 py-2 max-w-full border-gray-700 rounded w-full dark:placeholder-gray-400 h-12 border bg-gray-200 dark:bg-slate-800 pl-10 inline-block">{{userInfo.birth}}</span>
-                                <span class="inline-flex justify-center items-center w-10 h-12 absolute top-0 left-0 z-10 pointer-events-none text-gray-500 dark:text-slate-400">
+                                <span
+                                    class="px-3 py-2 max-w-full border-gray-700 rounded w-full dark:placeholder-gray-400 h-12 border bg-gray-200 dark:bg-slate-800 pl-10 inline-block">{{ userInfo.birth }}</span>
+                                <span
+                                    class="inline-flex justify-center items-center w-10 h-12 absolute top-0 left-0 z-10 pointer-events-none text-gray-500 dark:text-slate-400">
                                     <svg viewBox="0 0 24 24" width="16" height="16" class="inline-block">
                                         <path fill="currentColor"
                                             d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z">
@@ -122,8 +127,8 @@ onMounted(() => {
                 <div class="flex-1 p-6">
                     <div class="mb-6 last:mb-0"><label class="block font-bold mb-2">주소</label>
                         <div class="">
-                            <div class="relative"><input name="address" autocomplete="address"
-                                    type="text" :value="userInfo.studentDetail.address"
+                            <div class="relative"><input name="address" autocomplete="address" type="text"
+                                    :value="userInfo.studentDetail.address"
                                     class="px-3 py-2 max-w-full focus:ring focus:outline-none border-gray-700 rounded w-full dark:placeholder-gray-400 h-12 border bg-white dark:bg-slate-800 pl-10"><span
                                     class="inline-flex justify-center items-center w-10 h-12 absolute top-0 left-0 z-10 pointer-events-none text-gray-500 dark:text-slate-400"><svg
                                         viewBox="0 0 24 24" width="16" height="16" class="inline-block">
@@ -133,11 +138,11 @@ onMounted(() => {
                                     </svg></span></div>
                         </div>
                     </div>
-                
+
                     <div class="mb-6 last:mb-0"><label class="block font-bold mb-2">출석일수</label>
                         <div class="">
-                            <div class="relative"><input name="attendance" autocomplete="attendance"
-                                    type="text" :value="userInfo.studentDetail.attendance"
+                            <div class="relative"><input name="attendance" autocomplete="attendance" type="text"
+                                    :value="userInfo.studentDetail.attendance"
                                     class="px-3 py-2 max-w-full focus:ring focus:outline-none border-gray-700 rounded w-full dark:placeholder-gray-400 h-12 border bg-white dark:bg-slate-800 pl-10"><span
                                     class="inline-flex justify-center items-center w-10 h-12 absolute top-0 left-0 z-10 pointer-events-none text-gray-500 dark:text-slate-400"><svg
                                         viewBox="0 0 24 24" width="16" height="16" class="inline-block">
@@ -149,8 +154,8 @@ onMounted(() => {
                     </div>
                     <div class="mb-6 last:mb-0"><label class="block font-bold mb-2">조퇴일수</label>
                         <div class="">
-                            <div class="relative"><input name="leaveEarly" autocomplete="leaveEarly"
-                                    type="text" :value="userInfo.studentDetail.leaveEarly"
+                            <div class="relative"><input name="leaveEarly" autocomplete="leaveEarly" type="text"
+                                    :value="userInfo.studentDetail.leaveEarly"
                                     class="px-3 py-2 max-w-full focus:ring focus:outline-none border-gray-700 rounded w-full dark:placeholder-gray-400 h-12 border bg-white dark:bg-slate-800 pl-10"><span
                                     class="inline-flex justify-center items-center w-10 h-12 absolute top-0 left-0 z-10 pointer-events-none text-gray-500 dark:text-slate-400"><svg
                                         viewBox="0 0 24 24" width="16" height="16" class="inline-block">
@@ -162,8 +167,8 @@ onMounted(() => {
                     </div>
                     <div class="mb-6 last:mb-0"><label class="block font-bold mb-2">지각일수</label>
                         <div class="">
-                            <div class="relative"><input name="perception" autocomplete="perception"
-                                    type="text" :value="userInfo.studentDetail.perception"
+                            <div class="relative"><input name="perception" autocomplete="perception" type="text"
+                                    :value="userInfo.studentDetail.perception"
                                     class="px-3 py-2 max-w-full focus:ring focus:outline-none border-gray-700 rounded w-full dark:placeholder-gray-400 h-12 border bg-white dark:bg-slate-800 pl-10"><span
                                     class="inline-flex justify-center items-center w-10 h-12 absolute top-0 left-0 z-10 pointer-events-none text-gray-500 dark:text-slate-400"><svg
                                         viewBox="0 0 24 24" width="16" height="16" class="inline-block">
@@ -175,8 +180,8 @@ onMounted(() => {
                     </div>
                     <div class="mb-6 last:mb-0"><label class="block font-bold mb-2">외출일수</label>
                         <div class="">
-                            <div class="relative"><input name="outing" autocomplete="outing"
-                                    type="text" :value="userInfo.studentDetail.outing"
+                            <div class="relative"><input name="outing" autocomplete="outing" type="text"
+                                    :value="userInfo.studentDetail.outing"
                                     class="px-3 py-2 max-w-full focus:ring focus:outline-none border-gray-700 rounded w-full dark:placeholder-gray-400 h-12 border bg-white dark:bg-slate-800 pl-10"><span
                                     class="inline-flex justify-center items-center w-10 h-12 absolute top-0 left-0 z-10 pointer-events-none text-gray-500 dark:text-slate-400"><svg
                                         viewBox="0 0 24 24" width="16" height="16" class="inline-block">
@@ -188,8 +193,8 @@ onMounted(() => {
                     </div>
                     <div class="mb-6 last:mb-0"><label class="block font-bold mb-2">남은 휴가 일수</label>
                         <div class="">
-                            <div class="relative"><input name="vacation_left" autocomplete="vacation_left"
-                                    type="text" :value="userInfo.studentDetail.vacation_left"
+                            <div class="relative"><input name="vacation_left" autocomplete="vacation_left" type="text"
+                                    :value="userInfo.studentDetail.vacation_left"
                                     class="px-3 py-2 max-w-full focus:ring focus:outline-none border-gray-700 rounded w-full dark:placeholder-gray-400 h-12 border bg-white dark:bg-slate-800 pl-10"><span
                                     class="inline-flex justify-center items-center w-10 h-12 absolute top-0 left-0 z-10 pointer-events-none text-gray-500 dark:text-slate-400"><svg
                                         viewBox="0 0 24 24" width="16" height="16" class="inline-block">
@@ -200,7 +205,7 @@ onMounted(() => {
                         </div>
                     </div>
                 </div>
-                
+
             </form>
 
             <form v-if="userInfo.instructor" class="rounded-2xl flex-col dark:bg-slate-900/70 bg-white flex">
@@ -251,14 +256,16 @@ onMounted(() => {
                         </div>
                     </div>
                 </div>
-                <footer class="p-6">
-                    <div class="flex items-center justify-start flex-wrap -mb-3"><button
-                            class="inline-flex justify-center items-center whitespace-nowrap focus:outline-none transition-colors focus:ring duration-150 border cursor-pointer rounded border-blue-600 dark:border-blue-500 ring-blue-300 dark:ring-blue-700 bg-blue-600 dark:bg-blue-500 text-white hover:bg-blue-700 hover:border-blue-700 hover:dark:bg-blue-600 hover:dark:border-blue-600 py-2 px-3 mr-3 last:mr-0 mb-3"
-                            type="submit"><!----><span class="px-2">Submit</span></button><button
-                            class="inline-flex justify-center items-center whitespace-nowrap focus:outline-none transition-colors focus:ring duration-150 border cursor-pointer rounded border-blue-600 dark:border-blue-500 ring-blue-300 dark:ring-blue-700 text-blue-600 dark:text-blue-500 hover:bg-blue-600 hover:text-white hover:dark:text-white hover:dark:border-blue-600 py-2 px-3 mr-3 last:mr-0 mb-3"
-                            type="button"><!----><span class="px-2">Options</span></button></div>
-                </footer>
+
             </form>
         </div>
+        <!--TODO: 정보 변경 버튼 추가 필요-->
+        <footer class="p-6">
+            <div class="flex items-center justify-start flex-wrap -mb-3"><button
+                    class="inline-flex justify-center items-center whitespace-nowrap focus:outline-none transition-colors focus:ring duration-150 border cursor-pointer rounded border-blue-600 dark:border-blue-500 ring-blue-300 dark:ring-blue-700 bg-blue-600 dark:bg-blue-500 text-white hover:bg-blue-700 hover:border-blue-700 hover:dark:bg-blue-600 hover:dark:border-blue-600 py-2 px-3 mr-3 last:mr-0 mb-3"
+                    type="submit"><!----><span class="px-2">Submit</span></button><button
+                    class="inline-flex justify-center items-center whitespace-nowrap focus:outline-none transition-colors focus:ring duration-150 border cursor-pointer rounded border-blue-600 dark:border-blue-500 ring-blue-300 dark:ring-blue-700 text-blue-600 dark:text-blue-500 hover:bg-blue-600 hover:text-white hover:dark:text-white hover:dark:border-blue-600 py-2 px-3 mr-3 last:mr-0 mb-3"
+                    type="button"><!----><span class="px-2">Options</span></button></div>
+        </footer>
     </section>
 </template>
