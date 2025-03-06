@@ -109,11 +109,6 @@ const login = (role) => {
                             disabled="false">
                             <span class="px-2">회원가입</span>
                         </a>
-                        <select v-model="userRole" class="mr-3 border border-gray-300 rounded px-2 py-1">
-                            <option value="student">학생</option>
-                            <option value="instructor">강사</option>
-                            <option value="manager">관리자</option>
-                        </select>
                     </div>
                 </footer>
             </form>
