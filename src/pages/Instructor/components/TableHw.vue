@@ -11,9 +11,16 @@ const selectedRowData = ref(null); // 선택된 행의 데이터
 const showPopup2 = ref(false); // 팝업 상태 관리
 const selectedRowData2 = ref(null); // 선택된 행의 데이터
 
+const hw_resp = ref([]);
+
 onMounted(async () => {
     await instructorStore.fetchHw()
-    console.log(instructorStore.hw_list)
+    if (instructorStore.hw_res.isSuccess==true) {
+        hw_resp.value = instructorStore.hw_res.data
+        console.log(hw_resp.value);
+    } else {
+        console.log(instructorStore.hw_res);
+    }
 });
 
 const openPopup = (row) => {
@@ -41,50 +48,50 @@ const closePopup2 = () => {
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
-                    <th scope="col" class="p-4">
+                    <th scope="col" class="p-4" style="width: 5%;">
                         <div class="flex items-center">
                             <input id="checkbox-all-search" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                             <label for="checkbox-all-search" class="sr-only">checkbox</label>
                         </div>
                     </th>
-                    <th scope="col" class="px-6 py-3">
+                    <th scope="col" class="px-6 py-3 text-center" style="width: 20%;">
                         과제명
                     </th>
-                    <th scope="col" class="px-6 py-3">
+                    <th scope="col" class="px-6 py-3 text-center" style="width: 30%;">
                         파일명
                     </th>
-                    <th scope="col" class="px-3 py-3">
-                        제출률
+                    <th scope="col" class="px-3 py-3 text-center" style="width: 15%;">
+                        작성일
                     </th>
-                    <th scope="col" class="px-3 py-3">
-                        조회수
+                    <th scope="col" class="px-3 py-3 text-center" style="width: 15%;">
+                        작성자
                     </th>
-                    <th scope="col" class="px-3 py-3 flex items-center justify-between">
+                    <th scope="col" class="px-3 py-3 text-center" style="width: 15%;">
                         Action
                     </th>
                 </tr>
             </thead>
             <tbody>
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" v-for="hw in instructorStore.hw_list">
-                    <td class="w-4 p-4">
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" v-for="hw in hw_resp.boardList">
+                    <td class="w-4 p-4" style="width: 5%;">
                         <div class="flex items-center">
                             <input id="checkbox-table-search-1" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                             <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
                         </div>
                     </td>
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white cursor-pointer" @click="openPopup(hw)">
-                        {{hw.assignmentName}}
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white cursor-pointer text-center" @click="openPopup(hw)" style="width: 20%;">
+                        {{hw.title}}
                     </th>
-                    <td class="px-6 py-4 cursor-pointer" @click="openPopup(hw)">
+                    <td class="px-6 py-4 cursor-pointer text-center" @click="openPopup(hw)" style="width: 30%;">
                         {{hw.fileName}}
                     </td>
-                    <td class="px-6 py-4 cursor-pointer" @click="openPopup(hw)">
-                        {{hw.submissionRate}}
+                    <td class="px-6 py-4 cursor-pointer text-center" @click="openPopup(hw)" style="width: 15%;">
+                        {{ new Date(hw.createdDate).toLocaleDateString() }}
                     </td>
-                    <td class="px-6 py-4 cursor-pointer" @click="openPopup(hw)">
-                        {{hw.viewCount}}
+                    <td class="px-6 py-4 cursor-pointer text-center" @click="openPopup(hw)" style="width: 15%;">
+                        {{hw.writer}}
                     </td>
-                    <td class="px-6 py-4">
+                    <td class="px-6 py-4 text-center" style="width: 15%;">
                         <a href="/board/boardform" class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600" type="button">
                             <svg class="w-4 h-5 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
@@ -95,7 +102,7 @@ const closePopup2 = () => {
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"/>
                             </svg>
                         </button>
-                    </td>    
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -157,7 +164,7 @@ const closePopup2 = () => {
                 </button>
                 <div class="p-4 md:p-5 text-center">
                     <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1-18 0Z"/>
                     </svg>
                     <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Are you sure you want to delete this homework?</h3>
                     <button type="button" @click="closePopup2" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">

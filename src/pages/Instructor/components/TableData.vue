@@ -7,10 +7,16 @@ const instructorStore = useInstructorStore();
 const showPopup = ref(false); // 팝업 상태 관리
 const selectedRowData = ref(null); // 선택된 행의 데이터
 
+const dt_resp = ref([]);
 
 onMounted(async () => {
     await instructorStore.fetchDt();
-    console.log(instructorStore.dt_list);
+    if (instructorStore.dt_res.isSuccess==true) {
+        dt_resp.value = instructorStore.dt_res.data
+        console.log(dt_resp.value);
+    } else {
+        console.log(instructorStore.dt_res);
+    }
 });
 
 const openPopup = (row) => {
@@ -28,50 +34,50 @@ const closePopup = () => {
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
-                    <th scope="col" class="p-4">
+                    <th scope="col" class="p-4" style="width: 5%;">
                         <div class="flex items-center">
                             <input id="checkbox-all-search" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                             <label for="checkbox-all-search" class="sr-only">checkbox</label>
                         </div>
                     </th>
-                    <th scope="col" class="px-6 py-3">
-                        Name
+                    <th scope="col" class="px-6 py-3 text-center" style="width: 20%;">
+                        자료명
                     </th>
-                    <th scope="col" class="px-6 py-3">
-                        File Name
+                    <th scope="col" class="px-6 py-3 text-center" style="width: 30%;">
+                        파일명
                     </th>
-                    <th scope="col" class="px-3 py-3">
-                        File Size
+                    <th scope="col" class="px-3 py-3 text-center" style="width: 15%;">
+                        작성일
                     </th>
-                    <th scope="col" class="px-3 py-3">
-                        View Count
+                    <th scope="col" class="px-3 py-3 text-center" style="width: 15%;">
+                        작성자
                     </th>
-                    <th scope="col" class="px-3 py-3">
+                    <th scope="col" class="px-3 py-3 text-center" style="width: 15%;">
                         Action
                     </th>
                 </tr>
             </thead>
             <tbody>
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" v-for="dt in instructorStore.dt_list">
-                    <td class="w-4 p-4">
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" v-for="dt in dt_resp.boardList">
+                    <td class="w-4 p-4" style="width: 5%;">
                         <div class="flex items-center">
                             <input id="checkbox-table-search-1" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                             <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
                         </div>
                     </td>
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        {{dt.dataName}}
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center" style="width: 20%;">
+                        {{dt.title}}
                     </th>
-                    <td class="px-6 py-4">
+                    <td class="px-6 py-4 text-center" style="width: 30%;">
                         {{dt.fileName}}
                     </td>
-                    <td class="px-6 py-4">
-                        {{dt.fileSize}}
+                    <td class="px-6 py-4 text-center" style="width: 15%;">
+                        {{dt.createdDate}}
                     </td>
-                    <td class="px-6 py-4">
-                        {{dt.viewCount}}
+                    <td class="px-6 py-4 text-center" style="width: 15%;">
+                        {{dt.writer}}
                     </td>
-                    <td class="px-6 py-4 flex space-x-2">
+                    <td class="px-6 py-4 flex space-x-2 text-center" style="width: 15%;">
                         <a href="/board/boardform" class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600" type="button">
                             <svg class="w-4 h-5 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>

@@ -3,25 +3,25 @@ import axios from "axios";
 
 export const useInstructorStore = defineStore('instructor', {
     state: () => ({
-        hw_list: [],
-        dt_list: [],
-        student_list: []
+        hw_res: [],
+        dt_res: [],
+        student_res: []
     }),
     actions: {
         async fetchHw() {
             const response = await axios.get(
-                'https://run.mocky.io/v3/496abf82-a1fa-4504-87fc-6b43a1a07e21');
-            this.hw_list = response.data.assignments;
+                '/api/board/list/1?page=0&size=10');
+            this.hw_res = response.data;
         },
         async fetchDt() {
             const response = await axios.get(
-                'https://run.mocky.io/v3/496abf82-a1fa-4504-87fc-6b43a1a07e21');
-            this.dt_list = response.data.datas;
+                '/api/board/list/1?page=0&size=10');
+            this.dt_res = response.data;
         },
         async fetchStudent() {
             const response = await axios.get(
-                'https://run.mocky.io/v3/496abf82-a1fa-4504-87fc-6b43a1a07e21');
-            this.student_list = response.data.students;
+                '/api/student/list?page=0&size=8');
+            this.student_res = response.data;
         }
     }
 });
