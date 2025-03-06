@@ -17,6 +17,20 @@
               <input type="text" id="large-input" v-model="title" required
                 class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
             </div>
+            <div class="mb-5">
+  <label class="block text-sm font-medium text-gray-900 dark:text-white">게시판 유형</label>
+  <div class="flex space-x-4">
+    <div>
+      <input type="radio" id="freeboard" value="freeboard" v-model="boardType" name="boardType" class="mr-2" />
+      <label for="freeboard" class="text-sm text-gray-900 dark:text-white">자유게시판</label>
+    </div>
+    <div>
+      <input type="radio" id="notice" value="notice" v-model="boardType" name="boardType" class="mr-2" />
+      <label for="notice" class="text-sm text-gray-900 dark:text-white">공지사항</label>
+    </div>
+  </div>
+</div>
+
 
             <form @submit.prevent="submitForm" class="space-y-6">
               <!-- 파일 업로드 필드 -->
@@ -64,8 +78,9 @@ export default {
 </script>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
+import { useBoardStore } from '@/stores/useBoardStore'; 
 
 const router = useRouter();
 const route = useRoute();
@@ -73,22 +88,41 @@ const previousRoute = ref(null);
 
 const title = ref('');
 const content = ref('');
+const boardIdx = ref(route.params.boardIdx);  // 게시글 번호 가져오기
 
 const submitForm = () => {
   if (content.value.length < 5) {
     alert('글 내용은 최소 5자 이상이어야 합니다.');
-    console.log("내용: "+content.value);
     return;
   }
-
+  const commentData = { content: content.value };  // 댓글 데이터
+  const boardStore = useBoardStore();
+  boardStore.getBoardComments({ boardIdx: boardIdx.value, commentData });  // 백엔드로 댓글 전송
   if (previousRoute.value) {
     router.push(previousRoute.value.fullPath);
-  } 
-  else {
-    router.go(-1); 
+  } else {
+    router.go(-1);
   }
 };
+
+// 데이터 로딩
+onMounted(() => {
+  const boardStore = useBoardStore();
+  boardStore.getBoardComments({ boardIdx: boardIdx.value }); 
+  // 게시판 유형에 따라 라우팅
+  if (boardType.value === 'freeboard') {
+    router.push({ name: 'freeboard' });  // 자유게시판 페이지로 이동
+  } else if (boardType.value === 'notice') {
+    router.push({ name: 'noticeboard' });  // 공지사항 페이지로 이동
+  } else {
+    alert('게시판 유형을 선택해주세요.');
+  }
+ // 게시글 번호로 댓글 로드
+});
+
+
 </script>
+
 
 <style scoped>
 /* 필요에 따라 추가 스타일링 */

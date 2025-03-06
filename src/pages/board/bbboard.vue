@@ -90,36 +90,57 @@
 
 <script>
 import BoardNav from './components/BoardNav.vue';
+import { defineComponent, onMounted } from 'vue';
+import { useBoardStore } from '@/stores/useBoardStore'; 
 
-export default {
+
+
+export default defineComponent({
   components: {
     BoardNav
   },
-  data() {
+  name: 'bbboard',
+  setup() {
+    const boardStore = useBoardStore();
+    const boardComments = boardStore.BoardComments;
+
+    onMounted(() => {
+      const boardIdx = 'boardIdx'; 
+      const commentData = 'commentData';
+      boardStore.getBoardComments(boardIdx,commentData);
+    });
+
     return {
-      isOverlayVisible: false, // 오버레이 표시 여부
-      newComment: '', // 새 댓글 내용
-      comments: [
-        { author: '김무성', date: '2025-02-06', text: '좋은 정보 감사합니다!' },
-        { author: '이우진', date: '2025-01-04', text: '브랜치 만드는 과정에 대해 더 알고 싶어요.' }
-      ]
+      boardComments
     };
-  },
-  methods: {
-    submitComment() {
-      // 새 댓글 제출
-      if (this.newComment.trim()) {
-        const newComment = {
-          author: '사용자', // 동적으로 사용자 정보를 넣을 수 있음
-          date: new Date().toISOString().split('T')[0], // 현재 날짜 (YYYY-MM-DD 형식)
-          text: this.newComment
-        };
-        this.comments.push(newComment); // 댓글 배열에 새 댓글 추가
-        this.newComment = ''; // 입력란 비우기
-      }
-    }
   }
-};
+});
+
+  // data() {
+  //   return {
+  //     isOverlayVisible: false, // 오버레이 표시 여부
+  //     newComment: '', // 새 댓글 내용
+  //     comments: [
+  //       { author: '김무성', date: '2025-02-06', text: '좋은 정보 감사합니다!' },
+  //       { author: '이우진', date: '2025-01-04', text: '브랜치 만드는 과정에 대해 더 알고 싶어요.' }
+  //     ]
+  //   };
+  // },
+  // methods: {
+  //   submitComment() {
+  //     // 새 댓글 제출
+  //     if (this.newComment.trim()) {
+  //       const newComment = {
+  //         author: '사용자', // 동적으로 사용자 정보를 넣을 수 있음
+  //         date: new Date().toISOString().split('T')[0], // 현재 날짜 (YYYY-MM-DD 형식)
+  //         text: this.newComment
+  //       };
+  //       this.comments.push(newComment); // 댓글 배열에 새 댓글 추가
+  //       this.newComment = ''; // 입력란 비우기
+  //     }
+  //   }
+  // }
+
 </script>
 
 <style scoped></style>
