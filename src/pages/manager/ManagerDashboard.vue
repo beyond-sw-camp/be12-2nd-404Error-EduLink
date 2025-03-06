@@ -1,85 +1,56 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted, computed } from "vue";
 import PageNavi from "./PageNavi.vue";
+import { useManagerStore } from "../../stores/useManagerStore.js";
 
 const boardHeaders = ref(["글번호", "제목", "작성자", "작성일"]);
-const boardData = ref([
-  {
-    id: 3,
-    title: "프론트 엔드 시험 안내",
-    author: "매니저1",
-    date: "2024-12-26",
-  },
-  {
-    id: 2,
-    title: "크리스마스 이벤트 안내",
-    author: "매니저1",
-    date: "2024-12-25",
-  },
-  { id: 1, title: "화장실 수리 안내", author: "매니저2", date: "2024-12-24" },
-]);
 
-const userHeaders = ref(["번호", "이름", "연락처", "이메일"]);
-const userData = ref([
-  {
-    id: 1,
-    name: "학생1",
-    role: "010-2312-5123",
-    email: "student01@example.com",
-  },
-  {
-    id: 2,
-    name: "학생2",
-    role: "010-2345-6637",
-    email: "student02@example.com",
-  },
-  {
-    id: 3,
-    name: "학생3",
-    role: "010-1235-7912",
-    email: "student03@example.com",
-  },
-]);
-const instructorData = ref([
-  {
-    id: 1,
-    name: "강사1",
-    role: "010-2152-5612",
-    email: "instructor01@example.com",
-  },
-  {
-    id: 2,
-    name: "강사2",
-    role: "010-7245-2135",
-    email: "instructor02@example.com",
-  },
-  {
-    id: 3,
-    name: "강사3",
-    role: "010-1564-7812",
-    email: "instructor03@example.com",
-  },
-]);
-const managerData = ref([
-  {
-    id: 1,
-    name: "매니저1",
-    role: "010-8238-9513",
-    email: "manager01@example.com",
-  },
-  {
-    id: 2,
-    name: "매니저2",
-    role: "010-0482-2348",
-    email: "manager02@example.com",
-  },
-  {
-    id: 3,
-    name: "매니저3",
-    role: "010-3294-9371",
-    email: "manager03@example.com",
-  },
-]);
+
+const userHeaders = ref(["번호", "이름", "생년월일","이메일"]);
+const instructorHeaders = ref(["번호", "이름", "맡은 수업","이메일"]);
+
+// Pinia 스토어 사용 (매니저 관련)
+const managerStore = useManagerStore();
+
+// 컴포넌트가 마운트되면 백엔드로부터 매니저 데이터를 요청합니다.
+onMounted(() => {
+  managerStore.getManagers(0, 5);
+  managerStore.getInstructors(0, 5);
+  managerStore.getStudents(0, 5);
+  managerStore.getNotice();
+});
+
+const noticeData = computed(() => managerStore.notices);
+
+// 매니저 데이터 관련 computed
+const managerData = computed(() => managerStore.managers);
+const currentPage = computed(() => managerStore.currentPage + 1);
+const totalPages = computed(() => managerStore.totalPages);
+
+// 강사 데이터 관련 computed
+const instructorData = computed(() => managerStore.instructors);
+const instructorCurrentPage = computed(() => managerStore.currentInstructorPage + 1);
+const instructorTotalPages = computed(() => managerStore.totalInstructorPages);
+
+
+const studentData = computed(() => managerStore.students);
+const studentCurrentPage = computed(() => managerStore.currentStudentPage + 1);
+const studentTotalPages = computed(() => managerStore.totalStudentPages);
+
+// 매니저 페이지네비 이벤트 핸들러
+const handleUpdatePage = (page) => {
+  // store는 0-based 페이지 번호를 사용하므로 -1 처리
+  managerStore.getManagers(page - 1, 5);
+};
+
+// 강사 페이지네비 이벤트 핸들러
+const handleUpdateInstructorPage = (page) => {
+  managerStore.getInstructors(page - 1, 5);
+};
+
+const handleUpdateStudentPage = (page) => {
+  managerStore.getStudents(page - 1, 5);
+};
 
 const examData = ref([
   {
@@ -152,13 +123,9 @@ const recentExamSummary = ref({
         <div class="card">
           <h3 class="card-title">중요 공지</h3>
           <ul class="card-list">
-            <li
-              v-for="notice in importantNotices"
-              :key="notice.id"
-              class="card-item"
-            >
-              {{ notice.title }} ({{ notice.date }})
-            </li>
+            <li v-for="(notice, index) in noticeData" :key="index">
+        <strong>{{ notice.title }}</strong> - {{ notice.writer }} ({{ notice.createdDate }})
+      </li>
           </ul>
         </div>
       </router-link>
@@ -228,11 +195,11 @@ const recentExamSummary = ref({
             </tr>
           </thead>
           <tbody>
-            <tr v-for="row in boardData" :key="row.id">
-              <td>{{ row.id }}</td>
+            <tr v-for="row in noticeData" :key="row.id">
+              <td>{{ row.idx }}</td>
               <td>{{ row.title }}</td>
-              <td>{{ row.author }}</td>
-              <td>{{ row.date }}</td>
+              <td>{{ row.writer }}</td>
+              <td>{{ row.createdDate.substring(0, 10) }}</td>
             </tr>
           </tbody>
         </table>
@@ -263,17 +230,21 @@ const recentExamSummary = ref({
               </tr>
             </thead>
             <tbody>
-              <tr v-for="row in userData" :key="row.id">
-                <td>{{ row.id }}</td>
+              <tr v-for="row in studentData" :key="row.idx">
+                <td>{{ row.idx }}</td>
                 <td>{{ row.name }}</td>
-                <td>{{ row.role }}</td>
+                <td>{{ row.birth }}</td>
                 <td>{{ row.email }}</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div>
-          <PageNavi></PageNavi>
+          <PageNavi 
+        :currentPage="studentCurrentPage" 
+        :totalPages="studentTotalPages"
+        @updatePage="handleUpdateStudentPage" 
+      />
         </div>
       </div>
 
@@ -295,23 +266,27 @@ const recentExamSummary = ref({
           <table class="custom-table">
             <thead>
               <tr>
-                <th v-for="header in userHeaders" :key="header">
+                <th v-for="header in instructorHeaders" :key="header">
                   {{ header }}
                 </th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="row in instructorData" :key="row.id">
-                <td>{{ row.id }}</td>
+                <td>{{ row.userIdx }}</td>
                 <td>{{ row.name }}</td>
-                <td>{{ row.role }}</td>
+                <td>{{ row.portfolio }}</td>
                 <td>{{ row.email }}</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div>
-          <PageNavi />
+          <PageNavi 
+        :currentPage="instructorCurrentPage" 
+        :totalPages="instructorTotalPages"
+        @updatePage="handleInstructorPageUpdate" 
+      />
         </div>
       </div>
 
@@ -340,9 +315,9 @@ const recentExamSummary = ref({
             </thead>
             <tbody>
               <tr v-for="row in managerData" :key="row.id">
-                <td>{{ row.id }}</td>
+                <td>{{ row.idx }}</td>
                 <td>{{ row.name }}</td>
-                <td>{{ row.role }}</td>
+                <td>{{ row.birth }}</td>
                 <td>{{ row.email }}</td>
               </tr>
             </tbody>
@@ -351,7 +326,11 @@ const recentExamSummary = ref({
       </div>
     </div>
     <div>
-      <PageNavi />
+      <PageNavi
+    :currentPage="currentPage"
+    :totalPages="totalPages"
+    @updatePage="handleUpdatePage"
+  />
     </div>
   </div>
 </template>

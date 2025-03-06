@@ -10,105 +10,171 @@ import axios from "axios";
 // 시험 등록 삭제
 
 export const useManagerStore = defineStore("manager", {
-    state: () => ({
-        // axios 결과를 처리하는 변수 
-        axiosStatus: false,
-        // 수강 신청한 학생들 목록을 위한 데이터
-        students: [],
-        // 수강 신청한 학생 1명의 상세 정보를 보기 위한 데이터
-        studentInfo: {},
-        // 강사 목록을 가져오는 데이터
-        instructors: [],
-        // 강사 상세 정보를 가져오는 데이터
-        instructorInfo: {},
-        // 매니저 목록을 가져오는 데이터
-        managers: [],
-        // 매니저 상세 정보를 가져오는 데이터
-        managerInfo: {},
-        // 수업 목록을 가져오는 데이터
-        courses: [],
-        // 수업 상세 정보를 가져오는 데이터
-        course: {},
-        // 출결 목록을 가져오는 데이터
-        attendances: [],
-        // 출결 상세 정보를 가져오는 데이터 (몇시 출석 했고 몇시 퇴실 했는지 조퇴 여부 등)
-        attendanceInfo: {},
-        // 시험 목록을 가져오는 데이터
-        tests: [],
-        // 시험 상세 정보를 가져오는 데이터 (합격자 수, 평균 점수 등)
-        testInfo: {},
-    }),
-    actions: {
-        // 수강 신청한 학생들 목록을 가져오는 함수
-        async getStudents() {
-            const response = await axios.get("수강신청 학생 정보 목록 url");
-            this.students = response.data;
-        },
+  state: () => ({
+    managers: [],
+    currentPage: 0,
+    totalPages: 0,
+    totalElements: 0,
+    // 강사 목록 관련 상태 추가
+    instructors: [],
+    currentInstructorPage: 0,
+    totalInstructorPages: 0,
+    totalInstructorElements: 0,
+    // 학생 목록 관련 상태 추가
+    students: [],
+    currentStudentPage: 0,
+    totalStudentPages: 0,
+    totalStudentElements: 0,
+    studentInfo: null,
+    notices: [],
+  }),
+  actions: {
+    // 수강 신청한 학생들 목록을 가져오는 함수 (페이지네이션 적용)
+    async getStudents(page = 0, size = 5) {
+      try {
+        const response = await axios.get("/api/student/list", {
+          params: { page, size },
+        });
+        if (response.data.isSuccess) {
+          const data = response.data.data;
+          // 실제 학생 목록은 data.content에 있다고 가정
+          this.students = data.studentList;
+          this.currentStudentPage = data.page;
+          this.totalStudentPages = data.totalPages;
+          this.totalStudentElements = data.totalElements;
+          console.log(data);
+        } else {
+          console.error("학생 목록 요청 실패:", response.data.message);
+        }
+      } catch (error) {
+        console.error("학생 목록 API 호출 중 오류 발생:", error);
+      }
+    },
 
-        // 수강 신청한 학생의 상세 정보를 가져오는 함수
-        async getStudentInfo() {
-            const response = await axios.get("학생 상세 정보 url/신청학생idx");
-            this.studentInfo = response.data;
-        },
+    // 수강 신청한 학생의 상세 정보를 가져오는 함수
+    async getStudentInfo(studentIdx) {
+      try {
+        const response = await axios.get(`학생 상세 정보 url/${studentIdx}`);
+        if (response.data.isSuccess) {
+          this.studentInfo = response.data.data;
+        } else {
+          console.error("학생 상세 정보 요청 실패:", response.data.message);
+        }
+      } catch (error) {
+        console.error("학생 상세 정보 API 호출 중 오류 발생:", error);
+      }
+    },
 
-        // 강사들 목록을 가져오는 함수
-        async getInstructors() {
-            const response = await axios.get("강사 목록 url");
-            this.instructors = response.data;
-        },
+    // 강사들 목록을 가져오는 함수 
+    async getInstructors(page = 0, size = 5) {
+      try {
+        const response = await axios.get("/api/manager/instructor/list", {
+          params: { page, size },
+        });
+        if (response.data.isSuccess) {
+          const data = response.data.data;
+          // 실제 강사 목록은 data.content에 있다고 가정
+          this.instructors = data.content;
+          // 페이징 정보 저장
+          this.currentInstructorPage = data.currentPage;
+          this.totalInstructorPages = data.totalPages;
+          this.totalInstructorElements = data.totalElements;
+        } else {
+          console.error("강사 목록 요청 실패:", response.data.message);
+        }
+      } catch (error) {
+        console.error("강사 목록 API 호출 중 오류 발생:", error);
+      }
+    },
 
-        // 강사의 상세 정보를 가져오는 함수
-        async getInstructorInfo() {
-            const response = await axios.get("강사 상세 정보 url/강사idx");
-            this.instructorInfo = response.data;
-        },
+    // 강사의 상세 정보를 가져오는 함수
+    async getInstructorInfo() {
+      const response = await axios.get("강사 상세 정보 url/강사idx");
+      this.instructorInfo = response.data;
+    },
 
-        // 매니저들 목록을 가져오는 함수
-        async getManagers() {
-            const response = await axios.get("매니저 목록 url");
-            this.managers = response.data;
-        },
+    async getManagers(page = 0, size = 5) {
+      try {
+        // page와 size를 쿼리 파라미터로 전송
+        const response = await axios.get("/api/manager/list", {
+          params: { page, size },
+        });
+        if (response.data.isSuccess) {
+          const data = response.data.data;
+          // 실제 매니저 목록은 data.content에 있음
+          this.managers = data.content;
+          // 페이징 정보 저장
+          this.currentPage = data.currentPage;
+          this.totalPages = data.totalPages;
+          this.totalElements = data.totalElements;
+        } else {
+          console.error("API 요청 실패:", response.data.message);
+        }
+      } catch (error) {
+        console.error("API 호출 중 오류 발생:", error);
+      }
+    },
 
-        // 매니저의 상세 정보를 가져오는 함수
-        async getManagerInfo() {
-            const response = await axios.get("매니저 상세 정보 url/매니저idx");
-            this.managerInfo = response.data;
-        },
+    // 매니저의 상세 정보를 가져오는 함수
+    async getManagerInfo() {
+      const response = await axios.get("매니저 상세 정보 url/매니저idx");
+      this.managerInfo = response.data;
+    },
 
-        // 수업 목록을 가져오는 함수
-        async getCourses() {
-            const response = await axios.get("수업 목록 url");
-            this.courses = response.data;
-        },
+    // 수업 목록을 가져오는 함수
+    async getCourses() {
+      const response = await axios.get("수업 목록 url");
+      this.courses = response.data;
+    },
 
-        // 수업의 상세 정보를 가져오는 함수
-        async getCourse() {
-            const response = await axios.get("수업 상세 정보 url/수업idx");
-            this.course = response.data;
-        },
+    // 수업의 상세 정보를 가져오는 함수
+    async getCourse() {
+      const response = await axios.get("수업 상세 정보 url/수업idx");
+      this.course = response.data;
+    },
 
-        //  출석 목록을 가져오는 함수
-        async getAttendances() {
-            const response = await axios.get("출석 목록 url");
-            this.attendances = response.data;
-        },
+    // 출석 목록을 가져오는 함수
+    async getAttendances() {
+      const response = await axios.get("출석 목록 url");
+      this.attendances = response.data;
+    },
 
-        // 출석 상세 정보를 가져오는 함수
-        async getAttendanceInfo() {
-            const response = await axios.get("출석 상세 정보 url/출석idx");
-            this.attendanceInfo = response.data;
-        },
+    // 출석 상세 정보를 가져오는 함수
+    async getAttendanceInfo() {
+      const response = await axios.get("출석 상세 정보 url/출석idx");
+      this.attendanceInfo = response.data;
+    },
 
-        //  시험 목록을 가져오는 함수
-        async getTests() {
-            const response = await axios.get("시험 목록 url");
-            this.tests = response.data;
-        },
+    // 시험 목록을 가져오는 함수
+    async getTests() {
+      const response = await axios.get("시험 목록 url");
+      this.tests = response.data;
+    },
 
-        // 시험 상세 정보를 가져오는 함수
-        async getTestInfo() {
-            const response = await axios.get("시험 상세 정보 url/시험idx");
-            this.testInfo = response.data;
-        },
-    }
-})
+    // 시험 상세 정보를 가져오는 함수
+    async getTestInfo() {
+      const response = await axios.get("시험 상세 정보 url/시험idx");
+      this.testInfo = response.data;
+    },
+
+    // 최신 공지목록 3개 가져오는 함수ㅡ
+    // 최신 공지사항 3개만 가져오는 함수 (페이지네이션 필요 없음)
+    async getNotice() {
+        try {
+          const response = await axios.get("/api/board/list/1", {
+            params: { page: 0, size: 3 },
+          });
+          if (response.data.isSuccess) {
+            const data = response.data.data;
+            // 실제 공지사항 목록은 data.boardList에 있음
+            this.notices = data.boardList;
+          } else {
+            console.error("공지사항 요청 실패:", response.data);
+          }
+        } catch (error) {
+          console.error("공지사항 API 호출 중 오류 발생:", error);
+        }
+      },
+      
+  },
+});
