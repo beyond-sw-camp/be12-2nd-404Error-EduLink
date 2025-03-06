@@ -1,12 +1,12 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { usememberStore } from '../stores/useMemberStore';
+import { useMemberStore } from '../stores/useMemberStore';
 
-const memberStore = usememberStore()
+const memberStore = useMemberStore()
 const router = useRouter();
 const loginUser = ref({
-    nickname: '',
+    email: '',
     password: '',
 });
 const userRole = ref('student');
@@ -15,9 +15,11 @@ const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-        const result = await memberStore.Login(loginUser.value);
+        const result = await memberStore.login(loginUser.value);
         if (result.isSuccess) {
             console.log('로그인 성공');
+            console.log(result.role);
+            login(result.role);
         }
         else {
             console.log('로그인 실패');
@@ -27,20 +29,19 @@ const handleSubmit = async (event) => {
         console.error('Login failed: ', error);
     }
     finally {
-        login();
     }
 };
 
-const login = () => {
+const login = (role) => {
     let dashboardUrl = '';
-    switch (userRole.value) {
-        case 'student':
+    switch (role) {
+        case 'ROLE_STUDENT':
             dashboardUrl = '/studentdashboard';
             break;
-        case 'instructor':
+        case 'ROLE_INSTRUCTOR':
             dashboardUrl = '/inst/dashboard';
             break;
-        case 'manager':
+        case 'ROLE_MANAGER':
             dashboardUrl = '/manager/dashboard';
             break;
     }
@@ -58,7 +59,7 @@ const login = () => {
                     <div class="mb-6 last:mb-0"><label class="block font-bold mb-2">Login</label>
                         <div class="">
                             <div class="relative">
-                                <input v-model="loginUser.nickname" name="nickname" autocomplete="username" type="text"
+                                <input v-model="loginUser.email" name="email" autocomplete="username" type="text"
                                     class="px-3 py-2 max-w-full focus:ring focus:outline-none border-gray-700 rounded w-full dark:placeholder-gray-400 h-12 border bg-white dark:bg-slate-800 pl-10">
                                 <span
                                     class="inline-flex justify-center items-center w-10 h-12 absolute top-0 left-0 z-10 pointer-events-none text-gray-500 dark:text-slate-400">

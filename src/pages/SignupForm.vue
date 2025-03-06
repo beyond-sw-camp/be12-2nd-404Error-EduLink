@@ -2,12 +2,12 @@
 <script setup>
 import { ref } from 'vue'
 
-import { usememberStore } from '../stores/useMemberStore';
+import { useMemberStore } from '../stores/useMemberStore';
 import { useRoute, useRouter } from 'vue-router'
 
 const route = useRoute();
 const router = useRouter();
-const memberStore = usememberStore()
+const memberStore = useMemberStore()
 
 const signupuser = ref({
     name: '',
@@ -19,7 +19,7 @@ const signup = async () => {
     console.log(signupuser.value);
 
     try {
-        const result = await memberStore.signup(signupuser.value)
+        const result = await memberStore.signup(signupuser.value, "STUDENT")
         console.log(result.value);
         if (result.isSuccess) {
         }
