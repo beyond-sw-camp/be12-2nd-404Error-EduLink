@@ -79,9 +79,9 @@ const router = createRouter({
         { path: '/manager/leave-request', component: LeaveRequest },
 
         { path: '/bootcamp', component : bootcampList },
-        { path: '/board/bbboard', component : bbboard },
+        { path: '/board/comment/register', component : bbboard , name: 'BoardComments'},
         { path: '/board/bbnoticeboard', component : bbnoticeboard },
-        { path: '/board/boardform', component : boardform },
+        { path: '/board/register', component : boardform, name:'boardregister' },
         { path: '/board/deleteboard', component : deleteboard },
         { path: '/board/freeboard', component : freeboard },
         { path: '/board/managerboard', component : managerboard },
