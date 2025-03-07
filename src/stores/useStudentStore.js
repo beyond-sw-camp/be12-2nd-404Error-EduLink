@@ -19,7 +19,7 @@ export const useStudentStore = defineStore('student', {
   actions: {
     async get_dashboard() {
       try {
-        const response = await axios.get(`/student/getStudentcheck`, {
+        const response = await axios.get(`/api/student/getStudentcheck`, {
           withCredentials: true
         });
         
@@ -36,7 +36,7 @@ export const useStudentStore = defineStore('student', {
         const encodedSubject = encodeURIComponent(subject);  // subject 값을 URL 인코딩
         console.log('encodedSubject:', encodedSubject);
         try {
-          const response = await axios.get(`/course/curriculum?subject=${encodedSubject}`, {
+          const response = await axios.get(`/api/course/curriculum?subject=${encodedSubject}`, {
 
             withCredentials: true
           });
@@ -50,7 +50,7 @@ export const useStudentStore = defineStore('student', {
 
       ,async attendanceCheck(actions) {
         try{
-            axios.post(`/attend/update/batch/${actions}`, {}, {
+            axios.post(`/api/attend/update/batch/${actions}`, {}, {
                 headers: {
                   Authorization: `Bearer ${token}`
                 }
