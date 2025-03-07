@@ -1,5 +1,8 @@
 <script setup>
 import { ref } from 'vue';
+import { useMemberStore } from '@/stores/useMemberStore';
+
+const memberStore = useMemberStore();
 
 const examData = ref([
   { id: 1, subject: "데이터베이스", date: "2024-11-30", participants: 26, total: 30 },
@@ -57,7 +60,7 @@ const resetForm = () => {
     <div class="container">
       <div class="exam-list-header">
         <h1>전체 시험 리스트</h1>
-        <button class="add-button" @click="showAddExamForm = true">시험 추가</button>
+        <button v-if="memberStore.role === 'ROLE_MANAGER'" class="add-button" @click="showAddExamForm = true">시험 추가</button>
       </div>
       <div class="exam-card-grid">
         <div v-for="exam in examData" :key="exam.id" class="exam-card">
