@@ -15,6 +15,7 @@
     "flowbite": "^2.5.2",
     "numeral": "^2.0.6",
     "pinia": "^2.3.1",
+    "pinia-plugin-persistedstate": "^4.2.0",
     "tail": "file:",
     "vue": "^3.5.13",
     "vue-cal": "^4.10.0",

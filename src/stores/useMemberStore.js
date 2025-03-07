@@ -6,6 +6,7 @@ export const useMemberStore = defineStore("member", {
     token: null,
     role: null,
     email: null,
+    name: null,
   }),
   actions: {
     async signup(user, role) {
@@ -24,6 +25,7 @@ export const useMemberStore = defineStore("member", {
         this.token = response.data.token;
         this.role = response.data.role;
         this.email = response.data.email;
+        this.name = response.data.name;
         console.log("Login success", response.data);
         return { isSuccess: true, ...response.data };
       } catch (error) {
@@ -31,6 +33,6 @@ export const useMemberStore = defineStore("member", {
         return { isSuccess: false, error: error.response ? error.response.data : error.message };
       }
     }
-    
   },
+  persist: true
 });
