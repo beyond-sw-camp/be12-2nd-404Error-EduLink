@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-
-
+import { useMemberStore } from '@/stores/useMemberStore'
 
 import LoginForm from '../pages/LoginForm.vue';
 
@@ -8,7 +7,7 @@ import Aside from '../pages/Aside.vue';
 import FormsView from '../pages/FormsView.vue';
 import SignupForm from '../pages/SignupForm.vue';
 
-import UserinfoForm from '../pages/UserInformation.vue';import { h } from 'vue';
+import UserinfoForm from '../pages/UserInformation.vue'; import { h } from 'vue';
 import Studentdashboard from '../pages/Student/Studentdashboard.vue';
 import BootcampInfo from '../pages/Student/BootcampInfo.vue';
 import ManagerDashboard from '../pages/manager/ManagerDashboard.vue';
@@ -57,45 +56,44 @@ const router = createRouter({
             path: '/studentdashboard',
             component: Studentdashboard,
 
-            meta: { asideComponent: StudentAside  ,hideAside: false }, // StudentAside를 항상 사용
-        },     
+            meta: { asideComponent: StudentAside, hideAside: false, requiresAuth: true }, // StudentAside를 항상 사용
+        },
 
-        { path: '/userinfo', component: UserinfoForm },
+        { path: '/userinfo', component: UserinfoForm, meta: { requiresAuth: true }  },
 
-        { path: '/inst/dashboard', component: InstructorDash },
-        { path: '/inst/studinform', component: InstStudInform },
-        { path: '/inst/registercur', component: RegistCur },
-        { path: '/manager/dashboard', component: ManagerDashboard },
-        { path: '/manager/studentList', component: StudentList },
-        { path: '/manager/instructorList', component: InstructorList },
-        { path: '/manager/managerList', component: ManagerList },
+        { path: '/inst/dashboard', component: InstructorDash, meta: { requiresAuth: true }  },
+        { path: '/inst/studinform', component: InstStudInform, meta: { requiresAuth: true }  },
+        { path: '/inst/registercur', component: RegistCur, meta: { requiresAuth: true }  },
+        { path: '/manager/dashboard', component: ManagerDashboard, meta: { requiresAuth: true }  },
+        { path: '/manager/studentList', component: StudentList, meta: { requiresAuth: true }  },
+        { path: '/manager/instructorList', component: InstructorList, meta: { requiresAuth: true }  },
+        { path: '/manager/managerList', component: ManagerList, meta: { requiresAuth: true }  },
 
-        { path: '/manager/attendanceManage', component: AttendanceManage},
+        { path: '/manager/attendanceManage', component: AttendanceManage, meta: { requiresAuth: true }  },
 
-        { path: '/manager/examList', component: ExamList},
-        { path: '/manager/examDetails', component: ExamDetails},
+        { path: '/manager/examList', component: ExamList, meta: { requiresAuth: true }  },
+        { path: '/manager/examDetails', component: ExamDetails, meta: { requiresAuth: true }  },
 
-        { path: '/manager/attendanceManage', component: AttendanceManage },
-        { path: '/manager/leave-request', component: LeaveRequest },
+        { path: '/manager/attendanceManage', component: AttendanceManage, meta: { requiresAuth: true }  },
+        { path: '/manager/leave-request', component: LeaveRequest, meta: { requiresAuth: true }  },
 
-        { path: '/bootcamp', component : bootcampList },
-        { path: '/board/bbboard', component : bbboard },
-        { path: '/board/bbnoticeboard', component : bbnoticeboard },
-        { path: '/board/boardform', component : boardform },
-        { path: '/board/deleteboard', component : deleteboard },
-        { path: '/board/freeboard', component : freeboard },
-        { path: '/board/managerboard', component : managerboard },
-        { path: '/board/notice', component : notice },
-        { path: '/board/project', component : project },
-
-
-        { path: '/board/data', component : data },
-
-        { path: '/board/question', component : question },
+        { path: '/bootcamp', component: bootcampList, meta: { requiresAuth: true }  },
+        { path: '/board/bbboard', component: bbboard, meta: { requiresAuth: true }  },
+        { path: '/board/bbnoticeboard', component: bbnoticeboard, meta: { requiresAuth: true }  },
+        { path: '/board/boardform', component: boardform, meta: { requiresAuth: true }  },
+        { path: '/board/deleteboard', component: deleteboard, meta: { requiresAuth: true }  },
+        { path: '/board/freeboard', component: freeboard, meta: { requiresAuth: true }  },
+        { path: '/board/managerboard', component: managerboard, meta: { requiresAuth: true }  },
+        { path: '/board/notice', component: notice, meta: { requiresAuth: true }  },
+        { path: '/board/project', component: project, meta: { requiresAuth: true }  },
 
 
-        { path: '/common', component: common },
-        { path: '/bootcampInfo', component: BootcampInfo },
+        { path: '/board/data', component: data, meta: { requiresAuth: true }  },
+
+        { path: '/board/question', component: question, meta: { requiresAuth: true }  },
+
+        { path: '/common', component: common, meta: { requiresAuth: true }  },
+        { path: '/bootcampInfo', component: BootcampInfo, meta: { requiresAuth: true }  },
 
 
 
@@ -106,6 +104,16 @@ const router = createRouter({
         // { path: '/g', component: Signup }
 
     ]
-})
+});
+
+router.beforeEach((to, from, next) => {
+    const memberStore = useMemberStore();
+
+    if (to.meta.requiresAuth && !memberStore.token) {
+        next({ path: '/' });
+    } else {
+        next();
+    }
+});
 
 export default router;
