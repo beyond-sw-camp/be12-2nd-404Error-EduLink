@@ -32,7 +32,7 @@ export const useManagerStore = defineStore("manager", {
     // 수강 신청한 학생들 목록을 가져오는 함수 (페이지네이션 적용)
     async getStudents(page = 0, size = 5) {
       try {
-        const response = await axios.get("/api/student/list", {
+        const response = await axios.get("/student/list", {
           params: { page, size },
         });
         if (response.data.isSuccess) {
@@ -68,7 +68,7 @@ export const useManagerStore = defineStore("manager", {
     // 강사들 목록을 가져오는 함수 
     async getInstructors(page = 0, size = 5) {
       try {
-        const response = await axios.get("/api/manager/instructor/list", {
+        const response = await axios.get("/manager/instructor/list", {
           params: { page, size },
         });
         if (response.data.isSuccess) {
@@ -96,7 +96,7 @@ export const useManagerStore = defineStore("manager", {
     async getManagers(page = 0, size = 5) {
       try {
         // page와 size를 쿼리 파라미터로 전송
-        const response = await axios.get("/api/manager/list", {
+        const response = await axios.get("/manager/list", {
           params: { page, size },
         });
         if (response.data.isSuccess) {
@@ -121,17 +121,7 @@ export const useManagerStore = defineStore("manager", {
       this.managerInfo = response.data;
     },
 
-    // 수업 목록을 가져오는 함수
-    async getCourses() {
-      const response = await axios.get("수업 목록 url");
-      this.courses = response.data;
-    },
 
-    // 수업의 상세 정보를 가져오는 함수
-    async getCourse() {
-      const response = await axios.get("수업 상세 정보 url/수업idx");
-      this.course = response.data;
-    },
 
     // 출석 목록을 가져오는 함수
     async getAttendances() {
@@ -144,6 +134,21 @@ export const useManagerStore = defineStore("manager", {
       const response = await axios.get("출석 상세 정보 url/출석idx");
       this.attendanceInfo = response.data;
     },
+    // 시험 등록 함수 추가
+    async registerTest(testData) {
+    try {
+      const response = await axios.post("/manager/test/register", testData);
+      if (response.data.isSuccess) {
+        console.log("시험 등록 성공:", response.data.data);
+        return response.data.data; // 등록된 시험 데이터 반환
+      } else {
+        console.error("시험 등록 실패:", response.data.message);
+      }
+    } catch (error) {
+      console.error("시험 등록 API 호출 중 오류 발생:", error);
+    }
+  },
+  
 
     // 시험 목록을 가져오는 함수
     async getTests() {
@@ -161,7 +166,7 @@ export const useManagerStore = defineStore("manager", {
     // 최신 공지사항 3개만 가져오는 함수 (페이지네이션 필요 없음)
     async getNotice() {
         try {
-          const response = await axios.get("/api/board/list/1", {
+          const response = await axios.get("/board/list/1", {
             params: { page: 0, size: 3 },
           });
           if (response.data.isSuccess) {
