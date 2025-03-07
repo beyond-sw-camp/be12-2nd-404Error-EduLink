@@ -7,6 +7,7 @@ const route = useRoute();
 const router = useRouter();
 const memberStore = useMemberStore()
 const checkPassword = ref("");
+const selectedRole = ref("STUDENT");
 const signupuser = ref({
     email: "",
     password: "",
@@ -16,12 +17,12 @@ const signupuser = ref({
 const signup = async () => {
     console.log(signupuser.value);
 
-    if(signupuser.value.password !== checkPassword.value) {
+    if (signupuser.value.password !== checkPassword.value) {
         showError("비밀번호가 일치하지 않습니다.");
         return;
     }
     try {
-        const response = await memberStore.signup(signupuser.value, "STUDENT")
+        const response = await memberStore.signup(signupuser.value, selectedRole.value);
         console.log("Signup success:", response);
         alert('회원가입이 완료되었습니다.');
         router.push("/");
@@ -143,6 +144,14 @@ function showError(message) {
                         </div>
                         <div class="text-xs text-gray-500 dark:text-slate-400 mt-1">비밀번호 확인</div>
                     </div>
+
+                    <!--추후 이메일 인증 방식으로 변경 예정-->
+                    <select v-model="selectedRole" class="mr-3 border border-gray-300 rounded px-2 py-1">
+                        <option value="STUDENT">학생</option>
+                        <option value="INSTRUCTOR">강사</option>
+                        <option value="MANAGER">관리자</option>
+                    </select>
+
 
 
                     <label class="checkbox"><input type="checkbox" name="remember" value="true"><span
