@@ -11,7 +11,7 @@ export const useMemberStore = defineStore("member", {
   actions: {
     async signup(user, role) {
       try {
-        const response = await axios.post(`/user/signup/${role}`, user);
+        const response = await axios.post(`/api/user/signup/${role}`, user);
         return response.data;
       } catch (error) {
         console.error("Signup error", error.response ? error.response.data : error.message);
@@ -21,7 +21,7 @@ export const useMemberStore = defineStore("member", {
 
     async login(user) {
       try {
-        const response = await axios.post("/login", user);
+        const response = await axios.post("/api/login", user);
         this.token = response.data.token;
         this.role = response.data.role;
         this.email = response.data.email;
