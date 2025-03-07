@@ -120,6 +120,10 @@ const handleSubmit = async (formType) => {
     data = leaveData.value;
   }
 
+
+
+
+
   
   
 };
@@ -139,7 +143,7 @@ document.addEventListener("DOMContentLoaded", function () {
     async function sendAttendanceRequest(action) {
       console.log('  ddd :', action);
         try {
-            const response = await axios.get(`/student/attend/update/${action}`);
+            const response = await axios.get(`/api/student/attend/update/${action}`);
             console.log('  ddd :', response);
 
             alert(`${action === 'attendance' ? '출석' : '퇴실'} 체크 완료!`);
