@@ -9,8 +9,8 @@ import 'flowbite';
 import 'vue-cal/dist/vuecal.css';
 
 //백엔드 주소 설정
-axios.defaults.baseURL = "http://localhost:8080";
-axios.defaults.withCredentials = true;
+// axios.defaults.baseURL = "http://localhost:8080";
+// axios.defaults.withCredentials = true;
 
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
