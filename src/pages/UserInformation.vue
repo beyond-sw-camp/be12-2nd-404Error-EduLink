@@ -1,6 +1,26 @@
 <script setup>
-import { reactive } from 'vue'
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
 
+const userInfo = ref({});
+const loading = ref(true);
+const errorMessage = ref("");
+
+const getUserInfo = async () => {
+    try {
+        const response = await axios.get("/user/info", { withCredentials: true });
+        userInfo.value = response.data.data;
+    } catch (error) {
+        console.error("Error fetching user info:", error);
+        errorMessage.value = "회원 정보를 불러오지 못했습니다.";
+    } finally {
+        loading.value = false;
+    }
+};
+
+onMounted(() => {
+    getUserInfo();
+});
 
 </script>
 
@@ -14,7 +34,7 @@ import { reactive } from 'vue'
                             d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z">
                         </path>
                     </svg></span>
-                <h1 class="text-3xl leading-tight">Profile</h1>
+                <h1 class="text-3xl leading-tight">회원 정보</h1>
             </div>
         </section>
         <div class="rounded-2xl flex-col dark:bg-slate-900/70 bg-white flex mb-6">
@@ -28,19 +48,10 @@ import { reactive } from 'vue'
                     </div>
                     <div class="flex items-center justify-center">
                         <div class="space-y-3 text-center md:text-left lg:mx-12">
-                            <div class="flex justify-center md:block"><label class="switch"><span class="check"></span></label></div>
-                            <h1 class="text-2xl"> Howdy, <b>John Doe</b>! </h1>
-                            <p>Last login <b>12 mins ago</b> from <b>127.0.0.1</b></p>
-                            <div class="flex justify-center md:block">
-                                <div
-                                    class="inline-flex items-center capitalize leading-none text-sm border rounded-full py-1.5 px-4 bg-blue-500 border-blue-500 text-white">
-                                    <span class="inline-flex justify-center items-center w-4 h-4 mr-2"><svg
-                                            viewBox="0 0 24 24" width="16" height="16" class="inline-block">
-                                            <path fill="currentColor"
-                                                d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z">
-                                            </path>
-                                        </svg></span><span>Verified</span></div>
-                            </div>
+                            <div class="flex justify-center md:block"><label class="switch"><span
+                                        class="check"></span></label></div>
+                            <h1 class="text-2xl"> 안녕하세요, <b>{{ userInfo.name }}</b>님! </h1>
+
                         </div>
                     </div>
                 </div>
@@ -64,11 +75,14 @@ import { reactive } from 'vue'
                         </div>
                         <div class="text-xs text-gray-500 dark:text-slate-400 mt-1">Max 500kb</div>
                     </div>
-                    <div class="mb-6 last:mb-0"><label class="block font-bold mb-2">Name</label>
+                    <div v-if="loading">정보를 불러오는 중...</div>
+                    <div v-else-if="userInfo" class="mb-6 last:mb-0"><label class="block font-bold mb-2">이름</label>
                         <div class="">
                             <div class="relative">
-                                <span class="px-3 py-2 max-w-full border-gray-700 rounded w-full dark:placeholder-gray-400 h-12 border bg-gray-200 dark:bg-slate-800 pl-10 inline-block">John Doe</span>
-                                <span class="inline-flex justify-center items-center w-10 h-12 absolute top-0 left-0 z-10 pointer-events-none text-gray-500 dark:text-slate-400">
+                                <span
+                                    class="px-3 py-2 max-w-full border-gray-700 rounded w-full dark:placeholder-gray-400 h-12 border bg-gray-200 dark:bg-slate-800 pl-10 inline-block">{{ userInfo.name }}</span>
+                                <span
+                                    class="inline-flex justify-center items-center w-10 h-12 absolute top-0 left-0 z-10 pointer-events-none text-gray-500 dark:text-slate-400">
                                     <svg viewBox="0 0 24 24" width="16" height="16" class="inline-block">
                                         <path fill="currentColor"
                                             d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z">
@@ -78,10 +92,10 @@ import { reactive } from 'vue'
                             </div>
                         </div>
                     </div>
-                    <div class="mb-6 last:mb-0"><label class="block font-bold mb-2">E-mail</label>
+                    <div v-if="userInfo.email" class="mb-6 last:mb-0"><label class="block font-bold mb-2">E-mail</label>
                         <div class="">
                             <div class="relative"><input name="email" autocomplete="email" type="email"
-                                    value="example@example.com"
+                                    :value="userInfo.email"
                                     class="px-3 py-2 max-w-full focus:ring focus:outline-none border-gray-700 rounded w-full dark:placeholder-gray-400 h-12 border bg-white dark:bg-slate-800 pl-10"><span
                                     class="inline-flex justify-center items-center w-10 h-12 absolute top-0 left-0 z-10 pointer-events-none text-gray-500 dark:text-slate-400"><svg
                                         viewBox="0 0 24 24" width="16" height="16" class="inline-block">
@@ -91,9 +105,110 @@ import { reactive } from 'vue'
                                     </svg></span></div>
                         </div>
                     </div>
+                    <div v-if="userInfo.birth" class="mb-6 last:mb-0"><label class="block font-bold mb-2">생년월일</label>
+                        <div class="">
+                            <div class="relative">
+                                <span
+                                    class="px-3 py-2 max-w-full border-gray-700 rounded w-full dark:placeholder-gray-400 h-12 border bg-gray-200 dark:bg-slate-800 pl-10 inline-block">{{ userInfo.birth }}</span>
+                                <span
+                                    class="inline-flex justify-center items-center w-10 h-12 absolute top-0 left-0 z-10 pointer-events-none text-gray-500 dark:text-slate-400">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" class="inline-block">
+                                        <path fill="currentColor"
+                                            d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z">
+                                        </path>
+                                    </svg>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </form>
-            <form class="rounded-2xl flex-col dark:bg-slate-900/70 bg-white flex">
+            <form v-if="userInfo.studentDetail" class="rounded-2xl flex-col dark:bg-slate-900/70 bg-white flex">
+                <div class="flex-1 p-6">
+                    <div class="mb-6 last:mb-0"><label class="block font-bold mb-2">주소</label>
+                        <div class="">
+                            <div class="relative"><input name="address" autocomplete="address" type="text"
+                                    :value="userInfo.studentDetail.address"
+                                    class="px-3 py-2 max-w-full focus:ring focus:outline-none border-gray-700 rounded w-full dark:placeholder-gray-400 h-12 border bg-white dark:bg-slate-800 pl-10"><span
+                                    class="inline-flex justify-center items-center w-10 h-12 absolute top-0 left-0 z-10 pointer-events-none text-gray-500 dark:text-slate-400"><svg
+                                        viewBox="0 0 24 24" width="16" height="16" class="inline-block">
+                                        <path fill="currentColor"
+                                            d="M21 13H14.4L19.1 17.7L17.7 19.1L13 14.4V21H11V14.3L6.3 19L4.9 17.6L9.4 13H3V11H9.6L4.9 6.3L6.3 4.9L11 9.6V3H13V9.4L17.6 4.8L19 6.3L14.3 11H21V13Z">
+                                        </path>
+                                    </svg></span></div>
+                        </div>
+                    </div>
+
+                    <div class="mb-6 last:mb-0"><label class="block font-bold mb-2">출석일수</label>
+                        <div class="">
+                            <div class="relative"><input name="attendance" autocomplete="attendance" type="text"
+                                    :value="userInfo.studentDetail.attendance"
+                                    class="px-3 py-2 max-w-full focus:ring focus:outline-none border-gray-700 rounded w-full dark:placeholder-gray-400 h-12 border bg-white dark:bg-slate-800 pl-10"><span
+                                    class="inline-flex justify-center items-center w-10 h-12 absolute top-0 left-0 z-10 pointer-events-none text-gray-500 dark:text-slate-400"><svg
+                                        viewBox="0 0 24 24" width="16" height="16" class="inline-block">
+                                        <path fill="currentColor"
+                                            d="M17,7H22V17H17V19A1,1 0 0,0 18,20H20V22H17.5C16.95,22 16,21.55 16,21C16,21.55 15.05,22 14.5,22H12V20H14A1,1 0 0,0 15,19V5A1,1 0 0,0 14,4H12V2H14.5C15.05,2 16,2.45 16,3C16,2.45 16.95,2 17.5,2H20V4H18A1,1 0 0,0 17,5V7M2,7H13V9H4V15H13V17H2V7M20,15V9H17V15H20M8.5,12A1.5,1.5 0 0,0 7,10.5A1.5,1.5 0 0,0 5.5,12A1.5,1.5 0 0,0 7,13.5A1.5,1.5 0 0,0 8.5,12M13,10.89C12.39,10.33 11.44,10.38 10.88,11C10.32,11.6 10.37,12.55 11,13.11C11.55,13.63 12.43,13.63 13,13.11V10.89Z">
+                                        </path>
+                                    </svg></span></div>
+                        </div>
+                    </div>
+                    <div class="mb-6 last:mb-0"><label class="block font-bold mb-2">조퇴일수</label>
+                        <div class="">
+                            <div class="relative"><input name="leaveEarly" autocomplete="leaveEarly" type="text"
+                                    :value="userInfo.studentDetail.leaveEarly"
+                                    class="px-3 py-2 max-w-full focus:ring focus:outline-none border-gray-700 rounded w-full dark:placeholder-gray-400 h-12 border bg-white dark:bg-slate-800 pl-10"><span
+                                    class="inline-flex justify-center items-center w-10 h-12 absolute top-0 left-0 z-10 pointer-events-none text-gray-500 dark:text-slate-400"><svg
+                                        viewBox="0 0 24 24" width="16" height="16" class="inline-block">
+                                        <path fill="currentColor"
+                                            d="M17,7H22V17H17V19A1,1 0 0,0 18,20H20V22H17.5C16.95,22 16,21.55 16,21C16,21.55 15.05,22 14.5,22H12V20H14A1,1 0 0,0 15,19V5A1,1 0 0,0 14,4H12V2H14.5C15.05,2 16,2.45 16,3C16,2.45 16.95,2 17.5,2H20V4H18A1,1 0 0,0 17,5V7M2,7H13V9H4V15H13V17H2V7M20,15V9H17V15H20M8.5,12A1.5,1.5 0 0,0 7,10.5A1.5,1.5 0 0,0 5.5,12A1.5,1.5 0 0,0 7,13.5A1.5,1.5 0 0,0 8.5,12M13,10.89C12.39,10.33 11.44,10.38 10.88,11C10.32,11.6 10.37,12.55 11,13.11C11.55,13.63 12.43,13.63 13,13.11V10.89Z">
+                                        </path>
+                                    </svg></span></div>
+                        </div>
+                    </div>
+                    <div class="mb-6 last:mb-0"><label class="block font-bold mb-2">지각일수</label>
+                        <div class="">
+                            <div class="relative"><input name="perception" autocomplete="perception" type="text"
+                                    :value="userInfo.studentDetail.perception"
+                                    class="px-3 py-2 max-w-full focus:ring focus:outline-none border-gray-700 rounded w-full dark:placeholder-gray-400 h-12 border bg-white dark:bg-slate-800 pl-10"><span
+                                    class="inline-flex justify-center items-center w-10 h-12 absolute top-0 left-0 z-10 pointer-events-none text-gray-500 dark:text-slate-400"><svg
+                                        viewBox="0 0 24 24" width="16" height="16" class="inline-block">
+                                        <path fill="currentColor"
+                                            d="M17,7H22V17H17V19A1,1 0 0,0 18,20H20V22H17.5C16.95,22 16,21.55 16,21C16,21.55 15.05,22 14.5,22H12V20H14A1,1 0 0,0 15,19V5A1,1 0 0,0 14,4H12V2H14.5C15.05,2 16,2.45 16,3C16,2.45 16.95,2 17.5,2H20V4H18A1,1 0 0,0 17,5V7M2,7H13V9H4V15H13V17H2V7M20,15V9H17V15H20M8.5,12A1.5,1.5 0 0,0 7,10.5A1.5,1.5 0 0,0 5.5,12A1.5,1.5 0 0,0 7,13.5A1.5,1.5 0 0,0 8.5,12M13,10.89C12.39,10.33 11.44,10.38 10.88,11C10.32,11.6 10.37,12.55 11,13.11C11.55,13.63 12.43,13.63 13,13.11V10.89Z">
+                                        </path>
+                                    </svg></span></div>
+                        </div>
+                    </div>
+                    <div class="mb-6 last:mb-0"><label class="block font-bold mb-2">외출일수</label>
+                        <div class="">
+                            <div class="relative"><input name="outing" autocomplete="outing" type="text"
+                                    :value="userInfo.studentDetail.outing"
+                                    class="px-3 py-2 max-w-full focus:ring focus:outline-none border-gray-700 rounded w-full dark:placeholder-gray-400 h-12 border bg-white dark:bg-slate-800 pl-10"><span
+                                    class="inline-flex justify-center items-center w-10 h-12 absolute top-0 left-0 z-10 pointer-events-none text-gray-500 dark:text-slate-400"><svg
+                                        viewBox="0 0 24 24" width="16" height="16" class="inline-block">
+                                        <path fill="currentColor"
+                                            d="M17,7H22V17H17V19A1,1 0 0,0 18,20H20V22H17.5C16.95,22 16,21.55 16,21C16,21.55 15.05,22 14.5,22H12V20H14A1,1 0 0,0 15,19V5A1,1 0 0,0 14,4H12V2H14.5C15.05,2 16,2.45 16,3C16,2.45 16.95,2 17.5,2H20V4H18A1,1 0 0,0 17,5V7M2,7H13V9H4V15H13V17H2V7M20,15V9H17V15H20M8.5,12A1.5,1.5 0 0,0 7,10.5A1.5,1.5 0 0,0 5.5,12A1.5,1.5 0 0,0 7,13.5A1.5,1.5 0 0,0 8.5,12M13,10.89C12.39,10.33 11.44,10.38 10.88,11C10.32,11.6 10.37,12.55 11,13.11C11.55,13.63 12.43,13.63 13,13.11V10.89Z">
+                                        </path>
+                                    </svg></span></div>
+                        </div>
+                    </div>
+                    <div class="mb-6 last:mb-0"><label class="block font-bold mb-2">남은 휴가 일수</label>
+                        <div class="">
+                            <div class="relative"><input name="vacation_left" autocomplete="vacation_left" type="text"
+                                    :value="userInfo.studentDetail.vacation_left"
+                                    class="px-3 py-2 max-w-full focus:ring focus:outline-none border-gray-700 rounded w-full dark:placeholder-gray-400 h-12 border bg-white dark:bg-slate-800 pl-10"><span
+                                    class="inline-flex justify-center items-center w-10 h-12 absolute top-0 left-0 z-10 pointer-events-none text-gray-500 dark:text-slate-400"><svg
+                                        viewBox="0 0 24 24" width="16" height="16" class="inline-block">
+                                        <path fill="currentColor"
+                                            d="M17,7H22V17H17V19A1,1 0 0,0 18,20H20V22H17.5C16.95,22 16,21.55 16,21C16,21.55 15.05,22 14.5,22H12V20H14A1,1 0 0,0 15,19V5A1,1 0 0,0 14,4H12V2H14.5C15.05,2 16,2.45 16,3C16,2.45 16.95,2 17.5,2H20V4H18A1,1 0 0,0 17,5V7M2,7H13V9H4V15H13V17H2V7M20,15V9H17V15H20M8.5,12A1.5,1.5 0 0,0 7,10.5A1.5,1.5 0 0,0 5.5,12A1.5,1.5 0 0,0 7,13.5A1.5,1.5 0 0,0 8.5,12M13,10.89C12.39,10.33 11.44,10.38 10.88,11C10.32,11.6 10.37,12.55 11,13.11C11.55,13.63 12.43,13.63 13,13.11V10.89Z">
+                                        </path>
+                                    </svg></span></div>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+
+            <form v-if="userInfo.instructor" class="rounded-2xl flex-col dark:bg-slate-900/70 bg-white flex">
                 <div class="flex-1 p-6">
                     <div class="mb-6 last:mb-0"><label class="block font-bold mb-2">Current password</label>
                         <div class="">
@@ -141,14 +256,16 @@ import { reactive } from 'vue'
                         </div>
                     </div>
                 </div>
-                <footer class="p-6">
-                    <div class="flex items-center justify-start flex-wrap -mb-3"><button
-                            class="inline-flex justify-center items-center whitespace-nowrap focus:outline-none transition-colors focus:ring duration-150 border cursor-pointer rounded border-blue-600 dark:border-blue-500 ring-blue-300 dark:ring-blue-700 bg-blue-600 dark:bg-blue-500 text-white hover:bg-blue-700 hover:border-blue-700 hover:dark:bg-blue-600 hover:dark:border-blue-600 py-2 px-3 mr-3 last:mr-0 mb-3"
-                            type="submit"><!----><span class="px-2">Submit</span></button><button
-                            class="inline-flex justify-center items-center whitespace-nowrap focus:outline-none transition-colors focus:ring duration-150 border cursor-pointer rounded border-blue-600 dark:border-blue-500 ring-blue-300 dark:ring-blue-700 text-blue-600 dark:text-blue-500 hover:bg-blue-600 hover:text-white hover:dark:text-white hover:dark:border-blue-600 py-2 px-3 mr-3 last:mr-0 mb-3"
-                            type="button"><!----><span class="px-2">Options</span></button></div>
-                </footer>
+
             </form>
         </div>
+        <!--TODO: 정보 변경 버튼 추가 필요-->
+        <footer class="p-6">
+            <div class="flex items-center justify-start flex-wrap -mb-3"><button
+                    class="inline-flex justify-center items-center whitespace-nowrap focus:outline-none transition-colors focus:ring duration-150 border cursor-pointer rounded border-blue-600 dark:border-blue-500 ring-blue-300 dark:ring-blue-700 bg-blue-600 dark:bg-blue-500 text-white hover:bg-blue-700 hover:border-blue-700 hover:dark:bg-blue-600 hover:dark:border-blue-600 py-2 px-3 mr-3 last:mr-0 mb-3"
+                    type="submit"><!----><span class="px-2">Submit</span></button><button
+                    class="inline-flex justify-center items-center whitespace-nowrap focus:outline-none transition-colors focus:ring duration-150 border cursor-pointer rounded border-blue-600 dark:border-blue-500 ring-blue-300 dark:ring-blue-700 text-blue-600 dark:text-blue-500 hover:bg-blue-600 hover:text-white hover:dark:text-white hover:dark:border-blue-600 py-2 px-3 mr-3 last:mr-0 mb-3"
+                    type="button"><!----><span class="px-2">Options</span></button></div>
+        </footer>
     </section>
 </template>
