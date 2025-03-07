@@ -1,10 +1,23 @@
 <script setup>
-import { useRouter } from 'vue-router';
 import axios from 'axios';
+import { computed } from 'vue';
+import { useRouter } from 'vue-router';
 import { useMemberStore } from '@/stores/useMemberStore';
 
 const router = useRouter();
 const memberStore = useMemberStore();
+
+const dashboardRoute = computed(() => {
+  switch (memberStore.role) {
+    case 'ROLE_INSTRUCTOR':
+      return '/inst/dashboard';
+    case 'ROLE_MANAGER':
+      return '/manager/dashboard';
+    case 'ROLE_STUDENT':
+    default:
+      return '/studentdashboard';
+  }
+});
 
 const logout = async () => {
     try {
@@ -38,7 +51,7 @@ const logout = async () => {
                 class="flex-1 overflow-y-auto overflow-x-hidden aside-scrollbars dark:aside-scrollbars-[slate] bg-slate-800">
                 <ul>
                     <li>
-                        <a aria-current="page" href="/studentdashboard"
+                        <router-link :to="dashboardRoute" aria-current="page" href="/studentdashboard"
                             class="router-link-active router-link-exact-active flex cursor-pointer py-3 aside-menu-item text-slate-300 dark:text-slate-300 hover:text-white dark:hover:text-white">
                             <span
                                 class="inline-flex justify-center items-center w-16 h-6 flex-none aside-menu-item-active font-bold">
@@ -50,7 +63,7 @@ const logout = async () => {
                             </span>
                             <span
                                 class="grow text-ellipsis line-clamp-1 pr-12 aside-menu-item-active font-bold">Dashboard</span><!--v-if-->
-                        </a><!--v-if-->
+                        </router-link><!--v-if-->
                     </li>
                     <li>
                         <a href="/board/freeboard"
