@@ -67,11 +67,17 @@ const studentCount = ref(5);
                 </div>
                 <TableData></TableData>  
             </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 mb-4 bg-white rounded-lg p-2 shadow-md">
-                <UserCard2
-                    v-for="student in student_resp.studentList"
-                    :student="student"
-                ></UserCard2>
+            <div class="flex flex-col mb-6 bg-white rounded-lg p-4 shadow-md">
+                <div class="mb-4 flex justify-between items-center">
+                    <h2 class="text-xl font-semibold text-gray-800 dark:text-white">학생 목록</h2>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 mb-4 bg-white rounded-lg p-2 shadow-md">
+                    <UserCard2
+                        v-for="student in student_resp.studentList"
+                        :key="student.id"
+                        :student="student"
+                    ></UserCard2>
+                </div>
             </div>
         </section>
     </div>
