@@ -10,9 +10,16 @@ import { useInstructorStore } from '../../stores/useInstructorStore';
 
 const instructorStore = useInstructorStore();
 
+const student_resp = ref([]);
+
 onMounted(async () => {
     await instructorStore.fetchStudent()
-    console.log(instructorStore.student_list)
+    if (instructorStore.student_res.isSuccess==true) {
+        student_resp.value = instructorStore.student_res.data
+        console.log(student_resp.value);
+    } else {
+        console.log(instructorStore.student_res);
+    }
 });
 
 const studentCount = ref(5);
@@ -60,11 +67,17 @@ const studentCount = ref(5);
                 </div>
                 <TableData></TableData>  
             </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 mb-4 bg-white rounded-lg p-2 shadow-md">
-                <UserCard2
-                    v-for="student in instructorStore.student_list"
-                    :student="student"
-                ></UserCard2>
+            <div class="flex flex-col mb-6 bg-white rounded-lg p-4 shadow-md">
+                <div class="mb-4 flex justify-between items-center">
+                    <h2 class="text-xl font-semibold text-gray-800 dark:text-white">학생 목록</h2>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 mb-4 bg-white rounded-lg p-2 shadow-md">
+                    <UserCard2
+                        v-for="student in student_resp.studentList"
+                        :key="student.id"
+                        :student="student"
+                    ></UserCard2>
+                </div>
             </div>
         </section>
     </div>

@@ -3,25 +3,27 @@ import axios from "axios";
 
 export const useInstructorStore = defineStore('instructor', {
     state: () => ({
-        hw_list: [],
-        dt_list: [],
-        student_list: []
+        hw_res: [],
+        dt_res: [],
+        student_res: [],
+        delete_res: []
     }),
     actions: {
-        async fetchHw() {
-            const response = await axios.get(
-                'https://run.mocky.io/v3/496abf82-a1fa-4504-87fc-6b43a1a07e21');
-            this.hw_list = response.data.assignments;
+        async fetchHw(page = 0, size = 5) {
+            const response = await axios.get(`/api/board/listByUser/4?page=${page}&size=${size}`);
+            this.hw_res = response.data;
         },
-        async fetchDt() {
-            const response = await axios.get(
-                'https://run.mocky.io/v3/496abf82-a1fa-4504-87fc-6b43a1a07e21');
-            this.dt_list = response.data.datas;
+        async fetchDt(page = 0, size = 5) {
+            const response = await axios.get(`/api/board/listByUser/3?page=${page}&size=${size}`);
+            this.dt_res = response.data;
         },
         async fetchStudent() {
-            const response = await axios.get(
-                'https://run.mocky.io/v3/496abf82-a1fa-4504-87fc-6b43a1a07e21');
-            this.student_list = response.data.students;
+            const response = await axios.get('/api/student/list?page=0&size=8');
+            this.student_res = response.data;
+        },
+        async fetchDelete(boardIdx) {
+            const response = await axios.delete(`/api/board/delete/${boardIdx}`);
+            this.delete_res = response.data;
         }
     }
 });
