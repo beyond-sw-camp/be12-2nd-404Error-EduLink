@@ -95,6 +95,10 @@ const getColorForDay = (day) => {
     default:
       return 'gray'; // Default color
   }
+
+
+
+  
 };
 
 const handleSubmit = async (formType) => {
