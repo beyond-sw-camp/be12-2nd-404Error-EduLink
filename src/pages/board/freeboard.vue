@@ -83,14 +83,30 @@ const columns = [
 
 <script>
 import BoardNav from './components/BoardNav.vue';
-import TableRow from './components/TableRow.vue';
-import PageNav from './components/PageNav.vue';
+// import TableRow from './components/TableRow.vue';
+// import PageNav from './components/PageNav.vue';
+import { defineComponent, onMounted } from 'vue';
+import { useBoardStore } from '@/stores/useBoardStore'; 
 
-export default {
+export default defineComponent({
   components: {
     BoardNav
+  },
+  name: 'freeboard',
+  setup() {
+    const boardStore = useBoardStore();
+    const board = boardStore.Board;
+
+    onMounted(() => {
+      const boardIdx = 'boardIdx'; 
+      boardStore.getBoard(boardIdx);
+    });
+
+    return {
+      board
+    };
   }
-};
+});
 </script>
 
 <style scoped>
