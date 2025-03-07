@@ -56,7 +56,7 @@ const login = (role) => {
             <form @submit="handleSubmit"
                 class="rounded-2xl flex-col dark:bg-slate-900/70 bg-white flex w-11/12 md:w-7/12 lg:w-6/12 xl:w-4/12 shadow-2xl">
                 <div class="flex-1 p-6">
-                    <div class="mb-6 last:mb-0"><label class="block font-bold mb-2">Login</label>
+                    <div class="mb-6 last:mb-0"><label class="block font-bold mb-2">E-Mail</label>
                         <div class="">
                             <div class="relative">
                                 <input v-model="loginUser.email" name="email" autocomplete="email" type="text"
@@ -71,7 +71,7 @@ const login = (role) => {
                                 </span>
                             </div>
                         </div>
-                        <div class="text-xs text-gray-500 dark:text-slate-400 mt-1">Please enter your login</div>
+                        <div class="text-xs text-gray-500 dark:text-slate-400 mt-1">Please enter your email</div>
                     </div>
                     <div class="mb-6 last:mb-0">
                         <label class="block font-bold mb-2">Password</label>
