@@ -32,7 +32,7 @@ export const useManagerStore = defineStore("manager", {
     // 수강 신청한 학생들 목록을 가져오는 함수 (페이지네이션 적용)
     async getStudents(page = 0, size = 5) {
       try {
-        const response = await axios.get("/student/list", {
+        const response = await axios.get("/api/student/list", {
           params: { page, size },
         });
         if (response.data.isSuccess) {
@@ -68,7 +68,7 @@ export const useManagerStore = defineStore("manager", {
     // 강사들 목록을 가져오는 함수 
     async getInstructors(page = 0, size = 5) {
       try {
-        const response = await axios.get("/manager/instructor/list", {
+        const response = await axios.get("/api/manager/instructor/list", {
           params: { page, size },
         });
         if (response.data.isSuccess) {
@@ -96,7 +96,7 @@ export const useManagerStore = defineStore("manager", {
     async getManagers(page = 0, size = 5) {
       try {
         // page와 size를 쿼리 파라미터로 전송
-        const response = await axios.get("/manager/list", {
+        const response = await axios.get("/api/manager/list", {
           params: { page, size },
         });
         if (response.data.isSuccess) {
@@ -137,7 +137,7 @@ export const useManagerStore = defineStore("manager", {
     // 시험 등록 함수 추가
     async registerTest(testData) {
     try {
-      const response = await axios.post("/manager/test/register", testData);
+      const response = await axios.post("/api/manager/test/register", testData);
       if (response.data.isSuccess) {
         console.log("시험 등록 성공:", response.data.data);
         return response.data.data; // 등록된 시험 데이터 반환
@@ -166,7 +166,7 @@ export const useManagerStore = defineStore("manager", {
     // 최신 공지사항 3개만 가져오는 함수 (페이지네이션 필요 없음)
     async getNotice() {
         try {
-          const response = await axios.get("/board/list/1", {
+          const response = await axios.get("/api/board/list/1", {
             params: { page: 0, size: 3 },
           });
           if (response.data.isSuccess) {
