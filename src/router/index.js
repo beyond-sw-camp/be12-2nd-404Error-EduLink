@@ -78,9 +78,9 @@ const router = createRouter({
         { path: '/manager/leave-request', component: LeaveRequest, meta: { requiresAuth: true }  },
 
         { path: '/bootcamp', component: bootcampList, meta: { requiresAuth: true }  },
-        { path: '/board/bbboard', component: bbboard, meta: { requiresAuth: true }  },
+        { path: '/board/comment/register', component: bbboard, meta: { requiresAuth: true }  , name: 'BoardComments'},
         { path: '/board/bbnoticeboard', component: bbnoticeboard, meta: { requiresAuth: true }  },
-        { path: '/board/boardform', component: boardform, meta: { requiresAuth: true }  },
+        { path: '/board/register', component: boardform, name:'boardregister', meta: { requiresAuth: true }  },
         { path: '/board/deleteboard', component: deleteboard, meta: { requiresAuth: true }  },
         { path: '/board/freeboard', component: freeboard, meta: { requiresAuth: true }  },
         { path: '/board/managerboard', component: managerboard, meta: { requiresAuth: true }  },
