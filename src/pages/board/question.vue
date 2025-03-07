@@ -23,7 +23,7 @@
       </header>
 
       <div class="p-4 dark:bg-gray-800 rounded-lg shadow-lg">
-        <router-link to="/board/boardform"
+        <router-link to="/board/register"
           class="inline-flex justify-center items-center whitespace-nowrap focus:outline-none transition-colors focus:ring duration-150 border cursor-pointer rounded-none border-blue-600 dark:border-blue-500 ring-blue-300 dark:ring-blue-700 bg-blue-600 dark:bg-blue-500 text-white hover:bg-blue-700 hover:border-blue-700 hover:dark:bg-blue-600 hover:dark:border-blue-600 py-2 px-4 text-sm">
           <span class="px-2">글쓰기</span>
         </router-link>
@@ -95,72 +95,57 @@ export default {
 };
 </script>
 <style scoped>
-.section-title {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  margin-top: 20px;
-  font-size: 24px;
+/* 타이틀과 버튼에 스타일을 추가 */
+h1 {
+  font-size: 2rem;
+  color: #2d3748;
   font-weight: 600;
-  color: #444;
-  margin-left: 20px;
 }
 
-
-.table-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.icon-button {
-  background-color: #f1f1f1;
-  border: none;
-  cursor: pointer;
-  border-radius: 50%;
-  padding: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.2s ease-in-out;
-}
-
-.icon-button:hover {
-  background-color: #e0e0e0;
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-  font-family: Arial, sans-serif;
-  color: #333;
-}
-
-.table-title {
-  font-size: 24px;
+/* 글쓰기 버튼 */
+.router-link {
+  border-radius: 0.375rem;
+  padding: 0.5rem 1.5rem;
   font-weight: 600;
-  margin-bottom: 16px;
-  color: #444;
+  background-color: #3182ce;
+  color: white;
+  transition: background-color 0.3s ease;
 }
 
-.btn-primary {
-  padding: 10px 20px;
-  background-color: #007BFF;
-  color: white;
-  border-radius: 5px;
-  border: none;
-  cursor: pointer;
+.router-link:hover {
+  background-color: #2b6cb0;
+  border-color: #2b6cb0;
 }
 
-.btn-secondary {
-  padding: 10px 20px;
-  background-color: gray;
-  color: white;
-  border-radius: 5px;
-  border: none;
-  cursor: pointer;
+/* 테이블 스타일 */
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+table th, table td {
+  padding: 1rem;
+  text-align: left;
+}
+
+table th {
+  background-color: #edf2f7;
+}
+
+table tr:hover {
+  background-color: #f7fafc;
+}
+
+table td {
+  border-bottom: 1px solid #e2e8f0;
+}
+
+/* 배경과 테두리 개선 */
+.bg-gray-50 {
+  background-color: #f7fafc;
+}
+
+.dark:bg-slate-800 {
+  background-color: #2d3748;
 }
 </style>

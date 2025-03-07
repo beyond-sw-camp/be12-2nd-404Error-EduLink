@@ -64,10 +64,12 @@
             <textarea id="comment" v-model="newComment"
               class="px-3 py-2 w-64 focus:ring focus:outline-none border-gray-700 rounded h-12 border bg-white dark:bg-slate-800 dark:border-gray-600 mb-4"
               placeholder="댓글을 작성해주세요..."></textarea>
-            <button @click="submitComment"
-              class="inline-flex justify-center items-center whitespace-nowrap focus:outline-none transition-colors focus:ring duration-150 border cursor-pointer rounded-md border-blue-600 dark:border-blue-500 ring-blue-300 dark:ring-blue-700 bg-blue-600 dark:bg-blue-500 text-white hover:bg-blue-700 hover:border-blue-700 hover:dark:bg-blue-600 hover:dark:border-blue-600 py-2 px-4 h-12 text-sm">
-              댓글 등록
-            </button>
+              <button 
+      @click="commData(index)" 
+      class="inline-flex justify-center items-center whitespace-nowrap focus:outline-none transition-colors focus:ring duration-150 border cursor-pointer rounded-md border-blue-600 dark:border-blue-500 ring-blue-300 dark:ring-blue-700 bg-blue-600 dark:bg-blue-500 text-white hover:bg-blue-700 hover:border-blue-700 hover:dark:bg-blue-600 hover:dark:border-blue-600 py-2 px-4 h-12 text-sm"
+    >
+      댓글 등록
+    </button>
           </div>
           <div class="space-y-6">
             <div v-for="(comment, index) in comments" :key="index"
@@ -90,10 +92,8 @@
 
 <script>
 import BoardNav from './components/BoardNav.vue';
-import { defineComponent, onMounted } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
 import { useBoardStore } from '@/stores/useBoardStore'; 
-
-
 
 export default defineComponent({
   components: {
@@ -102,16 +102,40 @@ export default defineComponent({
   name: 'bbboard',
   setup() {
     const boardStore = useBoardStore();
-    const boardComments = boardStore.BoardComments;
+    const boardComments = ref([]);
+    
+
+    // 댓글 내용 저장
+    const newComment = ref('');
+
+    // 댓글 등록 함수
+    const submitComment = async () => {
+      if (newComment.value.trim()) {
+        const boardIdx = 1;  // 게시글 번호, 실제로는 동적으로 가져와야 할 값
+        const commentData = {
+          author: '사용자', // 사용자 정보 (동적으로 처리 가능)
+          date: new Date().toISOString().split('T')[0], // 현재 날짜
+          text: newComment.value
+          
+        };
+        this.comments.push(newComment); // 댓글 배열에 새 댓글 추가
+
+        await boardStore.getBoardComments(boardIdx, commentData);  // 댓글 등록
+
+        // 댓글 등록 후 입력란 초기화
+        newComment.value = '';
+      }
+    };
 
     onMounted(() => {
-      const boardIdx = 'boardIdx'; 
-      const commentData = 'commentData';
-      boardStore.getBoardComments(boardIdx,commentData);
+      const boardIdx = 1; // 실제 게시글 인덱스를 동적으로 처리해야 함
+      boardStore.getBoardComments(boardIdx);
     });
 
     return {
-      boardComments
+      boardComments,
+      newComment,
+      submitComment
     };
   }
 });
@@ -139,7 +163,7 @@ export default defineComponent({
   //       this.newComment = ''; // 입력란 비우기
   //     }
   //   }
-  // }
+  // };
 
 </script>
 

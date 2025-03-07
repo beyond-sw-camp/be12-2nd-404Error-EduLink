@@ -71,27 +71,37 @@ const memberStore = useMemberStore();
 const router = useRouter();
 const route = useRoute();
 
+
 const title = ref('');
 const content = ref('');
 const boardIdx = ref(route.params.boardIdx);
-const boardType = ref(''); // 게시판 유형
+const boardType = ref('freeboard,notice'); // 게시판 유형
 const userInfo = ref(null); // 사용자 정보 저장
 
-// 사용자 정보 불러오기
-const fetchUserInfo = async () => {
+const fetchUserInfo = async () => { // event 제거
   try {
-    if (!memberStore.email) {
-      console.warn("로그인 정보 없음");
+    const token = memberStore.token; 
+    
+    if (!token) {
+      console.log("현재 토큰:", memberStore.token);
       return;
     }
 
-    const response = await axios.get(`/api/user/info?email=${memberStore.email}`);
+    const response = await axios.post(`http://localhost:8080/board/register`, null, { 
+      params: { email: memberStore.email },
+      headers: {
+        Authorization: `Bearer ${memberStore.token}`,
+  
+      },
+    });
+
     userInfo.value = response.data;
-    console.log("사용자 정보:", userInfo.value);
+    console.log("사용자 정보:", response.data);
   } catch (error) {
     console.error("사용자 정보를 불러오는 중 오류 발생:", error);
   }
 };
+
 
 // 게시글 등록 함수
 const submitForm = async (event) => {
@@ -102,22 +112,18 @@ const submitForm = async (event) => {
     return;
   }
 
-  try {
-    const postData = {
-      title: title.value,
-      content: content.value,
-      boardType: boardType.value,
-      userEmail: userInfo.value?.email, // 작성자 이메일 추가
-    };
+   // 게시글 등록
+   const response = await axios.post('http://localhost:8080/board/register', postData, {
+      headers: {
+        'Authorization': `Bearer ${memberStore.token}`
+      }
+    });
+    console.log('게시글 등록 성공:', response);
+    await boardStore.getBoardList(boardType.value);
+    
 
-    // 게시글 등록 API 호출
-    await boardStore.getRegister(boardType.value, postData);
-    console.log('게시글 등록 완료');
-    navigateBack();
-  } catch (error) {
-    console.error('게시글 등록 실패:', error);
-  }
-};
+  } ;
+  
 
 // 이전 페이지로 이동 또는 기본 이동 처리
 const navigateBack = () => {
@@ -127,19 +133,32 @@ const navigateBack = () => {
     router.go(-1);
   }
 };
-
-onMounted(async () => {
-  await boardStore.getBoardList('freeboard,notice'); 
   
+const data = ref({
+  title: '',
+  content: '',
+  boardType: 'freeboard, notice',
+  userEmail: '', 
+});
+
+const yourToken = 'your-jwt-token';
+onMounted(async () => {
+  await boardStore.getBoardList('freeboard');
+  await boardStore.getBoardList('notice');
+  await fetchUserInfo();
 });
 const registerBoard = async () => {
   const boardData = {
     title: '새로운 게시글',
     content: '내용 작성',
   };
-  await boardStore.getRegister('freeboard,notice', boardData);
-  router.push(`/board/list/${boardType.value}`);
+  await boardStore.getRegister('freeboard', boardData);
+  await boardStore.getRegister('notice', boardData);
+  router.push('/board');
 };
+onMounted(async () => {
+  await fetchUserInfo();  // 에러 없이 실행되도록 변경
+});
 </script>
 
 <style scoped>
