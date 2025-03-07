@@ -93,7 +93,7 @@ const router = createRouter({
         { path: '/board/question', component: question, meta: { requiresAuth: true }  },
 
         { path: '/common', component: common, meta: { requiresAuth: true }  },
-        { path: '/bootcampInfo', component: BootcampInfo, meta: { requiresAuth: true }  },
+        { path: '/bootcampInfo', component: BootcampInfo, meta: { asideComponent: StudentAside,requiresAuth: true }  },
 
 
 
