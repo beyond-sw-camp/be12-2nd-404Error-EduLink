@@ -1,54 +1,56 @@
 <template>
-  <div style="background-color: whitesmoke;" class="xl:pl-60 pt-14 min-h-screen w-full transition-position bg-gray-50 dark:bg-slate-800 dark:text-slate-100">
+  <div style="background-color: whitesmoke;"
+    class="xl:pl-60 pt-14 min-h-screen w-full transition-position bg-gray-50 dark:bg-slate-800 dark:text-slate-100">
     <section class="bg-gray-50 dark:bg-gray-900 min-h-screen flex items-center justify-center">
       <div class="py-8 px-4 mx-auto max-w-screen-lg lg:py-16 w-full">
         <div class="w-full max-w-2xl mx-auto bg-white rounded-lg shadow-xl dark:bg-gray-800 p-8 space-y-8">
           <h2 class="text-3xl font-semibold text-center text-gray-900 dark:text-white">글 작성</h2>
 
-          <!-- 제목 입력 필드 -->
-          <div class="mb-5">
-            <label for="large-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">제목</label>
-            <input type="text" id="large-input" v-model="title" required
-              class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-          </div>
+          <form @submit.prevent="submitBoard" class="space-y-6">
+            <div class="mb-5">
+              <label for="large-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                제목
+              </label>
+              <input type="text" id="large-input" v-model="boardForm.title" required
+                class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="제목을 입력하세요." />
+            </div>
 
-        
-              <!-- 파일 업로드 필드 -->
-              <div>
-                <label for="user_avatar"
-                  class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">첨부파일</label>
-                <input id="user_avatar" name="user_avatar" type="file"
-                  class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" />
-              </div>
-        
+            <div class="mb-5">
+              <label for="file-upload" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                첨부파일
+              </label>
+              <input id="file-upload" name="files" type="file" multiple @change="handleFiles"
+                class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" />
+            </div>
 
-          <!-- 게시판 유형 선택 -->
-          <div class="mb-5">
-            <label class="block text-sm font-medium text-gray-900 dark:text-white">게시판 유형</label>
-            <div class="flex space-x-4">
-              <div>
-                <input type="radio" id="freeboard" value="freeboard" v-model="boardType" name="boardType" class="mr-2" />
-                <label for="freeboard" class="text-sm text-gray-900 dark:text-white">자유게시판</label>
-              </div>
-              <div>
-                <input type="radio" id="notice" value="notice" v-model="boardType" name="boardType" class="mr-2" />
-                <label for="notice" class="text-sm text-gray-900 dark:text-white">공지사항</label>
+            <div class="mb-5">
+              <label class="block text-sm font-medium text-gray-900 dark:text-white">게시판 유형</label>
+              <div class="flex space-x-4">
+                <div>
+                  <input type="radio" id="freeboard" value="freeboard" v-model="boardForm.boardType" name="boardType"
+                    class="mr-2" />
+                  <label for="freeboard" class="text-sm text-gray-900 dark:text-white">자유게시판</label>
+                </div>
+                <div>
+                  <input type="radio" id="notice" value="notice" v-model="boardForm.boardType" name="boardType"
+                    class="mr-2" />
+                  <label for="notice" class="text-sm text-gray-900 dark:text-white">공지사항</label>
+                </div>
               </div>
             </div>
-          </div>
 
-          <!-- 게시글 내용 -->
-          <form @submit.prevent="submitForm" class="space-y-6">
             <div>
               <label for="content" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">글 내용</label>
-              <textarea id="content" v-model="content" minlength="5" required
+              <textarea id="content" v-model="boardForm.content" minlength="5" required
                 class="block w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-4 focus:ring-blue-300 dark:bg-gray-700 dark:text-white dark:border-gray-600 dark:focus:ring-blue-500 focus:outline-none"
-                placeholder="글을 작성해주세요..." rows="6"></textarea>
+                placeholder="글을 작성해주세요..." rows="6">
+        </textarea>
             </div>
 
-            <!-- 게시글 제출 버튼 -->
             <div>
-              <button type="submit" class="w-full px-5 py-3 text-base font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+              <button type="submit"
+                class="w-full px-5 py-3 text-base font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                 게시
               </button>
             </div>
@@ -60,107 +62,37 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
+import { ref } from 'vue';
 import { useBoardStore } from '@/stores/useBoardStore';
-import { useMemberStore } from '@/stores/useMemberStore';
-import axios from 'axios';
+import { useRouter } from 'vue-router';
 
 const boardStore = useBoardStore();
-const memberStore = useMemberStore();
 const router = useRouter();
-const route = useRoute();
 
-
-const title = ref('');
-const content = ref('');
-const boardIdx = ref(route.params.boardIdx);
-const boardType = ref('freeboard,notice'); // 게시판 유형
-const userInfo = ref(null); // 사용자 정보 저장
-
-const fetchUserInfo = async () => { // event 제거
-  try {
-    const token = memberStore.token; 
-    
-    if (!token) {
-      console.log("현재 토큰:", memberStore.token);
-      return;
-    }
-
-    const response = await axios.post(`http://localhost:8080/board/register`, null, { 
-      params: { email: memberStore.email },
-      headers: {
-        Authorization: `Bearer ${memberStore.token}`,
-  
-      },
-    });
-
-    userInfo.value = response.data;
-    console.log("사용자 정보:", response.data);
-  } catch (error) {
-    console.error("사용자 정보를 불러오는 중 오류 발생:", error);
-  }
-};
-
-
-// 게시글 등록 함수
-const submitForm = async (event) => {
-  event.preventDefault();
-
-  if (content.value.length < 5) {
-    alert('글 내용은 최소 5자 이상이어야 합니다.');
-    return;
-  }
-
-   // 게시글 등록
-   const response = await axios.post('http://localhost:8080/board/register', postData, {
-      headers: {
-        'Authorization': `Bearer ${memberStore.token}`
-      }
-    });
-    console.log('게시글 등록 성공:', response);
-    await boardStore.getBoardList(boardType.value);
-    
-
-  } ;
-  
-
-// 이전 페이지로 이동 또는 기본 이동 처리
-const navigateBack = () => {
-  if (route.query.prev) {
-    router.push(route.query.prev);
-  } else {
-    router.go(-1);
-  }
-};
-  
-const data = ref({
+const boardForm = ref({
   title: '',
   content: '',
-  boardType: 'freeboard, notice',
-  userEmail: '', 
+  files: []
 });
 
-const yourToken = 'your-jwt-token';
-onMounted(async () => {
-  await boardStore.getBoardList('freeboard');
-  await boardStore.getBoardList('notice');
-  await fetchUserInfo();
-});
-const registerBoard = async () => {
-  const boardData = {
-    title: '새로운 게시글',
-    content: '내용 작성',
-  };
-  await boardStore.getRegister('freeboard', boardData);
-  await boardStore.getRegister('notice', boardData);
-  router.push('/board');
+const boardType = ref(1);
+
+const errorMessage = ref('');
+const successMessage = ref('');
+
+const handleFiles = (event) => {
+  boardForm.value.files = Array.from(event.target.files).map(file => file.name);
 };
-onMounted(async () => {
-  await fetchUserInfo();  // 에러 없이 실행되도록 변경
-});
-</script>
 
-<style scoped>
-/* 필요에 따라 추가 스타일링 */
-</style>
+const submitBoard = async () => {
+  console.log("Submitting board:", boardForm.value);
+  try {
+    await boardStore.getRegister(boardType.value, boardForm.value);
+    successMessage.value = "게시글이 성공적으로 생성되었습니다.";
+    router.push('/board/freeboard');
+  } catch (error) {
+    console.error("Board creation error:", error.response ? error.response.data : error.message);
+    errorMessage.value = "게시글 생성에 실패하였습니다.";
+  }
+};
+</script>
