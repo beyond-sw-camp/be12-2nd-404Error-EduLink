@@ -39,18 +39,18 @@
         </div>
       </div>
 
-      <!-- Pass both modelValue and currentPage -->
       <PageNav
         :pages="[1, 2, 3, 4, 5]"
         :modelValue="currentPage"
         :currentPage="currentPage"
+        v-model="currentPage" 
         @update:modelValue="val => currentPage = val" />
     </section>
   </div>
 </template>
 
 <script setup>
-import { onMounted, computed, ref } from 'vue';
+import { onMounted, computed, ref, watch } from 'vue';
 import { useBoardStore } from "@/stores/useBoardStore";
 import BoardNav from './components/BoardNav.vue';
 import TableRow from './components/TableRow.vue';
@@ -66,9 +66,14 @@ const posts = computed(() => {
 const columns = ['번호', '글쓴이', '제목', '작성 일자'];
 
 const currentPage = ref(1);
+const pageSize = 20;
 
 onMounted(() => {
-  boardStore.getBoardList(1, 1, 20);
+  boardStore.getBoardList(0, currentPage.value -1, pageSize);
+});
+
+watch(currentPage, (newVal) => {
+  boardStore.getBoardList(0, newVal, pageSize);
 });
 </script>
 
