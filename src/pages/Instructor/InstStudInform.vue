@@ -2,10 +2,15 @@
 import TableBoard from './components/TableBoard.vue';
 import { ref, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
+import { useInstructorStore } from '../../stores/useInstructorStore';
 
 const route = useRoute();
+const instructorStore = useInstructorStore();
+
 const userIdx = ref(route.params.userIdx);
+const studentDetail_resp = ref([]);
 console.log(userIdx.value);
+const isLoading = ref(false);
 
 const boardTypeList = ref({
     noti: 0,
@@ -19,6 +24,19 @@ const boardTypeList = ref({
 watch(() => route.params.userIdx, (newVal) => {
     userIdx.value = newVal;
 });
+
+const fetchStudentDetail = async () => {
+    isLoading.value = true;
+    await instructorStore.fetchStudentDetail(userIdx.value)
+    if (instructorStore.studentDetail_res.isSuccess==true) {
+        studentDetail_resp.value = instructorStore.studentDetail_res.data
+        console.log(studentDetail_resp.value);
+    } else {
+        console.log(instructorStore.studentDetail_res);
+    }
+}
+
+onMounted(fetchStudentDetail);
 </script>
 
 <template>
@@ -31,9 +49,10 @@ watch(() => route.params.userIdx, (newVal) => {
                     <div class="flex items-center p-4 bg-white rounded-lg shadow-md dark:bg-gray-800 flex-grow">
                         <img class="w-16 h-16 rounded-full mr-4" src="https://randomuser.me/api/portraits/men/1.jpg" alt="Student Image">
                         <div>
-                        <p class="text-xl font-bold text-gray-800 dark:text-gray-100">John Doe</p>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Email: johndoe@example.com</p>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Phone no.: 123-4567-8901</p>
+                        <p v-if="isLoading" class="text-xl font-bold text-gray-800 dark:text-gray-100">{{studentDetail_resp.name}}</p>
+                        <p v-if="isLoading" class="text-sm text-gray-500 dark:text-gray-400">{{studentDetail_resp.email}}</p>
+                        <p v-if="isLoading" class="text-sm text-gray-500 dark:text-gray-400">{{studentDetail_resp.birth}}</p>
+                        <p v-if="isLoading" class="text-sm text-gray-500 dark:text-gray-400">{{studentDetail_resp.studentDetail.address}}</p>
                     </div>
                     </div>
                 </div>
@@ -42,7 +61,7 @@ watch(() => route.params.userIdx, (newVal) => {
                     <div class="flex items-center justify-between p-4 bg-white rounded-lg shadow-md">
                         <div>
                         <p class="text-sm font-medium text-gray-500">출석</p>
-                        <p class="text-2xl font-bold text-gray-800">0</p>
+                        <p v-if="isLoading" class="text-2xl font-bold text-gray-800">{{studentDetail_resp.studentDetail.attendance}}</p>
                         </div>
                         <div class="flex items-center justify-center w-10 h-10 bg-blue-100 rounded-full">
                         <svg xmlns="http://www.w3.org/2000/svg" class="size-10 text-primary dark:text-accent" fill="none"
@@ -57,7 +76,7 @@ watch(() => route.params.userIdx, (newVal) => {
                     <div class="flex items-center justify-between p-4 bg-white rounded-lg shadow-md">
                         <div>
                         <p class="text-sm font-medium text-gray-500">남은 휴가</p>
-                        <p class="text-2xl font-bold text-gray-800">0</p>
+                        <p v-if="isLoading" class="text-2xl font-bold text-gray-800">{{studentDetail_resp.studentDetail.vacationLeft}}</p>
                         </div>
                         <div class="flex items-center justify-center w-10 h-10 bg-purple-100 rounded-full">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-purple-500" fill="none" viewBox="0 0 24 24"
@@ -71,7 +90,7 @@ watch(() => route.params.userIdx, (newVal) => {
                     <div class="flex items-center justify-between p-4 bg-white rounded-lg shadow-md">
                         <div>
                         <p class="text-sm font-medium text-gray-500">지각</p>
-                        <p class="text-2xl font-bold text-gray-800">0</p>
+                        <p v-if="isLoading" class="text-2xl font-bold text-gray-800">{{studentDetail_resp.studentDetail.perception}}</p>
                         </div>
                         <div class="flex items-center justify-center w-10 h-10 bg-pink-100 rounded-full">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-pink-500" fill="none" viewBox="0 0 24 24"
@@ -85,7 +104,7 @@ watch(() => route.params.userIdx, (newVal) => {
                     <div class="flex items-center justify-between p-4 bg-white rounded-lg shadow-md">
                         <div>
                         <p class="text-sm font-medium text-gray-500">조퇴</p>
-                        <p class="text-2xl font-bold text-gray-800">0</p>
+                        <p v-if="isLoading" class="text-2xl font-bold text-gray-800">{{studentDetail_resp.studentDetail.leaveEarly}}</p>
                         </div>
                         <div class="flex items-center justify-center w-10 h-10 bg-orange-100 rounded-full">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-orange-500" fill="none" viewBox="0 0 24 24"
@@ -99,7 +118,7 @@ watch(() => route.params.userIdx, (newVal) => {
                     <div class="flex items-center justify-between p-4 bg-white rounded-lg shadow-md">
                         <div>
                         <p class="text-sm font-medium text-gray-500">외출</p>
-                        <p class="text-2xl font-bold text-gray-800">0</p>
+                        <p v-if="isLoading" class="text-2xl font-bold text-gray-800">{{studentDetail_resp.studentDetail.outing}}</p>
                         </div>
                         <div class="flex items-center justify-center w-10 h-10 bg-green-100 rounded-full">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-green-500" fill="none" viewBox="0 0 24 24"
@@ -111,7 +130,7 @@ watch(() => route.params.userIdx, (newVal) => {
                     <div class="flex items-center justify-between p-4 bg-white rounded-lg shadow-md">
                         <div>
                         <p class="text-sm font-medium text-gray-500">조퇴</p>
-                        <p class="text-2xl font-bold text-gray-800">0</p>
+                        <p v-if="isLoading" class="text-2xl font-bold text-gray-800">{{studentDetail_resp.studentDetail.attendance}}</p>
                         </div>
                         <div class="flex items-center justify-center w-10 h-10 bg-green-100 rounded-full">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-green-500" fill="none" viewBox="0 0 24 24"
