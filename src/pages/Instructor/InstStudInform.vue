@@ -3,6 +3,7 @@ import TableBoard from './components/TableBoard.vue';
 import { ref, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { useInstructorStore } from '../../stores/useInstructorStore';
+import TableBoardStudInform from './components/TableBoardStudInform.vue';
 
 const route = useRoute();
 const instructorStore = useInstructorStore();
@@ -145,13 +146,13 @@ onMounted(fetchStudentDetail);
                 <div class="mb-4 flex justify-between items-center">
                     <h2 class="text-xl font-semibold text-gray-800 dark:text-white">게시판 목록</h2>
                 </div>
-                <TableBoard :boardType="boardTypeList.data"></TableBoard>  
+                <TableBoardStudInform :boardType="boardTypeList.comm" :userIdx="userIdx"></TableBoardStudInform>  
             </div>
             <div class="flex flex-col mb-6 bg-white rounded-lg p-4 shadow-md">
                 <div class="mb-4 flex justify-between items-center">
                     <h2 class="text-xl font-semibold text-gray-800 dark:text-white">과제 현황</h2>
                 </div>
-                <TableBoard :boardType="boardTypeList.hw"></TableBoard>  
+                <TableBoardStudInform :boardType="boardTypeList.hw" :userIdx="userIdx"></TableBoardStudInform>  
             </div>
         </section>
     </div>

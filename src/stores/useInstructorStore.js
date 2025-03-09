@@ -18,7 +18,7 @@ export const useInstructorStore = defineStore('instructor', {
             this.board_res = response.data;
         },
         async fetchBoardByUser(userIdx, boardType, page = 0, size = 5) {
-            const response = await axios.get(`/api/board/listByUser/${boardType}?userIdx=${userIdx}&page=${page}&size=${size}`);
+            const response = await axios.get(`/api/board/listByUserIdx/${boardType}?userIdx=${userIdx}&page=${page}&size=${size}`);
             this.boardByUser_res = response.data;
         },
         async fetchHw(page = 0, size = 5) {
