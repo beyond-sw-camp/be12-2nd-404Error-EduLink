@@ -6,7 +6,8 @@ export const useInstructorStore = defineStore('instructor', {
         hw_res: [],
         dt_res: [],
         student_res: [],
-        delete_res: []
+        delete_res: [],
+        detail_res: []
     }),
     actions: {
         async fetchHw(page = 0, size = 5) {
@@ -24,6 +25,10 @@ export const useInstructorStore = defineStore('instructor', {
         async fetchDelete(boardIdx) {
             const response = await axios.delete(`/api/board/delete/${boardIdx}`);
             this.delete_res = response.data;
+        },
+        async fetchDetail(boardIdx) {
+            const response = await axios.get(`/api/board/read/${boardIdx}`);
+            this.detail_res = response.data;
         }
     }
 });
