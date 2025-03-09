@@ -1,5 +1,24 @@
 <script setup>
+import TableBoard from './components/TableBoard.vue';
+import { ref, onMounted, watch } from 'vue';
+import { useRoute } from 'vue-router';
 
+const route = useRoute();
+const userIdx = ref(route.params.userIdx);
+console.log(userIdx.value);
+
+const boardTypeList = ref({
+    noti: 0,
+    comm: 1,
+    test: 2,
+    data: 3,
+    hw: 4,
+    qa: 5
+});
+
+watch(() => route.params.userIdx, (newVal) => {
+    userIdx.value = newVal;
+});
 </script>
 
 <template>
@@ -103,118 +122,17 @@
                     </div>
                 </div>
             </div>
-            <div class="p-8 bg-gray-100 dark:bg-gray-900">
-                <h1 class="text-3xl font-bold mb-6 text-gray-800 dark:text-gray-100">게시판</h1>
-                <div class="overflow-x-auto shadow-lg rounded-lg">
-                    <table class="min-w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                    <thead class="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 uppercase text-xs">
-                        <tr>
-                            <th scope="col" class="px-6 py-4">제목</th>
-                            <th scope="col" class="px-6 py-4">글쓴이</th>
-                            <th scope="col" class="px-6 py-4">카테고리</th>
-                            <th scope="col" class="px-6 py-4">작성 일자</th>
-                            <th scope="col" class="px-6 py-4 text-right">
-                                <router-link to="/board/freeboard" class="text-blue-600 dark:text-blue-400 hover:underline">더보기</router-link>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Row 1 -->
-                        <tr class="bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700">
-                            <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">애플 맥북 프로 17"</td>
-                            <td class="px-6 py-4">홍길동</td>
-                            <td class="px-6 py-4">랩탑</td>
-                            <td class="px-6 py-4">2024-01-01</td>
-                            <td class="px-6 py-4 text-right">
-                                <router-link to="/board/bbboard" class="text-blue-600 dark:text-blue-400 hover:underline">글보기</router-link>
-                            </td>
-                        </tr>
-                        <!-- Row 2 -->
-                        <tr class="bg-gray-50 dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-700">
-                            <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">마이크로소프트 서피스 프로</td>
-                            <td class="px-6 py-4">김철수</td>
-                            <td class="px-6 py-4">랩탑 PC</td>
-                            <td class="px-6 py-4">2024-01-02</td>
-                            <td class="px-6 py-4 text-right">
-                                <router-link to="/board/bbboard" class="text-blue-600 dark:text-blue-400 hover:underline">글보기</router-link>
-                            </td>
-                        </tr>
-                        <!-- Row 3 -->
-                        <tr class="bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700">
-                            <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">매직 마우스 2</td>
-                            <td class="px-6 py-4">이영희</td>
-                            <td class="px-6 py-4">액세서리</td>
-                            <td class="px-6 py-4">2024-01-03</td>
-                            <td class="px-6 py-4 text-right">
-                                <router-link to="/board/bbboard" class="text-blue-600 dark:text-blue-400 hover:underline">글보기</router-link>
-                            </td>
-                        </tr>
-                        <!-- Additional Rows -->
-                        <tr class="bg-gray-50 dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-700">
-                            <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">매직 키보드</td>
-                            <td class="px-6 py-4">박지민</td>
-                            <td class="px-6 py-4">액세서리</td>
-                            <td class="px-6 py-4">2024-01-04</td>
-                            <td class="px-6 py-4 text-right">
-                                <router-link to="/board/bbboard" class="text-blue-600 dark:text-blue-400 hover:underline">글보기</router-link>
-                            </td>
-                        </tr>
-                    </tbody>
-                    </table>
+            <div class="flex flex-col mb-6 bg-white rounded-lg p-4 shadow-md">
+                <div class="mb-4 flex justify-between items-center">
+                    <h2 class="text-xl font-semibold text-gray-800 dark:text-white">게시판 목록</h2>
                 </div>
+                <TableBoard :boardType="boardTypeList.data"></TableBoard>  
             </div>
-            <div class="p-8 bg-gray-100 dark:bg-gray-900">
-                <h1 class="text-3xl font-bold mb-6 text-gray-800 dark:text-gray-100">과제 현황</h1>
-                <ol class="relative border-s border-gray-200 dark:border-gray-700 p-6 bg-white rounded-lg shadow-lg" style="margin-left: 40px;">
-                    <li class="mb-10 ms-6">
-                    <span
-                        class="absolute flex items-center justify-center w-8 h-8 bg-blue-100 text-blue-600 rounded-full -start-4 ring-4 ring-white dark:ring-gray-900 dark:bg-blue-900 dark:text-blue-300">
-                        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                            <path
-                                d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
-                        </svg>
-                    </span>
-                    <h3 class="mb-1 text-lg font-semibold text-gray-800 dark:text-white">
-                        Flowbite Application UI v2.0.0
-                        <span
-                            class="bg-blue-100 text-blue-600 text-xs font-medium ms-2 px-2 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">Latest</span>
-                    </h3>
-                    <time class="block mb-2 text-sm font-normal text-gray-500 dark:text-gray-400">
-                        Released on January 13th, 2022
-                    </time>
-                    <p class="mb-4 text-sm text-gray-600 dark:text-gray-400">
-                        Get access to over 20+ pages including a dashboard layout, charts, kanban board, calendar, and
-                        pre-order E-commerce & Marketing pages.
-                    </p>
-                    <a href="#"
-                        class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <svg class="w-4 h-4 me-2" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                            <path
-                                d="M14.707 7.793a1 1 0 0 0-1.414 0L11 10.086V1.5a1 1 0 0 0-2 0v8.586L6.707 7.793a1 1 0 1 0-1.414 1.414l4 4a1 1 0 0 0 1.416 0l4-4a1 1 0 0 0-.002-1.414Z" />
-                            <path
-                                d="M18 12h-2.55l-2.975 2.975a3.5 3.5 0 0 1-4.95 0L4.55 12H2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2Zm-3 5a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z" />
-                        </svg>
-                        Download ZIP
-                    </a>
-                    </li>
-
-                    <li class="mb-10 ms-6">
-                    <span
-                        class="absolute flex items-center justify-center w-8 h-8 bg-green-100 text-green-600 rounded-full -start-4 ring-4 ring-white dark:ring-gray-900 dark:bg-green-900 dark:text-green-300">
-                        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                            <path
-                                d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
-                        </svg>
-                    </span>
-                    <h3 class="mb-1 text-lg font-semibold text-gray-800 dark:text-white">Flowbite Figma v1.3.0</h3>
-                    <time class="block mb-2 text-sm font-normal text-gray-500 dark:text-gray-400">Released on December 7th,
-                        2021</time>
-                    <p class="text-sm text-gray-600 dark:text-gray-400">
-                        All of the pages and components are first designed in Figma and we keep a parity between the two
-                        versions even as we update the project.
-                    </p>
-                    </li>
-                </ol>
+            <div class="flex flex-col mb-6 bg-white rounded-lg p-4 shadow-md">
+                <div class="mb-4 flex justify-between items-center">
+                    <h2 class="text-xl font-semibold text-gray-800 dark:text-white">과제 현황</h2>
+                </div>
+                <TableBoard :boardType="boardTypeList.hw"></TableBoard>  
             </div>
         </section>
     </div>
