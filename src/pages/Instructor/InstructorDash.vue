@@ -2,13 +2,22 @@
 import { ref } from 'vue';
 import CourseCard from './components/CourseCard.vue';
 import TableHw from './components/TableHw.vue';
-import TableData from './components/TableData.vue';
+import TableBoard from './components/TableBoard.vue';
 import UserCard2 from './components/UserCard2.vue';
 
 import { onMounted } from 'vue';
 import { useInstructorStore } from '../../stores/useInstructorStore';
 
 const instructorStore = useInstructorStore();
+
+const boardTypeList = ref({
+    noti: 0,
+    comm: 1,
+    test: 2,
+    data: 3,
+    hw: 4,
+    qa: 5
+});
 
 const student_resp = ref([]);
 
@@ -53,7 +62,7 @@ const studentCount = ref(5);
                     </svg>
                     </a>
                 </div>
-                <TableHw></TableHw>  
+                <TableBoard :boardType="boardTypeList.hw"></TableBoard>  
             </div>
             <div class="flex flex-col mb-6 bg-white rounded-lg p-4 shadow-md">
                 <div class="mb-4 flex justify-between items-center">
@@ -65,7 +74,7 @@ const studentCount = ref(5);
                     </svg>
                     </a>
                 </div>
-                <TableData></TableData>  
+                <TableBoard :boardType="boardTypeList.data"></TableBoard>
             </div>
             <div class="flex flex-col mb-6 bg-white rounded-lg p-4 shadow-md">
                 <div class="mb-4 flex justify-between items-center">

@@ -38,8 +38,9 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { defineProps, defineEmits, computed } from 'vue';
 
+// props 정의
 const props = defineProps({
   pages: {
     type: Array,
@@ -60,6 +61,13 @@ const currentPage = computed({
     emit('update:modelValue', val);
   }
 });
+
+// 페이지 변경 함수
+const changePage = (page) => {
+  if (page >= 1 && page <= props.pages.length) {
+    emit('update:modelValue', page);
+  }
+};
 </script>
 
 

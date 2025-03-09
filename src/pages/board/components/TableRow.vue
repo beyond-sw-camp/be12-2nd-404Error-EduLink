@@ -24,6 +24,12 @@ export default {
     }
   }
 }
+
+const router = useRouter();
+  
+  const navigate = () => {
+    router.push('/board/comment/register');
+  };
 </script>
 
 <style scoped></style>
