@@ -1,7 +1,7 @@
 <template>
   <tr @click="navigate" class="hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
     <td>{{ post.idx }}</td>
-    <td>{{ post.user?.name }}</td>
+    <td>{{ post.writer }}</td>
     <td>{{ post.title }}</td>
     <td>{{ formatDate(post.createdDate) }}</td>
   </tr>
