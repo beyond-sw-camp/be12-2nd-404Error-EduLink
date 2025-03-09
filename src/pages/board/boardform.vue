@@ -26,19 +26,19 @@
 
             <div class="mb-5">
               <label class="block text-sm font-medium text-gray-900 dark:text-white">게시판 유형</label>
-              <div class="flex space-x-4">
-                <div>
-                  <input type="radio" id="freeboard" value="freeboard" v-model="boardForm.boardType" name="boardType"
-                    class="mr-2" />
-                  <label for="freeboard" class="text-sm text-gray-900 dark:text-white">자유게시판</label>
-                </div>
-                <div>
-                  <input type="radio" id="notice" value="notice" v-model="boardForm.boardType" name="boardType"
-                    class="mr-2" />
-                  <label for="notice" class="text-sm text-gray-900 dark:text-white">공지사항</label>
-                </div>
-              </div>
+              <select v-model="boardType"
+                class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50">
+                <option value="1">일반 게시판</option>
+                <option value="5">질의 응답</option>
+
+                <option v-if="userRole === 'ROLE_INSTRUCTOR'" value="3">자료실</option>
+                <option v-if="userRole === 'ROLE_INSTRUCTOR'" value="4">과제</option>
+
+                <option v-if="userRole === 'ROLE_MANAGER'" value="0">공지 게시판</option>
+                <option v-if="userRole === 'ROLE_MANAGER'" value="2">시험</option>
+              </select>
             </div>
+
 
             <div>
               <label for="content" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">글 내용</label>
@@ -62,11 +62,13 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useBoardStore } from '@/stores/useBoardStore';
+import { useMemberStore } from '@/stores/useMemberStore';
 import { useRouter } from 'vue-router';
 
 const boardStore = useBoardStore();
+const memberStore = useMemberStore();
 const router = useRouter();
 
 const boardForm = ref({
@@ -75,6 +77,7 @@ const boardForm = ref({
   files: []
 });
 
+const userRole = computed(() => memberStore.role);
 const boardType = ref(1);
 
 const errorMessage = ref('');
@@ -89,7 +92,32 @@ const submitBoard = async () => {
   try {
     await boardStore.getRegister(boardType.value, boardForm.value);
     successMessage.value = "게시글이 성공적으로 생성되었습니다.";
-    router.push('/board/freeboard');
+    let redirectRoute = '';
+    switch (boardType.value) {
+      case 0:
+        redirectRoute = '/board/notice';
+        break;
+      case 1:
+        redirectRoute = '/board/freeboard';
+        break;
+      case 2:
+        redirectRoute = '/manager/ExamList';
+        break;
+      case 3:
+        redirectRoute = '/board/data';
+        break;
+      case 4:
+        redirectRoute = '/board/project';
+        break;
+      case 5:
+        redirectRoute = '/board/project';
+        break;
+      default:
+        redirectRoute = '/board/question';
+        break;
+    }
+    console.log("Redirecting to:", redirectRoute);
+    router.push(redirectRoute);
   } catch (error) {
     console.error("Board creation error:", error.response ? error.response.data : error.message);
     errorMessage.value = "게시글 생성에 실패하였습니다.";
