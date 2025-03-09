@@ -8,6 +8,7 @@
 </template>
 
 <script>
+
 export default {
   props: {
     post: {
@@ -25,11 +26,17 @@ export default {
   }
 }
 
+
+</script>
+
+<script setup>
+import { useRouter } from 'vue-router';
+
 const router = useRouter();
-  
-  const navigate = () => {
-    router.push('/board/comment/register');
-  };
+
+const navigate = () => {
+  router.push('/board/comment/register');
+};
 </script>
 
 <style scoped></style>
