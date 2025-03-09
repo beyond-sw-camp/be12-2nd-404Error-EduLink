@@ -1,33 +1,29 @@
 <template>
-    <tr @click="navigate" class="hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
-      <td v-for="(column, index) in columns" :key="index" class="px-6 py-4">
-        {{ post[column.field] }}
-      </td>
-    </tr>
-  </template>
-  
-  <script setup>
-  import { defineProps } from 'vue';
-  import { useRouter } from 'vue-router';
-  
-  const props = defineProps({
+  <tr @click="navigate" class="hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+    <td>{{ post.idx }}</td>
+    <td>{{ post.user?.name }}</td>
+    <td>{{ post.title }}</td>
+    <td>{{ formatDate(post.createdDate) }}</td>
+  </tr>
+</template>
+
+<script>
+export default {
+  props: {
     post: {
       type: Object,
       required: true
-    },
-    columns: {
-      type: Array,
-      required: true
     }
-  });
-  
-  const router = useRouter();
-  
-  const navigate = () => {
-    router.push('/board/bbboard');
-  };
-  </script>
-  
-  <style scoped>
-  
-  </style>
+  },
+  methods: {
+    formatDate(dateString) {
+      if (!dateString) return '';
+      // Adjust to your desired format
+      const d = new Date(dateString);
+      return d.toLocaleDateString();
+    }
+  }
+}
+</script>
+
+<style scoped></style>
