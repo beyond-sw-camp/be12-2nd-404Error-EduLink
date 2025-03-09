@@ -24,15 +24,16 @@ export const useBoardStore = defineStore("board", {
       }
     },
 
-    // 게시글 상세 목록을 가져오는 데이터
-    async getBoard(boardIdx) {
-      try {
-        const response = await axios.get(`/api/board/read/${boardIdx}`);
-        this.Board = response.data;
-      } catch (error) {
-        console.error("Error fetching board details:", error);
-      }
-    },
+   // 게시글 상세 목록을 가져오는 데이터
+async getBoard(boardIdx) {
+  try {
+    const response = await axios.get(`/api/board/read/${boardIdx}`);
+    console.log("게시글 상세 데이터:", response.data); // 반환된 게시글 데이터 확인
+    this.Board = response.data;  // 데이터를 저장하여 상세 페이지에 사용
+  } catch (error) {
+    console.error("Error fetching board details:", error);
+  }
+},
 
     // 게시글 댓글을 작성하는 데이터
     async getBoardComments(boardIdx, commentData) {
@@ -48,7 +49,7 @@ export const useBoardStore = defineStore("board", {
       }
     },
 
-    // 게시글 댓글을 수정하는 데이터
+
     async getCommentsUpdate(commentIdx, commentData) {
       try {
         const response = await axios.patch(`/api/comment/update/${commentIdx}`, commentData);
@@ -58,7 +59,7 @@ export const useBoardStore = defineStore("board", {
       }
     },
 
-    // 게시글 댓글을 삭제하는 데이터
+   
     async getCommentsDelete(commentIdx) {
       try {
         const response = await axios.delete(`/api/comment/delete/${commentIdx}`);
@@ -68,7 +69,7 @@ export const useBoardStore = defineStore("board", {
       }
     },
 
-    // 게시글 등록하는 데이터
+    
     async getRegister(boardType, boardData) {
       try {
         const response = await axios.post(`/api/board/register/${boardType}`, boardData);
@@ -81,14 +82,27 @@ export const useBoardStore = defineStore("board", {
         console.error("Error registering board:", error);
       }
     },
-    // 게시글 삭제하는 데이터
-    async getBoardDelete(boardIdx) {
+ 
+    async deletePost(postId) {
       try {
-        const response = await axios.delete(`/api/board/delete/${boardIdx}`);
-        this.BoardDelete = response.data;
+        const response = await axios.delete(`/api/board/delete/${postId}`);
+        if (response.status === 200) {
+          // 삭제 후 목록 갱신
+          this.getBoardList();
+        }
       } catch (error) {
-        console.error("Error deleting board:", error);
+        console.error("게시물을 삭제하는 데 실패했습니다", error);
       }
     },
+    async fetchPostAndComments() {
+      const route = useRoute();
+      const boardStore = useBoardStore();
+      const postId = route.params.id; 
+    
+      
+      await boardStore.getBoard(postId); 
+      this.post = boardStore.Board || {};
+      await this.fetchComments(postId); 
+}, 
   },
 });

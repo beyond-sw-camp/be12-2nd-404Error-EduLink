@@ -11,23 +11,21 @@
       <section class="p-6 xl:max-w-6xl xl:mx-auto">
         <section class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
           <div class="flex items-center justify-between mb-6">
-            <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-200">하하하핳핳</h2>
+            <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-200">{{ post.title }}</h2>
             <div class="flex items-center space-x-2">
               <div class="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
                 <svg class="absolute w-12 h-12 text-gray-400 -left-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                   <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
                 </svg>
               </div>
-              <p class="text-sm text-gray-600 dark:text-gray-400">작성자: 김유진<br>2025-02-06</p>
+              <p class="text-sm text-gray-600 dark:text-gray-400">작성자: {{ post.writer }}<br>{{ post.date }}</p>
             </div>
           </div>
 
           <div class="space-y-6">
             <div class="pb-4">
-              <h3 class="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-4">1. 브랜치를 생성한다다</h3>
-              이 글은 게시판에 등록된 첫 번째 글입니다. 내용을 여기에 작성하세요.<br>
-              이 글은 게시판에 등록된 두 번째 글입니다. 내용을 여기에 작성하세요.<br>
-              이 글은 게시판에 등록된 세 번째 글입니다. 내용을 여기에 작성하세요.
+              <h3 class="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-4">{{ post.title }}</h3>
+              <p class="text-lg">{{ post.content }}</p>
             </div>
           </div>
         </section>
@@ -64,8 +62,9 @@
 <script>
 import BoardNav from './components/BoardNav.vue';
 import { onMounted, ref } from 'vue';
-import { useBoardStore } from '@/stores/useBoardStore'; 
-import { useMemberStore } from '@/stores/useMemberStore'; 
+import { useRoute } from 'vue-router';
+import { useBoardStore } from '@/stores/useBoardStore';
+import { useMemberStore } from '@/stores/useMemberStore';
 
 export default {
   components: {
@@ -73,12 +72,22 @@ export default {
   },
   data() {
     return {
-      isOverlayVisible: false, // 오버레이 표시 여부
-      newComment: '', // 새 댓글 내용
-      comments: [] // 댓글 목록 (ref 필요 없음)
+      isOverlayVisible: false, 
+      newComment: '', 
+      comments: [], 
+      post: {} 
     };
   },
   methods: {
+
+     async fetchPost() {
+      const route = useRoute();
+      const boardIdx = route.params.id; 
+      console.log('게시글 ID:', boardIdx); 
+      const boardStore = useBoardStore();
+      this.post = boardStore.Board; 
+    },
+    
     async submitComment() {
       if (this.newComment.trim()) {
         const memberStore = useMemberStore();
@@ -86,34 +95,44 @@ export default {
 
         // 사용자 정보 가져오기
         const commentData = {
-          author: memberStore.name || '사용자', // 사용자 이름 (기본값: 사용자)
-          date: new Date().toISOString().split('T')[0], // 현재 날짜
-          text: this.newComment // 댓글 내용
+          author: memberStore.name || '사용자', 
+          date: new Date().toISOString().split('T')[0], 
+          
         };
 
-        // 댓글을 서버에 전송 (게시글 번호는 예시로 1번 사용)
-        const boardIdx = 1;
+      
+        const boardIdx = this.post.id; 
         await boardStore.getBoardComments(boardIdx, commentData);
 
-        // 댓글이 등록되면 목록을 갱신하고, 입력란을 비웁니다.
-        this.comments.push(commentData); // 배열에 직접 추가
-        this.newComment = ''; // 댓글 입력란 초기화
+       
+        this.comments.push(commentData); 
+        this.newComment = '';
       }
     },
-    async fetchComments() {
-      const boardIdx = 1; // 게시글 번호
+    async fetchPostAndComments() {
+      const route = useRoute();
+      const boardStore = useBoardStore();
+      const postId = route.params.id; 
+
+      await boardStore.getBoard(boardIdx); 
+      this.post = post || {}; 
+
+     
+      await this.fetchComments(postId);
+    },
+    async fetchComments(boardIdx) {
       const boardStore = useBoardStore();
       await boardStore.getBoardComments(boardIdx); // 댓글 목록을 서버에서 가져옵니다.
       this.comments = boardStore.BoardComments || []; // 댓글 목록을 상태에 저장합니다.
     }
   },
   onMounted() {
-    // 페이지 로드 시 댓글을 불러오는 로직을 추가할 수 있습니다.
-    this.fetchComments();
+    
+    this.fetchPostAndComments();
   }
 };
 </script>
 
-
 <style scoped>
+/* 추가적인 스타일을 여기에 작성할 수 있습니다. */
 </style>
