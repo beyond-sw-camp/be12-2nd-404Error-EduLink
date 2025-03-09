@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, ref, computed } from 'vue';
 import { useInstructorStore } from '../../../stores/useInstructorStore';
-import TableHwUser from './TableHwUser.vue';
+import BoardDetail from './BoardDetail.vue';
 
 const instructorStore = useInstructorStore();
 
@@ -45,6 +45,7 @@ onMounted(fetchHw);
 
 const openPopup = (row) => {
     selectedRowData.value = row;
+    console.log(selectedRowData.value);
     showPopup.value = true;
 };
 
@@ -112,10 +113,10 @@ const deleteBoard = () => {
                             <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
                         </div>
                     </td>
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white cursor-pointer text-center" @click="openPopup(hw)" style="width: 20%;">{{ hw.title }}</th>
-                    <td class="px-6 py-4 cursor-pointer text-center" @click="openPopup(hw)" style="width: 30%;">{{ hw.fileName }}</td>
-                    <td class="px-6 py-4 cursor-pointer text-center" @click="openPopup(hw)" style="width: 15%;">{{ new Date(hw.createdDate).toLocaleDateString() }}</td>
-                    <td class="px-6 py-4 cursor-pointer text-center" @click="openPopup(hw)" style="width: 15%;">{{ hw.writer }}</td>
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white cursor-pointer text-center" @click="openPopup(hw.idx)" style="width: 20%;">{{ hw.title }}</th>
+                    <td class="px-6 py-4 cursor-pointer text-center" @click="openPopup(hw.idx)" style="width: 30%;">{{ hw.fileName }}</td>
+                    <td class="px-6 py-4 cursor-pointer text-center" @click="openPopup(hw.idx)" style="width: 15%;">{{ new Date(hw.createdDate).toLocaleDateString() }}</td>
+                    <td class="px-6 py-4 cursor-pointer text-center" @click="openPopup(hw.idx)" style="width: 15%;">{{ hw.writer }}</td>
                     <td class="px-6 py-4 text-center" style="width: 15%;">
                         <a href="/board/boardform" class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600" type="button">
                             <svg class="w-4 h-5 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
@@ -150,14 +151,14 @@ const deleteBoard = () => {
         <div v-if="showPopup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div class="flex flex-col mb-6 bg-white rounded-lg p-4 shadow-md">
                 <div class="mb-4 flex justify-between items-center">
-                    <h2 class="text-xl font-semibold text-gray-800 dark:text-white">과제명:</h2>
+                    <h2 class="text-xl font-semibold text-gray-800 dark:text-white">과제명: </h2>
                     <button @click="closePopup">
                         <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1-18 0Z"/>
                         </svg>
                     </button>
                 </div>
-                <TableHwUser></TableHwUser>
+                <BoardDetail :boardIdx="selectedRowData"></BoardDetail>
             </div>
         </div>
     </div>
