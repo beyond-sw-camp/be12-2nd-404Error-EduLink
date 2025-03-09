@@ -24,7 +24,7 @@
   const router = useRouter();
   
   const navigate = () => {
-    router.push('/board/bbboard');
+    router.push('/board/comment/register');
   };
   </script>
   
