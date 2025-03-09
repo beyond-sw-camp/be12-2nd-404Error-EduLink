@@ -3,6 +3,7 @@ import axios from "axios";
 
 export const useInstructorStore = defineStore('instructor', {
     state: () => ({
+        board_res: [],
         hw_res: [],
         dt_res: [],
         student_res: [],
@@ -10,6 +11,10 @@ export const useInstructorStore = defineStore('instructor', {
         detail_res: []
     }),
     actions: {
+        async fetchBoard(boardType, page = 0, size = 5) {
+            const response = await axios.get(`/api/board/listByUser/${boardType}?page=${page}&size=${size}`);
+            this.board_res = response.data;
+        },
         async fetchHw(page = 0, size = 5) {
             const response = await axios.get(`/api/board/listByUser/4?page=${page}&size=${size}`);
             this.hw_res = response.data;
