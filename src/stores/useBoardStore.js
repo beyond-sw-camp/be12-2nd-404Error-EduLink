@@ -3,7 +3,7 @@ import axios from "axios";
 
 export const useBoardStore = defineStore("board", {
   state: () => ({
-    BoardList: [],
+    BoardList: {},
     Board: {},
     BoardComments: {},
     Register: {},
