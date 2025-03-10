@@ -34,8 +34,9 @@ const fetchBoard = async () => {
     await instructorStore.fetchBoard(props.boardType, currentPage.value, pageSize);
     if (instructorStore.board_res.isSuccess) {
         board_resp.value = instructorStore.board_res.data;
+        console.log('Board data fetched successfully:', board_resp.value);
     } else {
-        console.log(instructorStore.board_res);
+        console.log('Failed to fetch board data:', instructorStore.board_res);
     }
 };
 

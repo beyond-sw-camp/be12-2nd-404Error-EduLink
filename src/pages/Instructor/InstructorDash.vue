@@ -1,11 +1,9 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import CourseCard from './components/CourseCard.vue';
 import TableHw from './components/TableHw.vue';
 import TableBoard from './components/TableBoard.vue';
 import UserCard2 from './components/UserCard2.vue';
-
-import { onMounted } from 'vue';
 import { useInstructorStore } from '../../stores/useInstructorStore';
 
 const instructorStore = useInstructorStore();
@@ -20,18 +18,33 @@ const boardTypeList = ref({
 });
 
 const student_resp = ref([]);
+const course_resp = ref([]);
+const isLoading = ref(false);
 
-onMounted(async () => {
-    await instructorStore.fetchStudent()
-    if (instructorStore.student_res.isSuccess==true) {
-        student_resp.value = instructorStore.student_res.data
-        console.log(student_resp.value);
-    } else {
-        console.log(instructorStore.student_res);
-    }
+const uniqueSubjects = computed(() => {
+    const subjects = course_resp.value?.curriculumList?.map(item => item.curriculumSubject) || [];
+    return [...new Set(subjects)];
 });
 
-const studentCount = ref(5);
+onMounted(async () => {
+    isLoading.value = true;
+    instructorStore.fetchStudent().then(() => {
+        if (instructorStore.student_res.isSuccess) {
+            student_resp.value = instructorStore.student_res.data;
+        } else {
+            console.log(instructorStore.student_res);
+        }
+    });
+
+    instructorStore.fetchCourse(6).then(() => {
+        if (instructorStore.course_res.isSuccess) {
+            course_resp.value = instructorStore.course_res.data;
+            console.log(course_resp.value);
+        } else {
+            console.log(instructorStore.course_res);
+        }
+    });
+});
 </script>
 
 <template>
@@ -44,12 +57,12 @@ const studentCount = ref(5);
                     <a href="/inst/registercur" type="button" class="text-white bg-blue-500 hover:bg-blue-400 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 me-2 mb-2 dark:bg-blue-400 dark:hover:bg-blue-300 focus:outline-none dark:focus:ring-blue-600 flex items-center">
                         Create
                         <svg class="w-4 h-4 text-white ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 7.757v8.486M7.757 12h8.486M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 7.757v8.486M7.757 12h8.486M21 12a9 9 0 1 1-18 0 9 9 0 0 1-18 0Z"/>
                         </svg>
                     </a>
                 </div>
                 <div class="flex flex-wrap gap-4">
-                    <CourseCard v-for="student in studentCount" :key="student" class="mb-4"></CourseCard>
+                    <CourseCard v-if="isLoading" v-for="subject in uniqueSubjects" :key="subject" :subject="subject" class="mb-4"></CourseCard>
                 </div>
             </div>
             <div class="flex flex-col mb-6 bg-white rounded-lg p-4 shadow-md">
@@ -57,7 +70,7 @@ const studentCount = ref(5);
                     <h2 class="text-xl font-semibold text-gray-800 dark:text-white">과제 목록</h2>
                     <a href="/board/boardform" type="button" class="text-white bg-blue-500 hover:bg-blue-400 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 me-2 mb-2 dark:bg-blue-400 dark:hover:bg-blue-300 focus:outline-none dark:focus:ring-blue-600 flex items-center">
                     Create
-                    <svg class="w-4 h-4 text-white ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <svg class="w-4 h-4 text-white ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 7.757v8.486M7.757 12h8.486M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
                     </svg>
                     </a>
@@ -70,7 +83,7 @@ const studentCount = ref(5);
                     <a href="/board/boardform" type="button" class="text-white bg-blue-500 hover:bg-blue-400 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 me-2 mb-2 dark:bg-blue-400 dark:hover:bg-blue-300 focus:outline-none dark:focus:ring-blue-600 flex items-center">
                     Create
                     <svg class="w-4 h-4 text-white ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 7.757v8.486M7.757 12h8.486M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 7.757v8.486M7.757 12h8.486M21 12a9 9 0 1 1-18 0 9 9 0 0 1-18 0Z"/>
                     </svg>
                     </a>
                 </div>
