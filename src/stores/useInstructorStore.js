@@ -10,7 +10,9 @@ export const useInstructorStore = defineStore('instructor', {
         student_res: [],
         studentDetail_res: [],
         delete_res: [],
-        detail_res: []
+        detail_res: [],
+        course_res: [],
+        curr_res: []
     }),
     actions: {
         async fetchBoard(boardType, page = 0, size = 5) {
@@ -44,6 +46,14 @@ export const useInstructorStore = defineStore('instructor', {
         async fetchDetail(boardIdx) {
             const response = await axios.get(`/api/board/read/${boardIdx}`);
             this.detail_res = response.data;
+        },
+        async fetchCourse(generation) {
+            const response = await axios.get(`/api/course/${generation}`);
+            this.course_res = response.data;
+        },
+        async fetchCurr(subject) {
+            const response = await axios.get(`/api/course/curriculum?subject=${subject}`);
+            this.curr_res = response.data;
         }
     }
 });
