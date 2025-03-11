@@ -15,8 +15,9 @@ const vacationData = ref({
   name: '',
   startDate: null,
   endDate: null,
-  category: '',
-  description: ''
+  logType: '',
+  description: '',
+  createdAt: new Date().toISOString().split('T')[0]
 });
 
 
@@ -110,6 +111,8 @@ const handleSubmit = async (formType) => {
     const response = await axios.post('/api/student/apply', data);
     alert(`${formType === 'vacation' ? '휴가' : '조퇴'} 신11청이 완료되었습니다!`);
     console.log('응답:', response);
+    window.location.reload()
+
   } catch (error) {
     alert(`${formType === 'vacation' ? '휴가' : '조퇴'} 신청 중 오류가 발생했습니다.`);
     console.error('에러 발생:', error.response ? error.response.data : error.message);
@@ -136,8 +139,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // 퇴실 체크 버튼 이벤트
-    document.getElementById("outing-btn").addEventListener("click", function () {
-        sendAttendanceRequest('outing');
+    document.getElementById("leave_early-btn").addEventListener("click", function () {
+        sendAttendanceRequest('leaveEarly');
     });
 
     async function sendAttendanceRequest(action) {
@@ -146,7 +149,8 @@ document.addEventListener("DOMContentLoaded", function () {
             const response = await axios.get(`/api/student/attend/update/${action}`);
             console.log('  ddd :', response);
 
-            alert(`${action === 'attendance' ? '출석' : '퇴실'} 체크 완료!`);
+
+            alert(`${action === 'attendance' ? '출석' : '조퇴'} 체크 완료!`);
             window.location.reload()
         } catch (error) {
             console.log('Error in sendAttendanceRequest:', response);
@@ -179,7 +183,19 @@ const examData = ref([
       date: "2024-12-28",
       participants: 26,
       total: 27,
-   },
+   },{
+      id: 4,
+      subject: "기반 기술",
+      date: "2024-12-28",
+      participants: 26,
+      total: 27,
+   },{
+      id: 5,
+      subject: "기반 기술",
+      date: "2024-12-28",
+      participants: 26,
+      total: 27,
+   }
 ]);
 
 </script>
@@ -332,7 +348,6 @@ const examData = ref([
 
 
                <div class="p-4 md:p-5 text-center">
-                  <img src="" alt="출석 체크" class="mx-auto mb-4 w-40 h-20" />
                   <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
                      출석 체크하기</h3>
                   <button id="attendance-btn" data-modal-hide="popup-modal" type="button"
@@ -362,7 +377,7 @@ const examData = ref([
                   <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">퇴실 체크</h3>
                   <button id="outing-btn" data-modal-hide="popup-modal1" type="button"
                      class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
-                     퇴실 하기
+                     퇴실 하기 ( 서비스 준비중 )
                   </button>
                   <button  data-modal-hide="popup-modal1" type="button"
                      class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">취소
@@ -379,54 +394,88 @@ const examData = ref([
 
 
                <form @submit.prevent="handleSubmit('vacation')" class="p-4 md:p-5">
-                  <div class="grid gap-4 mb-4 grid-cols-2">
-                     <div class="col-span-2">
-                        <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">휴가
-                           신청</label>
-                        <input type="text" name="name" id="name"
-                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                           placeholder="사유 요약" required="">
-                     </div>
-                     <div class="col-span-2">
-                        <label for="date-range" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">날짜
-                           범위</label>
-                        <div class="flex items-center">
-                           <Datepicker v-model="startDate" placeholder="Select start date" class="w-full" />
-                           <span class="mx-4 text-gray-500">to</span>
-                           <Datepicker v-model="endDate" placeholder="Select end date" class="w-full" />
-                        </div>
-                     </div>
+   <div class="grid gap-4 mb-4 grid-cols-2">
+      <div class="col-span-2">
+         <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">휴가 신청</label>
+         <input 
+            v-model="vacationData.name" 
+            type="text" 
+            name="name" 
+            id="name"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" 
+            placeholder="사유 요약" 
+            required="">
+      </div>
+      <div class="col-span-2">
+         <label for="date-range" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">날짜 범위</label>
+         <div class="flex items-center">
+            <Datepicker 
+               v-model="vacationData.startDate" 
+               placeholder="Select start date" 
+               class="w-full" />
+            <span class="mx-4 text-gray-500">to</span>
+            <Datepicker 
+               v-model="vacationData.endDate" 
+               placeholder="Select end date" 
+               class="w-full" />
+         </div>
+      </div>
 
-                     <div class="col-span-2 ">
-                        <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"> 목록
-                        </label>
-                        <select id="category"
-                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                           <option selected="">선택</option>
-                           <option value="huga"> 휴가 </option>
-                           <option value="sick"> 병가 </option>
-                           <option value="gita"> 기타 </option>
-                        </select>
-                     </div>
-                     <div class="col-span-2">
-                        <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                           사유 </label>
-                        <textarea id="description" rows="4"
-                           class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                           placeholder="Write product description here"></textarea>
-                     </div>
-                  </div>
-                  <button type="submit" id="vacation-btn"
-                     class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                     <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd"
-                           d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                           clip-rule="evenodd"></path>
-                     </svg>
-                     신청 하기
+      <div class="col-span-2">
+         <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"> 목록 </label>
+         <select 
+            v-model="vacationData.logType" 
+            id="category" 
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+            <option selected>선택</option>
+            <option value="huga">휴가</option>
+            <option value="sick">병가</option>
+            <option value="gita">기타</option>
+         </select>
+      </div>
+      <div class="col-span-2">
+         <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">사유</label>
+         <textarea 
+            v-model="vacationData.description" 
+            id="description" 
+            rows="4"
+            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+            placeholder="Write product description here"></textarea>
+      </div>
+   </div>
+   <button type="submit" id="vacation-btn" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+      <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+         <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path>
+      </svg>
+      신청 하기
+   </button>
+</form>
+
+            </div>
+         </div>
+      </div>
+      <div id="popup-modal3" tabindex="-1"
+         class="hidden fixed top-0 left-0 right-0 bottom-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+
+         <div class="relative p-4 w-full max-w-md max-h-full">
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+
+
+               <div class="p-4 md:p-5 text-center">
+                  <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true"
+                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                  </svg>
+                  <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">조퇴 체크</h3>
+                  <button id="leave_early-btn" data-modal-hide="popup-modal1" type="button"
+                     class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
+                     조퇴 하기
                   </button>
-               </form>
+                  <button  data-modal-hide="popup-modal3" type="button"
+                     class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">취소
+                  </button>
+               </div>
             </div>
          </div>
       </div>
@@ -740,7 +789,7 @@ const examData = ref([
       <div class="container" style="margin-bottom: 20px; height: 350px; ">
          <!-- 시험 섹션 -->
          <div class="section-title">
-            <h1>시험</h1>
+            <h1>시험 ( 미완 )</h1>
          </div>
          <div class="exam-card-grid">
             <div v-for="exam in examData.slice(0, 3)" :key="exam.id" class="exam-card">
@@ -769,7 +818,7 @@ const examData = ref([
             style="
     margin-left: 40px;
 ">
-            <h1 class="text-3xl font-bold mb-6 text-gray-800 dark:text-gray-100">과제 현황</h1>
+            <h1 class="text-3xl font-bold mb-6 text-gray-800 dark:text-gray-100">과제 현황 ( 미완 ) </h1>
             <div class="px-6 py-4 text-right">
                <a href="#" class="text-blue-600 dark:text-blue-400 hover:underline">더보기</a>
             </div>

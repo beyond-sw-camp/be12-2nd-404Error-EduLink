@@ -38,7 +38,8 @@ const logout = async () => {
         <div class="aside lg:rounded-2xl flex-1 flex flex-col overflow-hidden dark:bg-slate-900 bg-slate-900">
             <div
                 class="aside-brand flex flex-row h-14 items-center justify-between dark:bg-slate-900 bg-slate-900 text-white">
-                <div class="text-center flex-1 lg:text-left lg:pl-6 xl:text-center xl:pl-0"><b
+                <div class="text-center flex-1 lg:text-left lg:pl-6 xl:text-center xl:pl-0">
+                    <b
                         class="font-black">EduLink</b></div><button class="hidden lg:inline-block xl:hidden p-3"><span
                         class="inline-flex justify-center items-center w-6 h-6"><svg viewBox="0 0 24 24" width="16"
                             height="16" class="inline-block">

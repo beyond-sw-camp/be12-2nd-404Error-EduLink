@@ -14,18 +14,16 @@ export const usebootcamp = defineStore('bootcamp', {
     }),
     actions: {
         async getBootcamp() {
-            const response = await axios.get(
-                'https://2d667f41-5cc9-4f00-9851-c2d1ea285149.mock.pstmn.io/bootcamp');
-            this.boot_campList = response.data;
+            const response = await axios.get(`/api/course/boocampinfo`);
+            this.boot_campList = response.data.data;
 
             console.log(response.data);
         } ,
         async getBootcampcurry() {
-            const response = await axios.get(
-                'https://2d667f41-5cc9-4f00-9851-c2d1ea285149.mock.pstmn.io/get_curryday');
-            this.boot_camp_curry = response.data;
+            const response = await axios.get(`/api/course/bootcampinfo`);
+            this.boot_camp_curry = response.data.data.curriculumList;
 
-            console.log(response.data);
+            console.log(response.data.data.curriculumList);
         } 
     }
     

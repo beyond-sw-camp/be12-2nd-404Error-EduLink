@@ -14,7 +14,8 @@ export const useStudentStore = defineStore('student', {
           leaveEarly: 0,
           outing: 0,
           vacationLeft: 0
-      }
+      },
+      examData : []
    }),
   actions: {
     async get_dashboard() {
