@@ -65,6 +65,7 @@ const router = createRouter({
         { path: '/inst/studinform', component: InstStudInform, meta: { requiresAuth: true }  },
         { path: '/inst/studinform/:userIdx', component: InstStudInform, meta: { requiresAuth: true }  },
         { path: '/inst/registercur', component: RegistCur, meta: { requiresAuth: true }  },
+        { path: '/inst/registercur/:courseIdx', component: RegistCur, meta: { requiresAuth: true }  },
         { path: '/manager/dashboard', component: ManagerDashboard, meta: { requiresAuth: true }  },
         { path: '/manager/studentList', component: StudentList, meta: { requiresAuth: true }  },
         { path: '/manager/instructorList', component: InstructorList, meta: { requiresAuth: true }  },

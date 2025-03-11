@@ -54,6 +54,10 @@ export const useInstructorStore = defineStore('instructor', {
         async fetchCurr(subject) {
             const response = await axios.get(`/api/course/curriculum?subject=${subject}`);
             this.curr_res = response.data;
+        },
+        async fetchRegisterCurr(curr_info) {
+            const response = await axios.post(`/api/curriculum/register`, curr_info);
+            return response.data;
         }
     }
 });

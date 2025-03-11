@@ -20,6 +20,7 @@ const boardTypeList = ref({
 const student_resp = ref([]);
 const course_resp = ref([]);
 const isLoading = ref(false);
+const courseLoaded = ref(false);
 
 const uniqueSubjects = computed(() => {
     const subjects = course_resp.value?.curriculumList?.map(item => item.curriculumSubject) || [];
@@ -28,22 +29,32 @@ const uniqueSubjects = computed(() => {
 
 onMounted(async () => {
     isLoading.value = true;
-    instructorStore.fetchStudent().then(() => {
-        if (instructorStore.student_res.isSuccess) {
-            student_resp.value = instructorStore.student_res.data;
-        } else {
-            console.log(instructorStore.student_res);
-        }
-    });
+    try {
+        // fetchStudent 호출
+        await instructorStore.fetchStudent().then(() => {
+            if (instructorStore.student_res.isSuccess) {
+                student_resp.value = instructorStore.student_res.data;
+            } else {
+                console.log(instructorStore.student_res);
+            }
+        });
 
-    instructorStore.fetchCourse(6).then(() => {
-        if (instructorStore.course_res.isSuccess) {
-            course_resp.value = instructorStore.course_res.data;
-            console.log(course_resp.value);
-        } else {
-            console.log(instructorStore.course_res);
-        }
-    });
+        // fetchCourse 호출
+        await instructorStore.fetchCourse(6).then(() => {
+            if (instructorStore.course_res.isSuccess) {
+                course_resp.value = instructorStore.course_res.data;
+                courseLoaded.value = true; // 성공 시 courseLoaded를 true로 설정
+                console.log(course_resp.value);
+                console.log(courseLoaded.value);
+            } else {
+                console.log(instructorStore.course_res);
+            }
+        });
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    } finally {
+        isLoading.value = false;
+    }
 });
 </script>
 
@@ -62,7 +73,7 @@ onMounted(async () => {
                     </a>
                 </div>
                 <div class="flex flex-wrap gap-4">
-                    <CourseCard v-if="isLoading" v-for="subject in uniqueSubjects" :key="subject" :subject="subject" class="mb-4"></CourseCard>
+                    <CourseCard v-for="subject in uniqueSubjects" :key="subject" :subject="subject" class="mb-4"></CourseCard>
                 </div>
             </div>
             <div class="flex flex-col mb-6 bg-white rounded-lg p-4 shadow-md">
