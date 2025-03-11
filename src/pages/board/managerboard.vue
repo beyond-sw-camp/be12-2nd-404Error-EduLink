@@ -65,7 +65,7 @@
 <script setup>
 import { onMounted, computed, ref, watch } from 'vue';
 import { useBoardStore } from '../../stores/useBoardStore';
-import useMemberStore from "../../stores/useMemberStore";
+import { useMemberStore } from "../../stores/useMemberStore";
 import BoardNav from './components/BoardNav.vue';
 import PageNav from './components/PageNav.vue';
 

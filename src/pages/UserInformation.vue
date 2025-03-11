@@ -16,10 +16,13 @@ const updateMessage = ref('');
 const form = ref({
     birth: '',
     password: '',
+    profileUrl: '',
     address: '',
     portfolio: '',
     record: ''
 });
+
+const selectedProfileImage = ref(null);
 
 const updateUserInfo = async () => {
     console.log("Form data to update:", form.value);
@@ -30,6 +33,33 @@ const updateUserInfo = async () => {
     } catch (error) {
         console.error("Update failed:", error);
         updateMessage.value = '회원정보 수정에 실패했습니다.';
+    }
+};
+
+const onProfileImageSelected = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    selectedProfileImage.value = file;
+
+    try {
+        const response = await axios.post('', {
+            fileName: file.name,
+            contentType: file.type
+        }, { withCredentials: true });
+
+        const { preSignedUrl, fileKey } = response.data;
+
+        await axios.put(preSignedUrl, file, {
+            headers: {
+                "Content-Type": file.type
+            }
+        });
+
+        form.value.profileUrl = fileKey;
+        console.log("Profile image uploaded successfully:", fileKey);
+    } catch (error) {
+        console.error("Error uploading profile image", error);
     }
 };
 
@@ -84,10 +114,11 @@ onMounted(() => {
             <div class="flex-1 p-6">
                 <div class="justify-around lg:justify-center items-center block md:flex">
                     <div class="flex items-center justify-center mb-6 md:mb-0">
-                        <div class="lg:mx-12"><img
-                                src="https://api.dicebear.com/7.x/avataaars/svg?seed=doe-doe-doe-example-com"
+                        <div class="lg:mx-12">
+                            <img :src="userInfo.profileUrl || 'https://api.dicebear.com/7.x/avataaars/svg?seed=doe-doe-doe-example-com'"
                                 alt="John Doe"
-                                class="rounded-full block h-auto w-full max-w-full bg-gray-100 dark:bg-slate-800"></div>
+                                class="rounded-full block h-auto w-full max-w-full bg-gray-100 dark:bg-slate-800" />
+                        </div>
                     </div>
                     <div class="flex items-center justify-center">
                         <div class="space-y-3 text-center md:text-left lg:mx-12">
@@ -107,13 +138,16 @@ onMounted(() => {
                         <div class="">
                             <div class="flex items-stretch justify-start relative"><label class="inline-flex"><a
                                         class="inline-flex justify-center items-center whitespace-nowrap focus:outline-none transition-colors focus:ring duration-150 border cursor-pointer rounded border-blue-600 dark:border-blue-500 ring-blue-300 dark:ring-blue-700 bg-blue-600 dark:bg-blue-500 text-white hover:bg-blue-700 hover:border-blue-700 hover:dark:bg-blue-600 hover:dark:border-blue-600 py-2 px-3"
-                                        disabled="false"><span
-                                            class="inline-flex justify-center items-center w-6 h-6"><svg
+                                        disabled="false">
+                                        <span class="inline-flex justify-center items-center w-6 h-6"><svg
                                                 viewBox="0 0 24 24" width="16" height="16" class="inline-block">
                                                 <path fill="currentColor"
                                                     d="M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z"></path>
-                                            </svg></span><span class="px-2">Upload</span></a><input type="file"
-                                        class="absolute top-0 left-0 w-full h-full opacity-0 outline-none cursor-pointer -z-1"></label><!---->
+                                            </svg>
+                                        </span>
+                                        <span class="px-2">Upload</span>
+                                    </a>
+                                    <input type="file" @change="onProfileImageSelected" class="absolute top-0 left-0 w-full h-full opacity-0 outline-none cursor-pointer -z-1"></label><!---->
                             </div>
                         </div>
                         <div class="text-xs text-gray-500 dark:text-slate-400 mt-1">Max 500kb</div>
@@ -293,8 +327,7 @@ onMounted(() => {
                             <div class="">
                                 <div class="relative">
                                     <input name="portfolio" autocomplete="portfolio" type="text"
-                                        v-model="form.portfolio"
-                                        :placeholder="userInfo?.portfolio || '포트폴리오 입력'"
+                                        v-model="form.portfolio" :placeholder="userInfo?.portfolio || '포트폴리오 입력'"
                                         class="px-3 py-2 max-w-full focus:ring focus:outline-none border-gray-700 rounded w-full dark:placeholder-gray-400 h-12 border bg-white dark:bg-slate-800 pl-10"><span
                                         class="inline-flex justify-center items-center w-10 h-12 absolute top-0 left-0 z-10 pointer-events-none text-gray-500 dark:text-slate-400"><svg
                                             viewBox="0 0 24 24" width="16" height="16" class="inline-block">
