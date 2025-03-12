@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import axios from "axios";
-
+import { useMemberStore } from "@/stores/useMemberStore";
 export const useBoardStore = defineStore("board", {
   state: () => ({
     BoardList: {},
@@ -10,31 +10,37 @@ export const useBoardStore = defineStore("board", {
     BoardDelete: {},
   }),
   actions: {
-    // 게시판 전체 목록을 가져오는 데이터
     async getBoardList(boardType, page = 1, size = 10) {
       try {
-        const response = await axios.get(`/api/board/list/${boardType}?page=${page}&size=${size}`);
+        const memberStore = useMemberStore();
+        console.log("현재 로그인한 토큰:", memberStore.token);
+        const token = memberStore.token;
+    
+        const response = await axios.get(`/api/board/list/${boardType}?page=${page}&size=${size}`, {
+          headers: {
+            Authorization: `Bearer ${token}`, // 토큰을 포함해서 요청 보내기
+          },
+        });
+    
         if (response.data && response.data.data) {
-          this.BoardList = response.data.data;  
+          this.BoardList = response.data.data;
         } else {
-          console.error('게시판 목록 로딩 실패');
+          console.error("게시판 목록 로딩 실패");
         }
       } catch (error) {
         console.error("Error fetching board list:", error);
       }
     },
-
-   // 게시글 상세 목록을 가져오는 데이터
-async getBoard(boardIdx) {
-  try {
-    const response = await axios.get(`/api/board/read/${boardIdx}`);
-    console.log("게시글 상세 데이터:", response.data); // 반환된 게시글 데이터 확인
-    this.Board = response.data;  // 데이터를 저장하여 상세 페이지에 사용
-  } catch (error) {
-    console.error("Error fetching board details:", error);
-  }
-},
-
+    
+    // 게시글 상세 목록을 가져오는 데이터
+    async getBoard(boardIdx) {
+      try {
+        const response = await axios.get(`/api/board/read/${boardIdx}`);
+        this.Board = response.data;
+      } catch (error) {
+        console.error("Error fetching board details:", error);
+      }
+    },
     // 게시글 댓글을 작성하는 데이터
     async getBoardComments(boardIdx, commentData) {
       try {
@@ -48,8 +54,7 @@ async getBoard(boardIdx) {
         console.error("Error posting comment:", error);
       }
     },
-
-
+    // 게시글 댓글을 수정하는 데이터
     async getCommentsUpdate(commentIdx, commentData) {
       try {
         const response = await axios.patch(`/api/comment/update/${commentIdx}`, commentData);
@@ -58,8 +63,7 @@ async getBoard(boardIdx) {
         console.error("Error updating comment:", error);
       }
     },
-
-   
+    // 게시글 댓글을 삭제하는 데이터
     async getCommentsDelete(commentIdx) {
       try {
         const response = await axios.delete(`/api/comment/delete/${commentIdx}`);
@@ -68,8 +72,7 @@ async getBoard(boardIdx) {
         console.error("Error deleting comment:", error);
       }
     },
-
-    
+    // 게시글 등록하는 데이터
     async getRegister(boardType, boardData) {
       try {
         const response = await axios.post(`/api/board/register/${boardType}`, boardData);
@@ -82,31 +85,14 @@ async getBoard(boardIdx) {
         console.error("Error registering board:", error);
       }
     },
- 
-    async deletePost(postId) {
+    // 게시글 삭제하는 데이터
+    async getBoardDelete(boardIdx) {
       try {
-        const response = await axios.delete(`/api/board/delete/${postId}`);
-        if (response.status === 200) {
-        
-          this.getBoardList(1, currentPage.value - 1, pageSize); 
-          alert('게시물이 삭제되었습니다.');
-          this.$router.push('/board');  
-        }
+        const response = await axios.delete(`/api/board/delete/${boardIdx}`);
+        this.BoardDelete = response.data;
       } catch (error) {
-        console.error("게시물을 삭제하는 데 실패했습니다", error);
-        alert('게시물 삭제에 실패했습니다.');
+        console.error("Error deleting board:", error);
       }
     },
-    
-    async fetchPostAndComments() {
-      const route = useRoute();
-      const boardStore = useBoardStore();
-      const postId = route.params.id; 
-    
-      
-      await boardStore.getBoard(postId); 
-      this.post = boardStore.Board || {};
-      await this.fetchComments(postId); 
-}, 
   },
 });
