@@ -27,7 +27,7 @@ const selectedProfileImage = ref(null);
 const updateUserInfo = async () => {
     console.log("Form data to update:", form.value);
     try {
-        const response = await axios.post('/user/update', form.value, { withCredentials: true });
+        const response = await axios.post('/api/user/update', form.value, { withCredentials: true });
         console.log("Update successful:", response.data);
         updateMessage.value = '회원정보가 성공적으로 수정되었습니다.';
     } catch (error) {
@@ -65,7 +65,7 @@ const onProfileImageSelected = async (event) => {
 
 const getUserInfo = async () => {
     try {
-        const response = await axios.get("/user/info", { withCredentials: true });
+        const response = await axios.get("http://localhost:8080/user/info", { withCredentials: true });
         userInfo.value = response.data.data;
 
         if (userInfo.value.role === 'ROLE_STUDENT') {
