@@ -7,36 +7,27 @@
   </tr>
 </template>
 
-<script>
-
-export default {
-  props: {
-    post: {
-      type: Object,
-      required: true
-    }
-  },
-  methods: {
-    formatDate(dateString) {
-      if (!dateString) return '';
-      // Adjust to your desired format
-      const d = new Date(dateString);
-      return d.toLocaleDateString();
-    }
-  }
-}
-
-
-</script>
-
 <script setup>
+import { defineProps } from 'vue';
 import { useRouter } from 'vue-router';
+
+const props = defineProps({
+  post: {
+    type: Object,
+    required: true
+  }
+});
 
 const router = useRouter();
 
 const navigate = () => {
-  router.push('/board/comment/register');
+  console.log('navigate to post', props.post.idx);
+  router.push(`/board/read/${props.post.idx}`);
+};
+
+const formatDate = (dateString) => {
+  if (!dateString) return '';
+  const d = new Date(dateString);
+  return d.toLocaleDateString();
 };
 </script>
-
-<style scoped></style>
