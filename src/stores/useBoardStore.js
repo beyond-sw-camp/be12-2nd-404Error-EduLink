@@ -87,13 +87,17 @@ async getBoard(boardIdx) {
       try {
         const response = await axios.delete(`/api/board/delete/${postId}`);
         if (response.status === 200) {
-          // 삭제 후 목록 갱신
-          this.getBoardList();
+        
+          this.getBoardList(1, currentPage.value - 1, pageSize); 
+          alert('게시물이 삭제되었습니다.');
+          this.$router.push('/board');  
         }
       } catch (error) {
         console.error("게시물을 삭제하는 데 실패했습니다", error);
+        alert('게시물 삭제에 실패했습니다.');
       }
     },
+    
     async fetchPostAndComments() {
       const route = useRoute();
       const boardStore = useBoardStore();

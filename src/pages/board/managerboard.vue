@@ -64,11 +64,13 @@
 
 <script setup>
 import { onMounted, computed, ref, watch } from 'vue';
-import { useBoardStore } from '../../stores/useBoardStore';
-import { useMemberStore } from "../../stores/useMemberStore";
+import { useRouter } from 'vue-router';
+import { useBoardStore } from '@/stores/useBoardStore';
+import { useMemberStore } from "@/stores/useMemberStore";
 import BoardNav from './components/BoardNav.vue';
 import PageNav from './components/PageNav.vue';
 
+const router = useRouter();
 const boardStore = useBoardStore();
 const memberStore = useMemberStore();
 
@@ -77,12 +79,20 @@ const posts = computed(() => {
     ? boardStore.BoardList.boardList
     : [];
 });
+
 const currentPage = ref(1);
 const pageSize = 20;
 
 // 게시물 삭제 함수
-const deletePost = (id) => {
-  boardStore.deletePost(id);
+const deletePost = async (id) => {
+  try {
+    
+    // 삭제가 완료되면 바로 deleteboard 페이지로 이동
+    router.push('/board/deleteboard');  
+  } catch (error) {
+    console.error('게시물 삭제 실패:', error);
+    alert("게시물 삭제에 실패했습니다.");
+  }
 };
 
 onMounted(() => {
