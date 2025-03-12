@@ -21,7 +21,7 @@ const dashboardRoute = computed(() => {
 
 const logout = async () => {
     try {
-        await axios.post('/logout', {}, { withCredentials: true });
+        await axios.post('/api/logout', {}, { withCredentials: true });
         memberStore.token = null;
         memberStore.role = null;
         memberStore.email = null;
