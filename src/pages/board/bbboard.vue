@@ -11,21 +11,21 @@
       <section class="p-6 xl:max-w-6xl xl:mx-auto">
         <section class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
           <div class="flex items-center justify-between mb-6">
-            <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-200">{{ post.title }}</h2>
+            <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-200">{{ boardStore.Board.title }}</h2>
             <div class="flex items-center space-x-2">
               <div class="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
                 <svg class="absolute w-12 h-12 text-gray-400 -left-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                   <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
                 </svg>
               </div>
-              <p class="text-sm text-gray-600 dark:text-gray-400">작성자: {{ post.writer }}<br>{{ post.date }}</p>
+              <p class="text-sm text-gray-600 dark:text-gray-400">작성자: {{ boardStore.Board.writer }}<br>{{ boardStore.Board.createdDate }}</p>
             </div>
           </div>
 
           <div class="space-y-6">
             <div class="pb-4">
-              <h3 class="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-4">{{ post.title }}</h3>
-              <p class="text-lg">{{ post.content }}</p>
+              <br>
+              <p class="text-lg">{{ boardStore.Board.content }}</p>
             </div>
           </div>
         </section>
@@ -114,6 +114,7 @@ export default {
       const boardStore = useBoardStore();
       const postId = route.params.id; 
 
+      console.log('게시글 ID:', boardIdx);
       await boardStore.getBoard(boardIdx); 
       this.post = post || {}; 
 
@@ -127,10 +128,27 @@ export default {
     }
   },
   onMounted() {
-    
+    console.log('게시판 페이지가 마운트되었습니다.');
     this.fetchPostAndComments();
   }
 };
+</script>
+
+<script setup>
+import { onMounted } from 'vue';
+import { useRoute } from 'vue-router';
+import { useBoardStore } from '@/stores/useBoardStore';
+
+const boardStore = useBoardStore();
+const route = useRoute();
+
+onMounted(() => {
+  const boardIdx = route.params.boardIdx;
+  console.log("Board ID from route:", boardIdx); 
+  if (boardIdx) {
+    boardStore.getBoard(boardIdx);
+  }
+});
 </script>
 
 <style scoped>

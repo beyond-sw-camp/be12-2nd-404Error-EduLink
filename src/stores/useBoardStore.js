@@ -36,7 +36,8 @@ export const useBoardStore = defineStore("board", {
     async getBoard(boardIdx) {
       try {
         const response = await axios.get(`/api/board/read/${boardIdx}`);
-        this.Board = response.data;
+        this.Board = response.data.data; // 게시글 상세 정보
+        console.log("게시글 상세 정보:", this.Board);
       } catch (error) {
         console.error("Error fetching board details:", error);
       }

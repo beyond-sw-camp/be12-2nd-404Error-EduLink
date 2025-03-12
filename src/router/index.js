@@ -59,43 +59,44 @@ const router = createRouter({
             meta: { asideComponent: StudentAside, hideAside: false, requiresAuth: true }, // StudentAside를 항상 사용
         },
 
-        { path: '/userinfo', component: UserinfoForm, meta: { requiresAuth: true }  },
+        { path: '/userinfo', component: UserinfoForm, meta: { requiresAuth: true } },
 
-        { path: '/inst/dashboard', component: InstructorDash, meta: { requiresAuth: true }  },
-        { path: '/inst/studinform', component: InstStudInform, meta: { requiresAuth: true }  },
-        { path: '/inst/studinform/:userIdx', component: InstStudInform, meta: { requiresAuth: true }  },
-        { path: '/inst/registercur', component: RegistCur, meta: { requiresAuth: true }  },
-        { path: '/inst/registercur/:courseIdx', component: RegistCur, meta: { requiresAuth: true }  },
-        { path: '/manager/dashboard', component: ManagerDashboard, meta: { requiresAuth: true }  },
-        { path: '/manager/studentList', component: StudentList, meta: { requiresAuth: true }  },
-        { path: '/manager/instructorList', component: InstructorList, meta: { requiresAuth: true }  },
-        { path: '/manager/managerList', component: ManagerList, meta: { requiresAuth: true }  },
+        { path: '/inst/dashboard', component: InstructorDash, meta: { requiresAuth: true } },
+        { path: '/inst/studinform', component: InstStudInform, meta: { requiresAuth: true } },
+        { path: '/inst/studinform/:userIdx', component: InstStudInform, meta: { requiresAuth: true } },
+        { path: '/inst/registercur', component: RegistCur, meta: { requiresAuth: true } },
+        { path: '/inst/registercur/:courseIdx', component: RegistCur, meta: { requiresAuth: true } },
+        { path: '/manager/dashboard', component: ManagerDashboard, meta: { requiresAuth: true } },
+        { path: '/manager/studentList', component: StudentList, meta: { requiresAuth: true } },
+        { path: '/manager/instructorList', component: InstructorList, meta: { requiresAuth: true } },
+        { path: '/manager/managerList', component: ManagerList, meta: { requiresAuth: true } },
 
-        { path: '/manager/attendanceManage', component: AttendanceManage, meta: { requiresAuth: true }  },
+        { path: '/manager/attendanceManage', component: AttendanceManage, meta: { requiresAuth: true } },
 
-        { path: '/manager/examList', component: ExamList, meta: { requiresAuth: true }  },
-        { path: '/manager/examDetails', component: ExamDetails, meta: { requiresAuth: true }  },
+        { path: '/manager/examList', component: ExamList, meta: { requiresAuth: true } },
+        { path: '/manager/examDetails', component: ExamDetails, meta: { requiresAuth: true } },
 
-        { path: '/manager/attendanceManage', component: AttendanceManage, meta: { requiresAuth: true }  },
-        { path: '/manager/leave-request', component: LeaveRequest, meta: { requiresAuth: true }  },
+        { path: '/manager/attendanceManage', component: AttendanceManage, meta: { requiresAuth: true } },
+        { path: '/manager/leave-request', component: LeaveRequest, meta: { requiresAuth: true } },
 
-        { path: '/bootcamp', component: bootcampList, meta: { requiresAuth: true }  },
-        { path: '/board/comment/register', component: bbboard, meta: { requiresAuth: true }  , name: 'BoardComments'},
-        { path: '/board/bbnoticeboard', component: bbnoticeboard, meta: { requiresAuth: true }  },
-        { path: '/board/register', component: boardform, name:'boardregister', meta: { requiresAuth: true }  },
-        { path: '/board/deleteboard', component: deleteboard, meta: { requiresAuth: true }  },
-        { path: '/board/freeboard', component: freeboard, meta: { requiresAuth: true }  },
-        { path: '/board/managerboard', component: managerboard, meta: { requiresAuth: true }  },
-        { path: '/board/notice', component: notice, meta: { requiresAuth: true }  },
-        { path: '/board/project', component: project, meta: { requiresAuth: true }  },
+        { path: '/bootcamp', component: bootcampList, meta: { requiresAuth: true } },
+        { path: '/board/read/', component: bbboard, meta: { requiresAuth: true } },
+        { path: '/board/read/:boardIdx', component: bbboard, meta: { requiresAuth: true } },
+        { path: '/board/bbnoticeboard', component: bbnoticeboard, meta: { requiresAuth: true } },
+        { path: '/board/register', component: boardform, name: 'boardregister', meta: { requiresAuth: true } },
+        { path: '/board/deleteboard', component: deleteboard, meta: { requiresAuth: true } },
+        { path: '/board/freeboard', component: freeboard, meta: { requiresAuth: true } },
+        { path: '/board/managerboard', component: managerboard, meta: { requiresAuth: true } },
+        { path: '/board/notice', component: notice, meta: { requiresAuth: true } },
+        { path: '/board/project', component: project, meta: { requiresAuth: true } },
 
 
-        { path: '/board/data', component: data, meta: { requiresAuth: true }  },
+        { path: '/board/data', component: data, meta: { requiresAuth: true } },
 
-        { path: '/board/question', component: question, meta: { requiresAuth: true }  },
+        { path: '/board/question', component: question, meta: { requiresAuth: true } },
 
-        { path: '/common', component: common, meta: { requiresAuth: true }  },
-        { path: '/bootcampInfo', component: BootcampInfo, meta: { asideComponent: StudentAside,requiresAuth: true }  },
+        { path: '/common', component: common, meta: { requiresAuth: true } },
+        { path: '/bootcampInfo', component: BootcampInfo, meta: { asideComponent: StudentAside, requiresAuth: true } },
 
 
 
