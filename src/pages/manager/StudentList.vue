@@ -6,7 +6,7 @@
     <div style="margin-top: 30px;" class="student-list-container">
       <h1 class="page-title">학생 관리</h1>
 
-      <!-- 수강 신청한 학생 테이블 -->
+      <!-- 수강 신청한 학생 테이블 (더미 데이터) -->
       <div class="table-section">
         <h2 class="table-title">수강 신청한 학생</h2>
         <table class="custom-table">
@@ -22,14 +22,19 @@
               <td>{{ student.name }}</td>
               <td>{{ student.contact }}</td>
               <td>
-                <button @click.stop="showConfirmModal('approve', student)" class="approve-button">승인</button>
+                <button
+                  @click.stop="showConfirmModal('approve', student)"
+                  class="approve-button"
+                >
+                  승인
+                </button>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <!-- 현재 수강 중인 학생 테이블 -->
+      <!-- 현재 수강 중인 학생 테이블 (백엔드 API 사용) -->
       <div class="table-section">
         <h2 class="table-title">현재 수강 중인 학생</h2>
         <table class="custom-table">
@@ -37,21 +42,41 @@
             <tr>
               <th>학생 이름</th>
               <th>연락처</th>
-              <th>출석률</th>
+              <th>출석</th>
               <th>관리</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="student in currentStudents" :key="student.id" @click="openModal(student)">
+            <tr
+              v-for="student in currentStudents"
+              :key="student.idx"
+              @click="openModal(student)"
+            >
               <td>{{ student.name }}</td>
-              <td>{{ student.contact }}</td>
-              <td>{{ student.attendanceRate }}</td>
+              <td>{{ student.contact ? student.contact : '-' }}</td>
               <td>
-                <button @click.stop="showConfirmModal('expel', student)" class="expel-button">제적 처리</button>
+                <!-- studentDetail.attendance 값이 있다면 표시 -->
+                {{ student.studentDetail && student.studentDetail.attendance ? student.studentDetail.attendance + '회' : '-' }}
+              </td>
+              <td>
+                <button
+                  @click.stop="showConfirmModal('expel', student)"
+                  class="expel-button"
+                >
+                  제적 처리
+                </button>
               </td>
             </tr>
           </tbody>
         </table>
+        <!-- 페이지 네비게이션 -->
+        <div>
+          <PageNavi
+            :currentPage="currentStudentPageDisplay"
+            :totalPages="totalStudentPages"
+            @updatePage="handleUpdateStudentPage"
+          />
+        </div>
       </div>
 
       <!-- 학생 상세 정보 모달 -->
@@ -63,14 +88,17 @@
           </div>
           <div class="modal-body">
             <p><strong>이름:</strong> {{ selectedStudent.name }}</p>
-            <p><strong>생년월일:</strong> {{ selectedStudent.birthDate }}</p>
+            <p><strong>생년월일:</strong> {{ selectedStudent.birth }}</p>
             <p><strong>이메일:</strong> {{ selectedStudent.email }}</p>
-            <p><strong>연락처:</strong> {{ selectedStudent.contact }}</p>
-            <p><strong>출석률:</strong> {{ selectedStudent.attendanceRate }}</p>
-            <p><strong>전체 출석일:</strong> {{ selectedStudent.totalAttendanceDays }}</p>
-            <p><strong>현재 출석일:</strong> {{ selectedStudent.currentAttendanceDays }}</p>
-            <p><strong>결석일:</strong> {{ selectedStudent.absentDays }}</p>
-            <p><strong>남은 휴가 수:</strong> {{ selectedStudent.remainingLeaves }}</p>
+            <p><strong>연락처:</strong> {{ selectedStudent.contact ? selectedStudent.contact : '-' }}</p>
+            <p>
+              <strong>출석:</strong>
+              {{ selectedStudent.studentDetail && selectedStudent.studentDetail.attendance ? selectedStudent.studentDetail.attendance + '회' : '-' }}
+            </p>
+            <p>
+              <strong>남은 휴가 수:</strong>
+              {{ selectedStudent.studentDetail && selectedStudent.studentDetail.vacationLeft ? selectedStudent.studentDetail.vacationLeft + '일' : '-' }}
+            </p>
           </div>
           <div class="modal-footer">
             <button class="close-modal-button" @click="closeModal">닫기</button>
@@ -87,7 +115,9 @@
           </div>
           <div style="text-align: center;" class="modal-body">
             <p>
-              정말로 <strong>{{ confirmModal.student.name }}</strong> 님의 {{ confirmModal.action === 'approve' ? '수강신청을 승인' : '제적 처리를 승인' }} 하시겠습니까?<br>
+              정말로 <strong>{{ confirmModal.student.name }}</strong> 님의
+              {{ confirmModal.action === 'approve' ? '수강신청을 승인' : '제적 처리를 승인' }}
+              하시겠습니까?<br>
             </p>
           </div>
           <div class="modal-footer">
@@ -100,54 +130,64 @@
   </div>
 </template>
 
-
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted, computed } from "vue";
+import PageNavi from "./PageNavi.vue";
 
-const currentStudents = ref([
-  { id: 1, name: "학생01", email: "student01@example.com", contact: "010-1234-5678", birthDate: "1995-01-01", attendanceRate: "92%", totalAttendanceDays: 30, currentAttendanceDays: 27, absentDays: 2, remainingLeaves: 1 },
-  { id: 2, name: "학생02", email: "student02@example.com", contact: "010-5678-1234", birthDate: "1996-02-13", attendanceRate: "85%", totalAttendanceDays: 30, currentAttendanceDays: 24, absentDays: 3, remainingLeaves: 0 },
-  { id: 3, name: "학생03", email: "student03@example.com", contact: "010-8765-4321", birthDate: "1997-03-25", attendanceRate: "90%", totalAttendanceDays: 30, currentAttendanceDays: 26, absentDays: 1, remainingLeaves: 2 },
-  { id: 4, name: "학생04", email: "student04@example.com", contact: "010-2345-6789", birthDate: "1994-07-11", attendanceRate: "87%", totalAttendanceDays: 30, currentAttendanceDays: 25, absentDays: 2, remainingLeaves: 1 },
-  { id: 5, name: "학생05", email: "student05@example.com", contact: "010-8765-4321", birthDate: "1992-12-09", attendanceRate: "93%", totalAttendanceDays: 30, currentAttendanceDays: 28, absentDays: 1, remainingLeaves: 0 },
-  { id: 6, name: "학생06", email: "student06@example.com", contact: "010-3333-4444", birthDate: "1998-01-29", attendanceRate: "95%", totalAttendanceDays: 30, currentAttendanceDays: 28, absentDays: 0, remainingLeaves: 2 },
-  { id: 7, name: "학생07", email: "student07@example.com", contact: "010-5555-6666", birthDate: "1993-06-22", attendanceRate: "82%", totalAttendanceDays: 30, currentAttendanceDays: 23, absentDays: 2, remainingLeaves: 1 },
-  { id: 8, name: "학생08", email: "student08@example.com", contact: "010-7777-8888", birthDate: "1999-11-14", attendanceRate: "88%", totalAttendanceDays: 30, currentAttendanceDays: 26, absentDays: 3, remainingLeaves: 0 },
-  { id: 9, name: "학생09", email: "student09@example.com", contact: "010-9999-0000", birthDate: "1990-04-17", attendanceRate: "90%", totalAttendanceDays: 30, currentAttendanceDays: 27, absentDays: 2, remainingLeaves: 1 },
-  { id: 10, name: "학생10", email: "student10@example.com", contact: "010-1111-2222", birthDate: "1996-02-23", attendanceRate: "89%", totalAttendanceDays: 30, currentAttendanceDays: 25, absentDays: 1, remainingLeaves: 2 },
-  { id: 11, name: "학생11", email: "student11@example.com", contact: "010-5656-7878", birthDate: "1998-07-07", attendanceRate: "86%", totalAttendanceDays: 30, currentAttendanceDays: 24, absentDays: 3, remainingLeaves: 1 },
-  { id: 12, name: "학생12", email: "student12@example.com", contact: "010-9898-7676", birthDate: "1992-08-19", attendanceRate: "83%", totalAttendanceDays: 30, currentAttendanceDays: 22, absentDays: 2, remainingLeaves: 0 },
-  { id: 13, name: "학생13", email: "student13@example.com", contact: "010-3434-5656", birthDate: "1997-03-08", attendanceRate: "85%", totalAttendanceDays: 30, currentAttendanceDays: 23, absentDays: 3, remainingLeaves: 2 },
-  { id: 14, name: "학생14", email: "student14@example.com", contact: "010-7878-9898", birthDate: "1995-12-25", attendanceRate: "88%", totalAttendanceDays: 30, currentAttendanceDays: 26, absentDays: 1, remainingLeaves: 1 },
-  { id: 15, name: "학생15", email: "student15@example.com", contact: "010-1231-5678", birthDate: "1999-01-11", attendanceRate: "80%", totalAttendanceDays: 30, currentAttendanceDays: 21, absentDays: 3, remainingLeaves: 0 },
-  { id: 16, name: "학생16", email: "student16@example.com", contact: "010-5672-8910", birthDate: "1994-09-05", attendanceRate: "95%", totalAttendanceDays: 30, currentAttendanceDays: 28, absentDays: 0, remainingLeaves: 1 },
-  { id: 17, name: "학생17", email: "student17@example.com", contact: "010-0987-1234", birthDate: "1990-10-03", attendanceRate: "78%", totalAttendanceDays: 30, currentAttendanceDays: 20, absentDays: 2, remainingLeaves: 2 },
-  { id: 18, name: "학생18", email: "student18@example.com", contact: "010-4567-8901", birthDate: "1993-11-16", attendanceRate: "87%", totalAttendanceDays: 30, currentAttendanceDays: 26, absentDays: 1, remainingLeaves: 1 },
-  { id: 19, name: "학생19", email: "student19@example.com", contact: "010-7890-1234", birthDate: "1995-05-20", attendanceRate: "85%", totalAttendanceDays: 30, currentAttendanceDays: 25, absentDays: 2, remainingLeaves: 0 },
-  { id: 20, name: "학생20", email: "student20@example.com", contact: "010-1010-2020", birthDate: "1991-12-12", attendanceRate: "88%", totalAttendanceDays: 30, currentAttendanceDays: 26, absentDays: 2, remainingLeaves: 1 },
-  { id: 21, name: "학생21", email: "student21@example.com", contact: "010-3030-4040", birthDate: "1997-01-25", attendanceRate: "93%", totalAttendanceDays: 30, currentAttendanceDays: 28, absentDays: 0, remainingLeaves: 0 },
-  { id: 22, name: "학생22", email: "student22@example.com", contact: "010-5050-6060", birthDate: "1996-02-15", attendanceRate: "89%", totalAttendanceDays: 30, currentAttendanceDays: 26, absentDays: 2, remainingLeaves: 2 },
-  { id: 23, name: "학생23", email: "student23@example.com", contact: "010-7070-8080", birthDate: "1994-03-27", attendanceRate: "82%", totalAttendanceDays: 30, currentAttendanceDays: 22, absentDays: 3, remainingLeaves: 1 },
-  { id: 24, name: "학생24", email: "student24@example.com", contact: "010-9090-0101", birthDate: "1999-10-14", attendanceRate: "91%", totalAttendanceDays: 30, currentAttendanceDays: 27, absentDays: 1, remainingLeaves: 0 },
-  { id: 25, name: "학생25", email: "student25@example.com", contact: "010-2121-3232", birthDate: "1993-07-18", attendanceRate: "85%", totalAttendanceDays: 30, currentAttendanceDays: 24, absentDays: 2, remainingLeaves: 2 },
-  { id: 26, name: "학생26", email: "student26@example.com", contact: "010-4343-5454", birthDate: "1992-08-30", attendanceRate: "86%", totalAttendanceDays: 30, currentAttendanceDays: 25, absentDays: 3, remainingLeaves: 1 },
-]); // 기존 데이터
+// 기존 더미 데이터 for 수강 신청한 학생
 const appliedStudents = ref([
-        { id: 4, name: "학생27", contact: "010-9876-5432" },
-        { id: 5, name: "학생28", contact: "010-1234-8765" },
-      ]); // 기존 데이터
+  { id: 4, name: "학생27", contact: "010-9876-5432" },
+  { id: 5, name: "학생28", contact: "010-1234-8765" },
+]);
 
-      const selectedStudent = ref(null);
+// 현재 수강 중인 학생: API에서 불러옴
+const currentStudents = ref([]);
+
+// 모달 관련 상태
+const selectedStudent = ref(null);
 const confirmModal = ref({
   visible: false,
   action: "",
   student: null,
 });
 
+// 페이지네비게이션 관련
+const currentStudentPage = ref(0); // 0-based index
+const totalStudentPages = ref(0);
+
+// getStudents 함수 (사이즈 10)
+import axios from "axios";
+async function getStudents(page = 0, size = 10) {
+  try {
+    const response = await axios.get("/api/student/list", {
+      params: { page, size },
+    });
+    if (response.data.isSuccess) {
+      const data = response.data.data;
+      // 실제 학생 목록은 data.studentList에 있음
+      currentStudents.value = data.studentList;
+      currentStudentPage.value = data.page;
+      totalStudentPages.value = data.totalPages;
+    } else {
+      console.error("학생 목록 요청 실패:", response.data.message);
+    }
+  } catch (error) {
+    console.error("학생 목록 API 호출 중 오류 발생:", error);
+  }
+}
+
+// 1-based 표시용 계산값
+const currentStudentPageDisplay = computed(() => currentStudentPage.value + 1);
+
+// 초기 데이터 로드
+onMounted(() => {
+  getStudents(0, 3);
+});
+
+// 모달 관련 함수
 const openModal = (student) => {
   selectedStudent.value = student;
 };
-
 const closeModal = () => {
   selectedStudent.value = null;
 };
@@ -155,7 +195,6 @@ const closeModal = () => {
 const showConfirmModal = (action, student) => {
   confirmModal.value = { visible: true, action, student };
 };
-
 const closeConfirmModal = () => {
   confirmModal.value = { visible: false, action: "", student: null };
 };
@@ -165,6 +204,7 @@ const confirmAction = () => {
   if (action === "approve") {
     currentStudents.value.push({
       ...student,
+      // 임의의 초기값 (실제 API 연동 시 수정)
       attendanceRate: "0%",
       totalAttendanceDays: 0,
       currentAttendanceDays: 0,
@@ -179,7 +219,14 @@ const confirmAction = () => {
   }
   closeConfirmModal();
 };
+
+// 페이지네비게이션 핸들러
+const handleUpdateStudentPage = (page) => {
+  // PageNavi에서 전달받은 page는 1-based, API 호출 시 0-based로 변환
+  getStudents(page - 1, 10);
+};
 </script>
+
 
 
 <style scoped>
