@@ -1,5 +1,5 @@
 <template>
-  <div class="xl:pl-60 pt-14 min-h-screen w-full transition-position bg-gray-50 dark:bg-slate-800 dark:text-slate-100">
+   <div class="xl:pl-60 pt-14 min-h-screen w-full transition-position bg-gray-50 dark:bg-slate-800 dark:text-slate-100">
     <BoardNav :selectedTab="'Profile'" />
 
     <section class="w-full max-w-7xl mx-auto">
@@ -18,8 +18,8 @@
 
       <div class="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-xl">
         <router-link to="/board/register"
-          class="inline-flex justify-center items-center whitespace-nowrap focus:outline-none transition-colors focus:ring duration-150 border cursor-pointer rounded-md border-blue-600 dark:border-blue-500 ring-blue-300 dark:ring-blue-700 bg-blue-600 dark:bg-blue-500 text-white hover:bg-blue-700 hover:border-blue-700 hover:dark:bg-blue-600 hover:dark:border-blue-600 py-2 px-6 text-sm font-medium">
-          글쓰기
+        class="inline-flex justify-center items-center whitespace-nowrap focus:outline-none transition-colors focus:ring duration-150 border cursor-pointer rounded-md border-blue-600 dark:border-blue-500 ring-blue-300 dark:ring-blue-700 bg-blue-600 dark:bg-blue-500 text-white hover:bg-blue-700 hover:border-blue-700 hover:dark:bg-blue-600 hover:dark:border-blue-600 py-2 px-6 text-sm font-medium">
+        글쓰기
         </router-link>
 
         <div class="overflow-x-auto mt-6">
@@ -48,26 +48,23 @@
 <script setup>
 import { onMounted, computed, ref, watch } from 'vue';
 import { useBoardStore } from "@/stores/useBoardStore";
-import BoardNav from './components/BoardNav.vue';
 import TableRow from './components/TableRow.vue';
 import PageNav from './components/PageNav.vue';
+import BoardNav from "./components/BoardNav.vue";
+
 
 const boardStore = useBoardStore();
-
 const posts = computed(() => {
   return boardStore.BoardList && boardStore.BoardList.boardList
     ? boardStore.BoardList.boardList
     : [];
 });
 const columns = ['번호', '글쓴이', '제목', '작성 일자'];
-
 const currentPage = ref(1);
 const pageSize = 20;
-
 onMounted(() => {
   boardStore.getBoardList(1, currentPage.value - 1, pageSize);
 });
-
 watch(currentPage, (newVal) => {
   boardStore.getBoardList(1, newVal, pageSize);
 });
