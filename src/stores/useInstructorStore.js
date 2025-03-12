@@ -52,7 +52,7 @@ export const useInstructorStore = defineStore('instructor', {
             this.course_res = response.data;
         },
         async fetchCurr(subject) {
-            const response = await axios.get(`/api/course/curriculum?subject=${subject}`);
+            const response = await axios.get(`/api/course/curriculumRe?subject=${subject}`);
             this.curr_res = response.data;
         },
         async fetchRegisterCurr(curr_info) {
