@@ -15,27 +15,35 @@
         <table class="custom-table">
           <thead>
             <tr>
+              <th>번호</th>
               <th>이름</th>
-              <th>연락처</th>
               <th>이메일</th>
-              <th>담당중인 수업</th>
-              <th>담당 반</th>
+              <th>포트폴리오</th>
+              <th>기록</th>
               <th>관리</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="instructor in instructors" :key="instructor.id" @click="openDetailsModal(instructor)">
+            <tr v-for="instructor in instructors" :key="instructor.userIdx" @click="openDetailsModal(instructor)">
+              <td>{{ instructor.userIdx }}</td>
               <td>{{ instructor.name }}</td>
-              <td>{{ instructor.contact }}</td>
               <td>{{ instructor.email }}</td>
-              <td>{{ instructor.currentClasses }}</td>
-              <td>{{ instructor.assignedClasses }}</td>
+              <td>{{ instructor.portfolio }}</td>
+              <td>{{ instructor.record }}</td>
               <td>
                 <button @click.stop="showConfirmModal(instructor)" class="delete-button">강사 삭제</button>
               </td>
             </tr>
           </tbody>
         </table>
+        <!-- PageNavi 컴포넌트 사용 -->
+        <div>
+          <PageNavi 
+            :currentPage="instructorCurrentPageDisplay" 
+            :totalPages="instructorTotalPages"
+            @updatePage="handleUpdateInstructorPage" 
+          />
+        </div>
       </div>
 
       <!-- 강사 상세 정보 모달 -->
@@ -46,12 +54,11 @@
             <button class="close-button" @click="closeDetailsModal">&times;</button>
           </div>
           <div class="modal-body">
+            <p><strong>번호:</strong> {{ selectedInstructor.userIdx }}</p>
             <p><strong>이름:</strong> {{ selectedInstructor.name }}</p>
-            <p><strong>연락처:</strong> {{ selectedInstructor.contact }}</p>
             <p><strong>이메일:</strong> {{ selectedInstructor.email }}</p>
-            <p><strong>담당중인 수업:</strong> {{ selectedInstructor.currentClasses }}</p>
-            <p><strong>담당 반:</strong> {{ selectedInstructor.assignedClasses }}</p>
-            <p><strong>추가 정보:</strong> {{ selectedInstructor.details }}</p>
+            <p><strong>포트폴리오:</strong> {{ selectedInstructor.portfolio }}</p>
+            <p><strong>기록:</strong> {{ selectedInstructor.record }}</p>
           </div>
           <div class="modal-footer">
             <button class="close-modal-button" @click="closeDetailsModal">닫기</button>
@@ -67,9 +74,7 @@
             <button class="close-button" @click="closeDeleteConfirmModal">&times;</button>
           </div>
           <div class="modal-body">
-            <p>
-              정말로 <strong>{{ instructorToDelete?.name }}</strong> 강사를 삭제하시겠습니까?<br>
-            </p>
+            <p>정말로 <strong>{{ instructorToDelete?.name }}</strong> 강사를 삭제하시겠습니까?</p>
           </div>
           <div class="modal-footer">
             <button class="delete-button" @click="deleteInstructor(instructorToDelete)">확인</button>
@@ -92,20 +97,16 @@
                 <input v-model="newInstructor.name" id="name" type="text" required />
               </div>
               <div class="form-group">
-                <label for="contact">연락처</label>
-                <input v-model="newInstructor.contact" id="contact" type="text" required />
-              </div>
-              <div class="form-group">
                 <label for="email">이메일</label>
                 <input v-model="newInstructor.email" id="email" type="email" required />
               </div>
               <div class="form-group">
-                <label for="classes">담당 수업</label>
-                <input v-model="newInstructor.currentClasses" id="classes" type="text" required />
+                <label for="portfolio">포트폴리오</label>
+                <input v-model="newInstructor.portfolio" id="portfolio" type="text" required />
               </div>
               <div class="form-group">
-                <label for="assigned-classes">담당 반</label>
-                <input v-model="newInstructor.assignedClasses" id="assigned-classes" type="text" required />
+                <label for="record">기록</label>
+                <input v-model="newInstructor.record" id="record" type="text" required />
               </div>
             </div>
             <div class="modal-footer">
@@ -115,118 +116,97 @@
           </form>
         </div>
       </div>
+
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      instructors: [
-        {
-          id: 1,
-          name: "이강사",
-          contact: "010-1234-5678",
-          email: "instructor1@example.com",
-          currentClasses: "프로그래밍 기초",
-          assignedClasses: "A반",
-          details: "프로그래밍 기초 수업 강사",
-        },
-        {
-          id: 2,
-          name: "박강사",
-          contact: "010-5678-1234",
-          email: "instructor2@example.com",
-          currentClasses: "웹 개발 입문",
-          assignedClasses: "B반",
-          details: "웹 개발 입문 수업 강사",
-        },
-        {
-          id: 3,
-          name: "김강사",
-          contact: "010-5234-1234",
-          email: "instructor3@example.com",
-          currentClasses: "데이터 베이스 기초",
-          assignedClasses: "C반",
-          details: "MariaDB로 배우는 데이터 베이스 기초",
-        },
-        {
-          id: 4,
-          name: "최강사",
-          contact: "010-5678-4124",
-          email: "instructor4@example.com",
-          currentClasses: "리눅스 기초",
-          assignedClasses: "D반",
-          details: "Ubuntu로 배우는 리눅스 기초 명령어",
-        },
-        {
-          id: 5,
-          name: "오강사",
-          contact: "010-4128-5224",
-          email: "instructor5@example.com",
-          currentClasses: "백엔드 개발 입문",
-          assignedClasses: "E반",
-          details: "자바로 배우는 백엔드 개발 기초",
-        },
-      ],
-      selectedInstructor: null,
-      showRegisterModal: false,
-      newInstructor: {
-        name: "",
-        contact: "",
-        email: "",
-        currentClasses: "",
-        assignedClasses: "",
-      },
-      showDeleteConfirmModal: false,
-      instructorToDelete: null,
-    };
-  },
-  methods: {
-    openDetailsModal(instructor) {
-      this.selectedInstructor = instructor;
-    },
-    closeDetailsModal() {
-      this.selectedInstructor = null;
-    },
-    openRegisterModal() {
-      this.showRegisterModal = true;
-    },
-    closeRegisterModal() {
-      this.showRegisterModal = false;
-    },
-    registerInstructor() {
-      this.instructors.push({
-        ...this.newInstructor,
-        id: Date.now(),
-        details: "새로 등록된 강사",
-      });
-      this.newInstructor = {
-        name: "",
-        contact: "",
-        email: "",
-        currentClasses: "",
-        assignedClasses: "",
-      };
-      this.closeRegisterModal();
-    },
-    showConfirmModal(instructor) {
-      this.instructorToDelete = instructor;
-      this.showDeleteConfirmModal = true;
-    },
-    closeDeleteConfirmModal() {
-      this.instructorToDelete = null;
-      this.showDeleteConfirmModal = false;
-    },
-    deleteInstructor(instructor) {
-      this.instructors = this.instructors.filter((i) => i.id !== instructor.id);
-      this.closeDeleteConfirmModal();
-      alert(`${instructor.name} 강사를 삭제했습니다.`);
-    },
-  },
-};
+<script setup>
+import { ref, onMounted, computed } from "vue";
+import { useManagerStore } from "../../stores/useManagerStore.js";
+import PageNavi from "./PageNavi.vue";
+
+const managerStore = useManagerStore();
+
+// 강사 목록 및 페이징 상태 (store에서 관리)
+const instructors = computed(() => managerStore.instructors);
+const currentInstructorPage = computed(() => managerStore.currentInstructorPage); // 0-based index
+const instructorTotalPages = computed(() => managerStore.totalInstructorPages);
+// 화면에 표시할 때 1-based로 변환
+const instructorCurrentPageDisplay = computed(() => currentInstructorPage.value + 1);
+
+// 초기 데이터 로드 (사이즈 10)
+onMounted(() => {
+  managerStore.getInstructors(0, 10);
+});
+
+// 로컬 모달 상태 및 등록 데이터
+const selectedInstructor = ref(null);
+const showRegisterModal = ref(false);
+const newInstructor = ref({
+  name: "",
+  email: "",
+  portfolio: "",
+  record: "",
+});
+const showDeleteConfirmModal = ref(false);
+const instructorToDelete = ref(null);
+
+function openDetailsModal(instructor) {
+  selectedInstructor.value = instructor;
+}
+function closeDetailsModal() {
+  selectedInstructor.value = null;
+}
+function openRegisterModal() {
+  showRegisterModal.value = true;
+}
+function closeRegisterModal() {
+  showRegisterModal.value = false;
+}
+function registerInstructor() {
+  // 실제 등록 API 호출 시 axios.post("/api/manager/instructor", newInstructor.value) 등으로 처리
+  // 여기서는 임시로 store의 instructors 배열에 추가
+  const instructor = {
+    ...newInstructor.value,
+    userIdx: Date.now(), // 임시 ID 생성
+  };
+  managerStore.instructors.push(instructor);
+  newInstructor.value = {
+    name: "",
+    email: "",
+    portfolio: "",
+    record: "",
+  };
+  closeRegisterModal();
+}
+function showConfirmModal(instructor) {
+  instructorToDelete.value = instructor;
+  showDeleteConfirmModal.value = true;
+}
+function closeDeleteConfirmModal() {
+  instructorToDelete.value = null;
+  showDeleteConfirmModal.value = false;
+}
+function deleteInstructor(instructor) {
+  // 실제 삭제 API 호출 시 axios.delete(`/api/manager/instructor/${instructor.userIdx}`) 등으로 처리
+  const index = managerStore.instructors.findIndex((i) => i.userIdx === instructor.userIdx);
+  if (index !== -1) {
+    managerStore.instructors.splice(index, 1);
+    alert(`${instructor.name} 강사를 삭제했습니다.`);
+  }
+  closeDeleteConfirmModal();
+}
+function handleUpdateInstructorPage(page) {
+  // PageNavi에서 받은 page는 1-based, API 호출 시 0-based로 변환
+  managerStore.getInstructors(page - 1, 10);
+}
 </script>
+
+<style scoped>
+/* 기존 CSS 그대로 유지 */
+</style>
+
 
 <style scoped>
 /* 공통 스타일 */

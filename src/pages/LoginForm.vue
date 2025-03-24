@@ -1,12 +1,12 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { usememberStore } from '../stores/useMemberStore';
+import { useMemberStore } from '../stores/useMemberStore';
 
-const memberStore = usememberStore()
+const memberStore = useMemberStore()
 const router = useRouter();
 const loginUser = ref({
-    nickname: '',
+    email: '',
     password: '',
 });
 const userRole = ref('student');
@@ -15,9 +15,11 @@ const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-        const result = await memberStore.Login(loginUser.value);
+        const result = await memberStore.login(loginUser.value);
         if (result.isSuccess) {
             console.log('로그인 성공');
+            console.log(result.role);
+            login(result.role);
         }
         else {
             console.log('로그인 실패');
@@ -27,20 +29,19 @@ const handleSubmit = async (event) => {
         console.error('Login failed: ', error);
     }
     finally {
-        login();
     }
 };
 
-const login = () => {
+const login = (role) => {
     let dashboardUrl = '';
-    switch (userRole.value) {
-        case 'student':
+    switch (role) {
+        case 'ROLE_STUDENT':
             dashboardUrl = '/studentdashboard';
             break;
-        case 'instructor':
+        case 'ROLE_INSTRUCTOR':
             dashboardUrl = '/inst/dashboard';
             break;
-        case 'manager':
+        case 'ROLE_MANAGER':
             dashboardUrl = '/manager/dashboard';
             break;
     }
@@ -55,10 +56,10 @@ const login = () => {
             <form @submit="handleSubmit"
                 class="rounded-2xl flex-col dark:bg-slate-900/70 bg-white flex w-11/12 md:w-7/12 lg:w-6/12 xl:w-4/12 shadow-2xl">
                 <div class="flex-1 p-6">
-                    <div class="mb-6 last:mb-0"><label class="block font-bold mb-2">Login</label>
+                    <div class="mb-6 last:mb-0"><label class="block font-bold mb-2">E-Mail</label>
                         <div class="">
                             <div class="relative">
-                                <input v-model="loginUser.nickname" name="nickname" autocomplete="username" type="text"
+                                <input v-model="loginUser.email" name="email" autocomplete="email" type="text"
                                     class="px-3 py-2 max-w-full focus:ring focus:outline-none border-gray-700 rounded w-full dark:placeholder-gray-400 h-12 border bg-white dark:bg-slate-800 pl-10">
                                 <span
                                     class="inline-flex justify-center items-center w-10 h-12 absolute top-0 left-0 z-10 pointer-events-none text-gray-500 dark:text-slate-400">
@@ -70,7 +71,7 @@ const login = () => {
                                 </span>
                             </div>
                         </div>
-                        <div class="text-xs text-gray-500 dark:text-slate-400 mt-1">Please enter your login</div>
+                        <div class="text-xs text-gray-500 dark:text-slate-400 mt-1">Please enter your email</div>
                     </div>
                     <div class="mb-6 last:mb-0">
                         <label class="block font-bold mb-2">Password</label>
@@ -108,11 +109,6 @@ const login = () => {
                             disabled="false">
                             <span class="px-2">회원가입</span>
                         </a>
-                        <select v-model="userRole" class="mr-3 border border-gray-300 rounded px-2 py-1">
-                            <option value="student">학생</option>
-                            <option value="instructor">강사</option>
-                            <option value="manager">관리자</option>
-                        </select>
                     </div>
                 </footer>
             </form>

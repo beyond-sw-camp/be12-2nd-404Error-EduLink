@@ -1,5 +1,23 @@
 <script setup>
+import { useRouter } from 'vue-router';
+import axios from 'axios';
+import { useMemberStore } from '@/stores/useMemberStore';
 
+const router = useRouter();
+const memberStore = useMemberStore();
+
+const logout = async () => {
+  try {
+    await axios.post('/logout', {}, { withCredentials: true });
+    memberStore.token = null;
+    memberStore.role = null;
+    memberStore.email = null;
+    memberStore.name = null;
+    router.push("/");
+  } catch (error) {
+    console.error("Logout error:", error);
+  }
+};
 </script>
 
 <template>
@@ -51,12 +69,7 @@
                                 src="https://api.dicebear.com/7.x/avataaars/svg?seed=doe-doe-doe-example-com"
                                 alt="John Doe"
                                 class="rounded-full block h-auto w-full max-w-full bg-gray-100 dark:bg-slate-800"></div>
-                        <!--v-if--><span class="px-2 transition-colors">John Doe</span><span
-                            class="inline-flex justify-center items-center w-6 h-6 hidden lg:inline-flex transition-colors"><svg
-                                viewBox="0 0 24 24" width="16" height="16" class="inline-block">
-                                <path fill="currentColor"
-                                    d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"></path>
-                            </svg></span>
+                        <!--v-if--><span class="px-2 transition-colors">{{ memberStore.name }}</span>
                     </a>
                     <div
                         class="text-sm border-b border-gray-100 lg:border lg:bg-white lg:absolute lg:top-full lg:left-0 lg:min-w-full lg:z-20 lg:rounded-lg lg:shadow-lg lg:dark:bg-slate-800 dark:border-slate-700 lg:hidden">
@@ -120,7 +133,7 @@
                 </div>
                 <div
                     class="block lg:flex items-center relative cursor-pointer navbar-item-label dark:text-white dark:hover:text-slate-400 py-2 px-3 lg:w-16 lg:justify-center">
-                    <a href="/" class="flex items-center"><!--v-if-->
+                    <button @click="logout" href="/" class="flex items-center"><!--v-if-->
                         <span
                             class="inline-flex justify-center items-center w-6 h-6 transition-colors">
                             <svg
@@ -131,7 +144,7 @@
                             </svg>
                         </span>
                         <span class="px-2 transition-colors lg:hidden">Log out</span><!--v-if-->
-                    </a>
+                    </button>
                     <!--v-if-->
                 </div>
             </div>

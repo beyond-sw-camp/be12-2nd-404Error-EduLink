@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+  frontend:
+    image: mstar228/edulink-frontend:2.1
+    ports:
+      - 80:80
+    # environment:
+    #   - BACKEND=${BACKEND}
