@@ -2,80 +2,51 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = 'kuj020409/frontend'
-        IMAGE_TAG = "${BUILD_NUMBER}"
-        DOCKERHUB_CREDENTIALS = 'DOCKER_HUB'
+        DOCKER_IMAGE = 'kuj020409/nginx'
+        DOCKER_TAG = 'latest'
+        SERVER_IP = '192.0.2.7'
+        SERVER_USER = 'test'
     }
 
     stages {
-        stage('Git Clone') {
+        stage('Git Checkout') {
             steps {
-                echo "Cloning Repository"
-                git branch: 'main', url: 'https://github.com/kuj020409/frontend-repository'
+                checkout scm
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                echo "Installing Dependencies"
                 sh 'npm ci'
             }
         }
 
         stage('Build') {
             steps {
-                echo "Building the Project"
-                sh 'npm run build'
+                sh 'npm run build'  // 이 과정에서 dist 폴더가 생성됩니다.
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Docker Build & Push') {
             steps {
-                echo "Building Docker Image"
-                script {
-                    docker.build("${IMAGE_NAME}:${IMAGE_TAG}")
-                }
-            }
-        }
-
-        stage('Push to Registry') {
-            steps {
-                echo "Pushing Docker Image to Registry"
-                script {
-                    withDockerRegistry([credentialsId: DOCKERHUB_CREDENTIALS]) {
-                        docker.image("${IMAGE_NAME}:${IMAGE_TAG}").push()
-                    }
-                }
+                sh """
+                    docker build -t $DOCKER_IMAGE:$DOCKER_TAG .
+                    echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
+                    docker push $DOCKER_IMAGE:$DOCKER_TAG
+                """
             }
         }
 
         stage('Deploy') {
             steps {
-                echo "Deploying to Server"
-                script {
-                    sshPublisher(
-                        publishers: [
-                            sshPublisherDesc(
-                                configName: 'k8s',
-                                verbose: true,
-                                transfers: [
-                                    sshTransfer(
-                                        sourceFiles: 'k8s/frontend-deployment.yml',
-                                        remoteDirectory: '/',
-                                        execCommand: '''
-                                            sed -i "s/latest/$BUILD_ID/g" k8s/frontend-deployment.yml
-                                        '''
-                                    ),
-                                    sshTransfer(
-                                        execCommand: '''
-                                            kubectl apply -f /home/test/k8s/frontend-deployment.yml
-                                        '''
-                                    )
-                                ]
-                            )
-                        ]
-                    )
-                }
+                sh """
+                    ssh $SERVER_USER@$SERVER_IP '
+                        docker pull $DOCKER_IMAGE:$DOCKER_TAG &&
+                        docker stop frontend || true &&
+                        docker rm frontend || true &&
+                        docker run -d -p 80:80 --name frontend $DOCKER_IMAGE:$DOCKER_TAG
+                    '
+                """
             }
         }
     }
